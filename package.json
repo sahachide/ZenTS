@@ -20,10 +20,10 @@
   "homepage": "http://zents.dev",
   "repository": {
     "type": "git",
-    "url": "https://"
+    "url": "https://github.com/sahachide/ZenTS"
   },
   "bugs": {
-    "url": "http://"
+    "url": "https://github.com/sahachide/ZenTS/issues"
   },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
