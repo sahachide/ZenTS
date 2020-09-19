@@ -1,5 +1,6 @@
 .DS_Store
 .git/
+docs/
 node_modules/
 npm-debug.log
 .vscode/
