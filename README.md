@@ -1,4 +1,4 @@
-[![ZenTS Logo](./docs/.vuepress/public/zents_logo_white.png)](http://zents.dev)
+[![ZenTS Logo](./docs/.vuepress/public/zents_logo_black.png)](http://zents.dev)
 
 ZenTS is a fast and modern MVC framework for Node.js & TypeScript.
 
