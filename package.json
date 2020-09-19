@@ -34,6 +34,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "docs:typedoc": "typedoc --plugin typedoc-plugin-markdown --out docs/api src",
+    "docs:deploy": "sh deploy-docs.sh",
     "dev:update": "yalc publish --push --changed",
     "dev:clean": "yalc installations clean zents"
   },

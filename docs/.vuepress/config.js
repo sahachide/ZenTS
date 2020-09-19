@@ -123,7 +123,6 @@ module.exports = {
       },
     ],
   ],
-  base: '/ZenTS/',
   plugins: [
     '@vuepress/back-to-top',
     'reading-progress',
