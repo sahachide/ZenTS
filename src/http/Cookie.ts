@@ -1,0 +1,80 @@
+import type { Except, JsonValue } from 'type-fest'
+import { parse, serialize } from 'cookie'
+
+import type { CookieOptions } from '../types/interfaces'
+import type { IncomingHttpHeaders } from 'http'
+import { config } from '../config/config'
+
+export class Cookie {
+  protected data = new Map<
+    string,
+    {
+      options: CookieOptions
+      value: JsonValue
+    }
+  >()
+  private modifiedKeys = new Set<string>()
+
+  constructor(headers: IncomingHttpHeaders) {
+    const cookies = parse(headers.cookie ?? '')
+
+    for (const [key, value] of Object.entries(cookies)) {
+      try {
+        this.data.set(key, JSON.parse(value))
+      } catch (e) {
+        // silent
+      }
+    }
+  }
+  public set(
+    key: string,
+    value: JsonValue,
+    options?: Except<CookieOptions, 'enable' | 'strategy'>,
+  ): void {
+    let cookieOptions = {}
+
+    this.modifiedKeys.add(key)
+
+    if (typeof options !== 'undefined') {
+      if (config.web?.cookie?.strategy === 'merge') {
+        cookieOptions = Object.assign({}, config.web?.cookie, options)
+      } else {
+        cookieOptions = options
+      }
+    } else if (config.web?.cookie) {
+      cookieOptions = config.web?.cookie
+    }
+
+    this.data.set(key, {
+      value,
+      options: cookieOptions,
+    })
+  }
+  public get<T>(key: string): T {
+    if (!this.data.has(key)) {
+      return undefined
+    }
+
+    return this.data.get(key).value as T
+  }
+  public has(key: string): boolean {
+    return this.data.has(key)
+  }
+  public serialize(): string {
+    const cookies = []
+
+    for (const [key, cookie] of this.data) {
+      if (!this.modifiedKeys.has(key)) {
+        return
+      }
+
+      try {
+        cookies.push(serialize(key, JSON.stringify(cookie.value), cookie.options))
+      } catch (e) {
+        // silent
+      }
+    }
+
+    return cookies.length ? cookies.join('; ') : ''
+  }
+}

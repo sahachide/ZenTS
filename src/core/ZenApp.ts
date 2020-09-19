@@ -1,0 +1,55 @@
+import { config, loadConfig } from '../config/config'
+import { createLogger, log } from '../log/logger'
+
+import { Autoloader } from './Autoloader'
+import type { Registry } from './Registry'
+import { Server } from '../http/Server'
+import { validateInstallation } from '../filesystem/validateInstallation'
+
+export class ZenApp {
+  /**
+   * Inidicates if the application has completly booted.
+   */
+  public isBooted: boolean = false
+
+  /**
+   * A reference to an initialized {@link Registry}.
+   */
+  public registry: Registry
+
+  /**
+   * This function boots the entire application, prepares the config, Registry and starts the webserver.
+   */
+  public async boot(): Promise<void> {
+    await loadConfig()
+    createLogger()
+    await validateInstallation()
+
+    const autoloader = new Autoloader()
+    this.registry = await autoloader.createRegistry()
+
+    await this.startServer()
+    this.isBooted = true
+  }
+
+  /**
+   * Creates a new webserver, which can be configured inside the config.web property (see {@link config} for more details)
+   */
+  protected async startServer(): Promise<void> {
+    return new Promise((resolve) => {
+      const server = new Server(this.registry)
+
+      server.listen(
+        {
+          host: config.web.host,
+          port: config.web.port,
+        },
+        () => {
+          log.success(`ZenTS web-server listening on http://${config.web.host}:${config.web.port}`)
+
+          resolve()
+        },
+      )
+    })
+  }
+}

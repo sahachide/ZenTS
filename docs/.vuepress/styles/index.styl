@@ -1,0 +1,248 @@
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+@tailwind utilities;
+
+.font-nunito { 
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 400
+}
+
+.font-nunito-light {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 300
+}
+
+.font-nunito-bold {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700
+}
+
+.font-rubik {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700
+}
+
+.font-quicksand-light {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 300
+}
+
+.font-quicksand-bold {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700
+}
+
+.landing-page {
+  h6.content-title {
+    color: $accentColor;
+
+    .sub-text {
+      margin-top: -20px;
+      display: block;
+      color: lighten($accentColor, 40%);
+    }
+  }
+
+  .beta-warning {
+    color: #fff;
+    background-color: var(--badgeErrorColor)
+    margin: 0
+  }
+
+  footer {
+    height: 40px; 
+    background-color: var(--textColor); 
+    color: var(--accentColor);
+    font-size: 0.85rem; 
+
+    a {
+      margin-left: 4px; 
+      color: var(--darken10AccentColor)
+      font-size: bolder
+       
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .dark-light-switcher-container {
+    padding-top: 5px;
+
+    .dark-light-switcher {
+      cursor: pointer
+      width: 15px
+    }
+  }
+
+  button, 
+  .button {
+    background-color: $accentColor;
+    border: none;
+    color: $textDarkColor;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Rubik', sans-serif;
+    outline: none;
+    padding: 12px 40px 10px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  button:before, 
+  button:after,
+  .button:before, 
+  .button:after {
+    border-color: transparent;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    border-style: solid;
+    border-width: 0;
+    content: '';
+    height: 24px;
+    position: absolute;
+    width: 24px;
+  }
+
+  button:before,
+  .button:before {
+    border-color: $accentColor;
+    border-left-width: 2px;
+    border-top-width: 2px;
+    left: -5px;
+    top: -5px;
+  }
+
+  button:after,
+  .button:after {
+    border-bottom-width: 2px;
+    border-color: $accentColor;
+    border-right-width: 2px;
+    bottom: -5px;
+    right: -5px;
+  }
+
+  button:hover, 
+  button.hover
+  .button:hover, 
+  .button.hover {
+    background-color: $accentColor;
+  }
+
+  button:hover:before, 
+  button.hover:before, 
+  button:hover:after, 
+  button.hover:after,
+  .button:hover:before, 
+  .button.hover:before, 
+  .button:hover:after, 
+  .button.hover:after {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.theme-container {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    margin-top: -2rem !important;
+    font-size: 1.5rem;
+  }
+
+  h3 {    
+    margin-top: -2rem !important;
+    font-size: 1.25rem;
+  }
+
+  a {
+    color: $accentColor;
+  }
+
+  p {
+    padding: 0.85rem 0;
+  }
+
+  .custom-block-title {
+    padding-top: 0.85rem;
+    padding-bottom: 0;  
+  }
+  
+  a.header-anchor {
+    color: $secondaryColor;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .custom-block.tip {
+    a {
+      color: $accentColor;
+    }
+  } 
+
+  ul {
+    margin-left: 3rem;
+    list-style-type: square;
+  }
+
+  .sidebar-group {
+    .sidebar-heading {
+      padding-left: 1.25rem;
+    }
+  }
+
+  .extra-class {
+    code {
+      font-size: 0.92rem;
+      font-family: 'Source Code Pro', monospace !important;
+      font-weight: 400 !important;
+    }
+  }
+
+  .table-of-contents {
+    ul {
+      margin-left: 3rem;      
+    }
+  }
+
+  .el-tabs {
+    background-color: transparent;
+    border: 0
+
+    > .el-tabs__header {
+      background-color: transparent;
+
+      .el-tabs__item {
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .el-tabs__item.is-active {
+        background-color: $accentColor;
+        color: #fff;
+      }
+
+      .el-tabs__item:not(.is-disabled):hover {
+        color: #fff;  
+      }
+    }
+  }
+  
+  
+  
+
+  // .site-name {
+  //   display: none; 
+  // }
+}
