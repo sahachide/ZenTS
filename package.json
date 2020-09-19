@@ -94,6 +94,7 @@
     "vuepress": "^1.5.4",
     "vuepress-plugin-code-copy": "^1.0.6",
     "vuepress-plugin-element-tabs": "^0.2.8",
+    "vuepress-plugin-minimal-analytics": "^0.1.4",
     "vuepress-plugin-reading-progress": "^1.0.10",
     "vuepress-plugin-reading-time": "^0.1.1",
     "vuepress-theme-default-prefers-color-scheme": "^1.1.0",

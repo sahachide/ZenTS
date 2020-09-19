@@ -135,6 +135,12 @@ module.exports = {
         color: '#7E57C2',
       },
     ],
+    [
+      'minimal-analytics',
+      {
+        ga: 'UA-161938495-2',
+      },
+    ],
   ],
   markdown: {
     lineNumbers: true,
