@@ -123,6 +123,7 @@ module.exports = {
       },
     ],
   ],
+  base: '/ZenTS/',
   plugins: [
     '@vuepress/back-to-top',
     'reading-progress',
@@ -146,7 +147,10 @@ module.exports = {
   themeConfig: {
     // defaultTheme: 'light',
     logo: '/zents_logo_icon.png',
-    repo: '',
+    repo: 'sahachide/ZenTS',
+    docsDir: 'docs',
+    editLinks: true,
+    editLinkText: 'Edit this page on GitHub',
     lastUpdated: 'Last Updated',
     smoothScroll: false,
     sidebarDepth: 3,

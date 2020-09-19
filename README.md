@@ -4,7 +4,7 @@ ZenTS is a fast and modern MVC framework for Node.js & TypeScript.
 
 [Website](http://zents.dev) | [Documentation](http://zents.dev/guide/)
 
-> **Warning**: ZenTS is still **_under heavy development_** and **_not_** ready for production use yet (breaking changes can be introduces at any time). Please report any issues on Github.
+> **Warning**: ZenTS is still **_under heavy development_** and **_not_** ready for production use yet (breaking changes can be introduces at any time). Please report any issues on [GitHub](https://github.com/sahachide/ZenTS/issues).
 
 ## Quick Start
 

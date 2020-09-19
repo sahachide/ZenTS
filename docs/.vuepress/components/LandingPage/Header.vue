@@ -19,7 +19,7 @@
             <a href="/api/">API-Reference</a>
           </li>
           <li>
-            <a href="#">Github</a>
+            <a href="https://github.com/sahachide/ZenTS" target="_blank">GitHub</a>
           </li>
           <li class="dark-light-switcher-container">
             <img

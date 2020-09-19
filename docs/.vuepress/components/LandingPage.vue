@@ -4,7 +4,8 @@
       <div class="container mx-auto py-4">
         ZenTS is still <strong><em>under heavy development</em></strong> and
         <strong><em>not</em></strong> ready for production use yet (breaking changes can be
-        introduces at any time). Please report any issues on Github.
+        introduces at any time). Please report any issues on
+        <a href="https://github.com/sahachide/ZenTS/issues" target="_blank">GitHub</a>.
       </div>
     </div>
     <section class="hero-container">
@@ -198,8 +199,10 @@ export default {
       height: 200px;
     }
   }
+
   .scroll-down {
     position: relative;
+
     span {
       animation: scrollDown 1.5s infinite;
       position: absolute;
@@ -212,6 +215,7 @@ export default {
       border-radius: 50px;
       box-sizing: border-box;
     }
+
     span::before {
       position: absolute;
       top: 10px;
@@ -224,6 +228,7 @@ export default {
       border-radius: 100%;
       box-sizing: border-box;
     }
+
     span::after {
       position: absolute;
       bottom: -18px;
@@ -243,14 +248,16 @@ export default {
 
 @keyframes scrollDown {
   0% {
-    transform:  translate(0, 0);
+    transform: translate(0, 0);
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
-    transform:  translate(0, 40px);
+    transform: translate(0, 40px);
     opacity: 0;
   }
 }
