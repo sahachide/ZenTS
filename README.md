@@ -1,8 +1,22 @@
-[![ZenTS Logo](./docs/.vuepress/public/zents_logo_black.png)](http://zents.dev)
+[![ZenTS Logo](./docs/.vuepress/public/zents_logo_small.png)](http://zents.dev)
+
+![GitHub top language](https://img.shields.io/github/languages/top/sahachide/ZenTS?style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/sahachide/ZenTS?style=flat-square)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sahachide/ZenTS?style=flat-square)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sahachide/ZenTS?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/sahachide/ZenTS?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues-raw/sahachide/ZenTS?style=flat-square)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/sahachide/ZenTS?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/sahachide/ZenTS?style=flat-square)
+![npm](https://img.shields.io/npm/dm/zents?style=flat-square)
+![npm](https://img.shields.io/npm/v/zents?label=latest%20release&style=flat-square)
+![node-current](https://img.shields.io/node/v/zents?style=flat-square)
+![Website](https://img.shields.io/website?style=flat-square&url=https%3A%2F%2Fzents.dev)
+![NPM](https://img.shields.io/npm/l/zents?style=flat-square)
+
+[Website](https://zents.dev) | [Documentation](https://zents.dev/guide/) | [npm](https://www.npmjs.com/package/zents)
 
 ZenTS is a fast and modern MVC framework for Node.js & TypeScript.
-
-[Website](http://zents.dev) | [Documentation](http://zents.dev/guide/)
 
 > **Warning**: ZenTS is still **_under heavy development_** and **_not_** ready for production use yet (breaking changes can be introduces at any time). Please report any issues on [GitHub](https://github.com/sahachide/ZenTS/issues).
 
@@ -24,7 +38,7 @@ The above command will install the latest version of the CLI globally and create
 
 ## Documentation
 
-Head over to the [official website](http://zents.dev) and read the [documentation](http://zents.dev/guide/).
+Head over to the [official website](https://zents.dev) and read the [documentation](https://zents.dev/guide/).
 
 ## License
 
