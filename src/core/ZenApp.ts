@@ -37,6 +37,10 @@ export class ZenApp {
     this.isBooted = true
   }
 
+  public destroy(): void {
+    this.nodeServer.close()
+  }
+
   /**
    * Creates a new webserver, which can be configured inside the config.web property (see {@link config} for more details)
    */
