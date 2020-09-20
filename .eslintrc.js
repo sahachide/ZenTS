@@ -7,6 +7,13 @@ module.exports = {
     es6: true,
     node: true,
   },
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: path.resolve(__dirname, './tsconfig.json'),
+    sourceType: 'module',
+    tsconfigRootDir: __dirname,
+  },
+  plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -18,13 +25,6 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
   ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: path.resolve(__dirname, './tsconfig.json'),
-    sourceType: 'module',
-    tsconfigRootDir: __dirname,
-  },
-  plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/ban-ts-comment': 'off',
