@@ -1,10 +1,12 @@
+import { mockZenApp } from './mock/mockZenApp'
 import supertest from 'supertest'
-import { zen } from './../src/core/Zen'
 
 describe('ZenTS app', () => {
   test('server starts successfully', async () => {
-    const app = await zen()
+    const app = await mockZenApp('./test/fixtures/baseapp/')
 
-    await supertest(app.nodeServer).get('/').expect(200)
+    await supertest(app.nodeServer).get('/').expect('Content-Type', /json/).expect(200).expect({
+      success: true,
+    })
   })
 })
