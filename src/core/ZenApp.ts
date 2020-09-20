@@ -2,6 +2,8 @@ import { config, loadConfig } from '../config/config'
 import { createLogger, log } from '../log/logger'
 
 import { Autoloader } from './Autoloader'
+import type { Server as NodeHttpServer } from 'http'
+import type { Server as NodeHttpsServer } from 'https'
 import type { Registry } from './Registry'
 import { Server } from '../http/Server'
 import { validateInstallation } from '../filesystem/validateInstallation'
@@ -16,6 +18,8 @@ export class ZenApp {
    * A reference to an initialized {@link Registry}.
    */
   public registry: Registry
+
+  public nodeServer: NodeHttpsServer | NodeHttpServer
 
   /**
    * This function boots the entire application, prepares the config, Registry and starts the webserver.
@@ -39,7 +43,7 @@ export class ZenApp {
     return new Promise((resolve) => {
       const server = new Server(this.registry)
 
-      server.listen(
+      this.nodeServer = server.listen(
         {
           host: config.web.host,
           port: config.web.port,

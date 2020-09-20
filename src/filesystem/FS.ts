@@ -10,9 +10,14 @@ import { readDirRecursive } from './readDirRecursiveGenerator'
  * utilizes async / await syntax. All functions supplied by this class should be static, because this (abstract) class
  * will never be initialized.
  */
+
 export abstract class fs {
   // @ts-ignore
-  public static isTsNode = process[Symbol.for('ts-node.register.instance')] as boolean
+  public static isTsNode =
+    process.env.NODE_ENV === 'development'
+      ? true
+      : // @ts-ignore
+        (process[Symbol.for('ts-node.register.instance')] as boolean)
 
   /**
    * Checks if the given path / file exists.

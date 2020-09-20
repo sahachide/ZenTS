@@ -7,10 +7,12 @@ describe('util functions', () => {
     expect(getContentType('foo.html')).toBe('text/html; charset=utf-8')
     expect(getContentType('app.js')).toBe('application/javascript; charset=utf-8')
   })
+
   test('getContentType() has a working cached copy', () => {
     expect(getContentType('json')).toBe('application/json; charset=utf-8')
     expect(getContentType('json')).toBe('application/json; charset=utf-8')
   })
+
   test('isObject()', () => {
     expect(isObject({ foo: 'bar' })).toBe(true)
     expect(isObject(['foo', 'bar'])).toBe(false)
