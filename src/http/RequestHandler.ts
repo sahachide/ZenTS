@@ -79,13 +79,7 @@ export class RequestHandler {
     if (result instanceof TemplateResponse) {
       return context.res.html(result.html).send()
     } else if (isObject(result)) {
-      const resultObject = result as JsonObject
-
-      if (typeof resultObject.__isZenRendered === 'boolean' && resultObject.__isZenRendered) {
-        return context.res.html(resultObject.html as string).send()
-      }
-
-      return context.res.json(resultObject).send()
+      return context.res.json(result as JsonObject).send()
     } else if (Array.isArray(result)) {
       return context.res.json(result).send()
     } else if (typeof result === 'string') {
