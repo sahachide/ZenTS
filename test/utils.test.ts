@@ -6,6 +6,7 @@ describe('Util', () => {
     expect(getContentType('json')).toBe('application/json; charset=utf-8')
     expect(getContentType('foo.html')).toBe('text/html; charset=utf-8')
     expect(getContentType('app.js')).toBe('application/javascript; charset=utf-8')
+    expect(getContentType('app.thismimetypedoesntexist')).toBe(false)
   })
 
   it('getContentType() has a working cached copy', () => {
