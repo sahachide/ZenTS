@@ -1,4 +1,7 @@
 {
   "roots": ["./test"],
-  "preset": "ts-jest"
+  "preset": "ts-jest",
+  "collectCoverage": true,
+  "collectCoverageFrom": ["src/**/*.ts"],
+  "coverageReporters": ["text"]
 }
