@@ -19,11 +19,11 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
+    'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
   ],
   rules: {
     '@typescript-eslint/ban-types': 'error',
