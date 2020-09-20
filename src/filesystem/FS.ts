@@ -13,11 +13,7 @@ import { readDirRecursive } from './readDirRecursiveGenerator'
 
 export abstract class fs {
   // @ts-ignore
-  public static isTsNode =
-    process.env.NODE_ENV === 'development'
-      ? true
-      : // @ts-ignore
-        (process[Symbol.for('ts-node.register.instance')] as boolean)
+  public static isTsNode = !!process[Symbol.for('ts-node.register.instance')]
 
   /**
    * Checks if the given path / file exists.
@@ -70,7 +66,7 @@ export abstract class fs {
   }
 
   public static resolveZenPath(key: string): string {
-    const basePath = !this.isTsNode ? config.paths.base.dist : config.paths.base.src
+    const basePath = !this.isDev() ? config.paths.base.dist : config.paths.base.src
     const paths = config.paths as { [key: string]: string }
 
     return join(basePath, paths[key])
@@ -78,10 +74,10 @@ export abstract class fs {
 
   public static resolveZenFileExtension(filename?: string): string {
     if (!filename) {
-      return !this.isTsNode ? '.js' : '.ts'
+      return !this.isDev() ? '.js' : '.ts'
     }
 
-    return !this.isTsNode ? `${filename}.js` : `${filename}.ts`
+    return !this.isDev() ? `${filename}.js` : `${filename}.ts`
   }
 
   /**
@@ -89,5 +85,9 @@ export abstract class fs {
    */
   public static appDir(): string {
     return appDir
+  }
+
+  public static isDev(): boolean {
+    return process.env.NODE_ENV === 'development' || this.isTsNode
   }
 }
