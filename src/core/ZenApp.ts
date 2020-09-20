@@ -6,6 +6,7 @@ import type { Server as NodeHttpServer } from 'http'
 import type { Server as NodeHttpsServer } from 'https'
 import type { Registry } from './Registry'
 import { Server } from '../http/Server'
+import type { ZenConfig } from '../types/interfaces'
 import { validateInstallation } from '../filesystem/validateInstallation'
 
 export class ZenApp {
@@ -24,8 +25,8 @@ export class ZenApp {
   /**
    * This function boots the entire application, prepares the config, Registry and starts the webserver.
    */
-  public async boot(): Promise<void> {
-    await loadConfig()
+  public async boot(config?: ZenConfig): Promise<void> {
+    await loadConfig(config)
     createLogger()
     await validateInstallation()
 

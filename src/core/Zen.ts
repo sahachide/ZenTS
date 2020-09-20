@@ -1,19 +1,9 @@
 import { ZenApp } from './ZenApp'
+import type { ZenConfig } from '../types/interfaces'
 
-/**
- * The main entry point for your application. Call this function to start a new ZenTS instance.
- *
- * ```
- * import { zen } from 'zents'
- *
- * ;(async () => {
- *   await zen()
- * })()
- * ```
- */
-export async function zen(): Promise<ZenApp> {
+export async function zen(config?: ZenConfig): Promise<ZenApp> {
   const app = new ZenApp()
-  await app.boot()
+  await app.boot(config)
 
   return app
 }

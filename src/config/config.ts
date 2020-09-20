@@ -53,7 +53,7 @@ export let isConfigLoaded: boolean = false
 /**
  * Load the config file. This function should never be called by custom code.
  */
-export async function loadConfig(): Promise<void> {
+export async function loadConfig(manualConfig: ZenConfig = {}): Promise<void> {
   if (isConfigLoaded) {
     return
   }
@@ -66,6 +66,7 @@ export async function loadConfig(): Promise<void> {
     defaultConfig,
     defaultFileConfig ? defaultFileConfig.config : {},
     envFileConfig ? envFileConfig.config : {},
+    manualConfig,
   )
   isConfigLoaded = true
 }
