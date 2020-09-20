@@ -1,0 +1,4 @@
+{
+  "roots": ["./test"],
+  "preset": "ts-jest"
+}

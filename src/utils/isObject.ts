@@ -1,5 +1,5 @@
 export function isObject(value: any): boolean {
-  if (value === null) {
+  if (value === null || Array.isArray(value)) {
     return false
   }
 

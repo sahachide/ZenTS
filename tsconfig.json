@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
+    "outDir": "./lib/",
     "target": "es2019",
     "module": "commonjs",
     "lib": ["es2020"],
     "alwaysStrict": true,
+    "noImplicitAny": true,
     "esModuleInterop": true,
+    "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "outDir": "./lib/",
-    "sourceMap": true,
-    "declaration": true
+    "sourceMap": true
   },
   "include": ["src/**/*", ".eslintrc.js"],
   "exclude": ["node_modules", "example", "docs"]
