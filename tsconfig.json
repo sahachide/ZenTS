@@ -16,5 +16,5 @@
     "sourceMap": true
   },
   "include": ["src/**/*", ".eslintrc.js"],
-  "exclude": ["node_modules", "example", "docs"]
+  "exclude": ["node_modules", "example", "docs", "test/testapp/**/*"]
 }

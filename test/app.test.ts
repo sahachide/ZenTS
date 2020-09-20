@@ -12,13 +12,13 @@ describe('ZenTS test app', () => {
     app.destroy()
   })
 
-  test('answers ping message', async () => {
+  it('answers ping message', async () => {
     await supertest(app.nodeServer).get('/ping').expect('Content-Type', /json/).expect(200).expect({
       answer: 'pong',
     })
   })
 
-  test('returns a JSON object response', async () => {
+  it('returns a JSON object response', async () => {
     await supertest(app.nodeServer)
       .get('/json-object')
       .expect(200)
@@ -29,7 +29,7 @@ describe('ZenTS test app', () => {
       })
   })
 
-  test('returns a JSON array response', async () => {
+  it('returns a JSON array response', async () => {
     await supertest(app.nodeServer)
       .get('/json-array')
       .expect(200)
