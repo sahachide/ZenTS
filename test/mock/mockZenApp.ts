@@ -1,6 +1,6 @@
-import type { ZenApp } from './../../src/core/ZenApp'
+import type { ZenApp } from '../../src/core/ZenApp'
 import { join } from 'path'
-import { zen } from './../../src/core/Zen'
+import { zen } from '../../src/core/Zen'
 
 export async function mockZenApp(basePath: string): Promise<ZenApp> {
   process.env.NODE_ENV = 'development'
