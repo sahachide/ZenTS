@@ -3,5 +3,6 @@
   "preset": "ts-jest",
   "collectCoverage": true,
   "collectCoverageFrom": ["src/**/*.ts"],
-  "coverageReporters": ["text"]
+  "coverageReporters": ["text"],
+  "testEnvironment": "node"
 }
