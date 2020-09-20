@@ -6,7 +6,7 @@ import merge from 'lodash.merge'
 
 const moduleName = 'zen'
 
-async function loadDefaultFile(): Promise<CosmicConfigResult> {
+async function loadDefaultFile(searchFrom?: string): Promise<CosmicConfigResult> {
   const explorer = cosmiconfig(moduleName, {
     searchPlaces: [
       'package.json',
@@ -22,10 +22,10 @@ async function loadDefaultFile(): Promise<CosmicConfigResult> {
     ],
   })
 
-  return await explorer.search()
+  return await explorer.search(searchFrom)
 }
 
-async function loadEnviormentFile(): Promise<CosmicConfigResult> {
+async function loadEnviormentFile(searchFrom?: string): Promise<CosmicConfigResult> {
   const env = process.env.NODE_ENV ?? 'development'
   const explorer = cosmiconfig(moduleName, {
     searchPlaces: [
@@ -39,7 +39,7 @@ async function loadEnviormentFile(): Promise<CosmicConfigResult> {
     ],
   })
 
-  return await explorer.search()
+  return await explorer.search(searchFrom)
 }
 
 /**
@@ -53,20 +53,25 @@ export let isConfigLoaded: boolean = false
 /**
  * Load the config file. This function should never be called by custom code.
  */
-export async function loadConfig(manualConfig: ZenConfig = {}): Promise<void> {
-  if (isConfigLoaded) {
+export async function loadConfig(
+  manualConfig?: ZenConfig,
+  searchFrom?: string,
+  forceLoading: boolean = false,
+): Promise<void> {
+  if (isConfigLoaded && !forceLoading) {
     return
   }
 
-  const defaultFileConfig = await loadDefaultFile()
-  const envFileConfig = await loadEnviormentFile()
+  isConfigLoaded = true
+
+  const defaultFileConfig = await loadDefaultFile(searchFrom)
+  const envFileConfig = await loadEnviormentFile(searchFrom)
 
   config = merge(
     {},
     defaultConfig,
     defaultFileConfig ? defaultFileConfig.config : {},
     envFileConfig ? envFileConfig.config : {},
-    manualConfig,
+    manualConfig ? manualConfig : {},
   )
-  isConfigLoaded = true
 }

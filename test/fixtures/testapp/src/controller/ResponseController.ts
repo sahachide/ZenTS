@@ -1,4 +1,4 @@
-import { Controller, get } from '../../../../lib'
+import { Controller, get } from '../../../../../lib'
 
 export default class extends Controller {
   @get('/ping')

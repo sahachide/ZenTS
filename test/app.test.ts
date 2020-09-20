@@ -6,7 +6,7 @@ let app: ZenApp
 
 describe('ZenTS test app', () => {
   beforeAll(async () => {
-    app = await mockZenApp('./test/testapp/')
+    app = await mockZenApp('./test/fixtures/testapp/')
   })
   afterAll(() => {
     app.destroy()

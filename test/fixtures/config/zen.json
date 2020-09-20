@@ -1,0 +1,6 @@
+{
+  "web": {
+    "port": 1234,
+    "publicPath": "/assets/"
+  }
+}

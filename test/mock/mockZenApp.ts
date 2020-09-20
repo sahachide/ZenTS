@@ -13,6 +13,7 @@ export async function mockZenApp(basePath: string): Promise<ZenApp> {
       public: false,
     },
   })
+  process.env.NODE_ENV = 'test'
 
   return app
 }
