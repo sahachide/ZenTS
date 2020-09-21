@@ -1,5 +1,5 @@
-import { getContentType } from './../src/utils/getContentType'
-import { isObject } from './../src/utils/isObject'
+import { getContentType } from '../../src/utils/getContentType'
+import { isObject } from '../../src/utils/isObject'
 
 describe('Util', () => {
   it('getContentType() returns the correct mime type', () => {

@@ -1,5 +1,5 @@
-import type { ZenApp } from '../src/core/ZenApp'
-import { mockZenApp } from './mock/mockZenApp'
+import type { ZenApp } from '../../src/core/ZenApp'
+import { mockZenApp } from '../mock/mockZenApp'
 import supertest from 'supertest'
 
 let app: ZenApp

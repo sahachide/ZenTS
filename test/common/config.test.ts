@@ -1,9 +1,9 @@
-import { config, loadConfig } from './../src/config/config'
+import { config, loadConfig } from '../../src/config/config'
 
-import { defaultConfig } from './../src/config/default'
-import { join } from 'path'
+import { defaultConfig } from '../../src/config/default'
+import { getFixtureDir } from '../helper/getFixtureDir'
 
-const testConfigDir = join(process.cwd(), './test/fixtures/config/')
+const testConfigDir = getFixtureDir('config')
 
 describe('Config', () => {
   it('has the default config before calling loadConfig()', () => {
