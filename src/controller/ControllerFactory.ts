@@ -37,13 +37,13 @@ export class ControllerFactory extends AbstractFactory {
    * @param key The key of the controller. That's either its filename or the exported member.
    */
   public build<T>(key: string): T {
-    const { module } = this.controllers.get(key)
+    const controller = this.controllers.get(key)
 
-    if (!module) {
+    if (!controller) {
       return null
     }
 
-    const instance = this.injector.inject<T>(module, [this.templateEnvironment])
+    const instance = this.injector.inject<T>(controller.module, [this.templateEnvironment])
 
     return instance
   }
