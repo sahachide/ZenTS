@@ -11,7 +11,7 @@ describe('Config', () => {
   })
 
   it('loads configuration files correctly', async () => {
-    await loadConfig({}, testConfigDir, true)
+    await loadConfig(undefined, testConfigDir, true)
 
     expect(config.web?.port).toBe(8080)
     expect(config.web?.publicPath).toBe('/assets/')
@@ -32,5 +32,28 @@ describe('Config', () => {
     expect(config.web?.port).toBe(3333)
     expect(config.web?.publicPath).toBe('/assets/')
     expect(config.database?.enable).toBe(true)
+  })
+
+  it("doesn't load configs twice", async () => {
+    await loadConfig(
+      {
+        web: {
+          port: 1234,
+        },
+      },
+      testConfigDir,
+      false,
+    )
+
+    expect(config.web?.port).toBe(3333)
+  })
+
+  it("loads development config when NODE_ENV isn't present", async () => {
+    delete process.env.NODE_ENV
+
+    await loadConfig(undefined, testConfigDir, true)
+    expect(config.web?.port).toBe(5555)
+
+    process.env.NODE_ENV = 'test'
   })
 })
