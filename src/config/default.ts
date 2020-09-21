@@ -2,7 +2,7 @@ import type { ZenConfig } from './../types/interfaces'
 import { fs } from './../filesystem/FS'
 import { join } from 'path'
 
-const appDir = fs.appDir()
+const appDir = fs ? fs.appDir() : process.cwd()
 
 /**
  * The default ZenTS config
