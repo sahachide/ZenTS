@@ -1,4 +1,4 @@
-import { Controller, inject } from '../../../../../lib'
+import { Controller, inject } from '../../../../../src'
 
 import DepdendencyInjectionService from '../service/DepdendencyInjectionService'
 

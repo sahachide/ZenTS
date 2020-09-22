@@ -1,4 +1,4 @@
-import { Controller, controller, get, prefix } from '../../../../../lib'
+import { Controller, controller, get, prefix } from '../../../../../src'
 
 @controller('Prefix')
 @prefix('/prefix/')
