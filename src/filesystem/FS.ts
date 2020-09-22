@@ -1,7 +1,6 @@
-import { join, resolve } from 'path'
-
 import { path as appDir } from 'app-root-path'
 import { config } from '../config/config'
+import { join } from 'path'
 import { promises } from 'fs'
 import { readDirRecursive } from './readDirRecursiveGenerator'
 
@@ -44,25 +43,6 @@ export abstract class fs {
     }
 
     return files
-  }
-  /**
-   * Read all sub-directories (recursively) of the given directory.
-   *
-   * @param dir A absolute path to a folder
-   */
-  public static async readSubDirs(dir: string): Promise<string[]> {
-    const dirs = []
-    const dirContent = await promises.readdir(dir, {
-      withFileTypes: true,
-    })
-
-    for (const content of dirContent) {
-      if (content.isDirectory()) {
-        dirs.push(resolve(dir, content.name))
-      }
-    }
-
-    return dirs
   }
 
   public static resolveZenPath(key: string): string {
