@@ -1,6 +1,6 @@
 {
   "name": "zents",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ZenTS is a Node.js & TypeScript MVC-Framework for building rich web applications, released as free and open-source software under the MIT License. It is designed for building web applications with modern tools and design patterns.",
   "keywords": [
     "ZenTS",
