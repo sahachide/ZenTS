@@ -14,6 +14,7 @@ export * from './template/'
 export {
   Context,
   TemplateFilter,
+  QueryString,
   InjectedConnection,
   InjectedEntityManager,
   InjectedRepository,
