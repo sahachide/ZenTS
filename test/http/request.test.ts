@@ -25,7 +25,7 @@ describe('Request', () => {
       })
   })
 
-  it('parses querystring', async () => {
+  it('parses a querystring', async () => {
     await supertest(app.nodeServer)
       .get('/request-test-queryparams?foo=bar&bar[]=baz&bar[]=buzz')
       .expect(200)
