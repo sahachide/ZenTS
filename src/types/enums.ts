@@ -29,6 +29,7 @@ export enum REFLECT_METADATA {
   DATABASE_REPOSITORY = 'database:repository',
   DEPENDENCIES = 'dependencies',
   HTTP_METHOD = 'httpMethod',
+  REDIS_CLIENT = 'redisClient',
   URL_PATH = 'urlPath',
   URL_PREFIX = 'urlPrefix',
 }

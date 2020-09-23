@@ -18,4 +18,5 @@ export {
   InjectedConnection,
   InjectedEntityManager,
   InjectedRepository,
+  RedisClient,
 } from './types/'

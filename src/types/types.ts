@@ -8,6 +8,7 @@ import type {
 } from './interfaces'
 import type { IncomingMessage, ServerResponse } from 'http'
 
+import type { Redis } from 'ioredis'
 import type { Stream } from 'stream'
 import type { TemplateResponse } from '../template/TemplateResponse'
 
@@ -93,6 +94,8 @@ export type NunjucksFilterCallback = (err: any, result: any) => void
 // ---- P
 // ---- Q
 // ---- R
+
+export type RedisClient = Redis
 
 export type RequestHeadersValue = string | string[]
 export type RequestHeaders = Map<string, RequestHeadersValue>
