@@ -36,4 +36,32 @@ describe('ZenTS test app', () => {
       .expect('Content-Type', /json/)
       .expect(['foo', 'bar', 'baz'])
   })
+
+  it('parses a POST request body', async () => {
+    const body = {
+      foo: 'bar',
+    }
+
+    await supertest(app.nodeServer)
+      .post('/post-echo')
+      .send(body)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .expect('Content-Type', /json/)
+      .expect(body)
+  })
+
+  it('parses a PUT request body', async () => {
+    const body = {
+      foo: 'bar',
+    }
+
+    await supertest(app.nodeServer)
+      .put('/put-echo')
+      .send(body)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(body)
+  })
 })
