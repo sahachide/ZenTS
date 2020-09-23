@@ -8,6 +8,7 @@ describe('ZenTS test app', () => {
   beforeAll(async () => {
     app = await mockZenApp('./test/fixtures/testapp/')
   })
+
   afterAll(() => {
     app.destroy()
   })
