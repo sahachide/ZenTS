@@ -60,11 +60,6 @@ export default class extends Controller {
       httpMethod: req.httpMethod,
     }
 
-    console.log({
-      request: requestData,
-      setterTests,
-    })
-
     return {
       request: requestData,
       setterTests,
