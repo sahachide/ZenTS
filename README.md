@@ -3,8 +3,6 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/sahachide/ZenTS?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/sahachide/ZenTS?style=flat-square)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sahachide/ZenTS?style=flat-square)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sahachide/ZenTS?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/sahachide/ZenTS?style=flat-square)
 ![GitHub issues](https://img.shields.io/github/issues-raw/sahachide/ZenTS?style=flat-square)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/sahachide/ZenTS?style=flat-square)
 ![GitHub contributors](https://img.shields.io/github/contributors/sahachide/ZenTS?style=flat-square)
