@@ -34,7 +34,8 @@ export class ControllerLoader extends AbstractZenFileLoader {
       const keyMetadata = Reflect.getMetadata(REFLECT_METADATA.CONTROLLER_KEY, module) as
         | string
         | undefined
-      const controllerKey = typeof keyMetadata !== 'string' ? key : keyMetadata.toLowerCase()
+      const controllerKey =
+        typeof keyMetadata !== 'string' ? key : `${keyMetadata}Controller`.toLowerCase()
 
       if (this.controllers.has(controllerKey)) {
         log.warn(`Controller with key "${controllerKey}" is already registered!`)

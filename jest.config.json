@@ -1,4 +1,9 @@
 {
   "roots": ["./test"],
-  "preset": "ts-jest"
+  "testPathIgnorePatterns": ["test/fixtures/config/zen.test.config.js"],
+  "preset": "ts-jest",
+  "collectCoverage": true,
+  "collectCoverageFrom": ["src/**/*.ts"],
+  "coverageReporters": ["text"],
+  "testEnvironment": "node"
 }

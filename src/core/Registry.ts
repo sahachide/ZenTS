@@ -19,8 +19,8 @@ export class Registry {
    * @param connection An initiated connection to a database (if enabled).
    */
   constructor(
-    protected readonly controllers: Controllers = new Map() as Controllers,
-    protected readonly services: Services = new Map() as Services,
+    protected readonly controllers: Controllers,
+    protected readonly services: Services,
     templateData: TemplateEngineLoaderResult,
     protected readonly connection: Connection | null,
   ) {

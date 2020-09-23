@@ -2,8 +2,11 @@ import { config, loadConfig } from '../config/config'
 import { createLogger, log } from '../log/logger'
 
 import { Autoloader } from './Autoloader'
+import type { Server as NodeHttpServer } from 'http'
+import type { Server as NodeHttpsServer } from 'https'
 import type { Registry } from './Registry'
 import { Server } from '../http/Server'
+import type { ZenConfig } from '../types/interfaces'
 import { validateInstallation } from '../filesystem/validateInstallation'
 
 export class ZenApp {
@@ -17,11 +20,13 @@ export class ZenApp {
    */
   public registry: Registry
 
+  public nodeServer: NodeHttpsServer | NodeHttpServer
+
   /**
    * This function boots the entire application, prepares the config, Registry and starts the webserver.
    */
-  public async boot(): Promise<void> {
-    await loadConfig()
+  public async boot(config?: ZenConfig): Promise<void> {
+    await loadConfig(config)
     createLogger()
     await validateInstallation()
 
@@ -32,6 +37,10 @@ export class ZenApp {
     this.isBooted = true
   }
 
+  public destroy(): void {
+    this.nodeServer.close()
+  }
+
   /**
    * Creates a new webserver, which can be configured inside the config.web property (see {@link config} for more details)
    */
@@ -39,7 +48,7 @@ export class ZenApp {
     return new Promise((resolve) => {
       const server = new Server(this.registry)
 
-      server.listen(
+      this.nodeServer = server.listen(
         {
           host: config.web.host,
           port: config.web.port,

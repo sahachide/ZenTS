@@ -1,10 +1,6 @@
 import type { Class } from 'type-fest'
 import { REFLECT_METADATA } from '../types/enums'
 
-/**
- * Create a http get route which is handled by the controller function.
- * @param path The path of the route
- */
 export function get(path: string) {
   return (target: any, propertyKey: string): void => {
     Reflect.defineMetadata(REFLECT_METADATA.HTTP_METHOD, 'get', target, propertyKey)

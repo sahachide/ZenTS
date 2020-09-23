@@ -94,7 +94,7 @@ export class RequestHandler {
     const method = this.nodeReq.method.toLowerCase()
     let body: ParsedBody = null
 
-    if (method === 'post' || this.nodeReq.method === 'put') {
+    if (method === 'post' || method === 'put') {
       const bodyParser = new BodyParser()
 
       body = await bodyParser.parse(this.nodeReq)
