@@ -1,4 +1,4 @@
-import type { Class, JsonValue, Promisable } from 'type-fest'
+import type { Class, Except, JsonValue, Promisable } from 'type-fest'
 import type {
   ControllerMethodReturnType,
   ErrorResponseData,
@@ -32,6 +32,11 @@ export interface CookieOptions {
   path?: string
   sameSite?: true | false | 'lax' | 'strict' | 'none'
   secure?: boolean
+}
+
+export interface ConfigValidationResult {
+  isValid: boolean
+  errors: string[]
 }
 
 export interface Context {
@@ -185,6 +190,13 @@ export interface RegistryFactories {
 }
 
 // ---- S
+
+export interface SessionProvider {
+  name?: string
+  store?: string
+  maxCookieSize?: number
+}
+
 // ---- T
 
 export interface TemplateEngineLoaderResult {
@@ -256,6 +268,11 @@ export interface ZenConfig {
       maxParamLength?: number
     }
     cookie?: CookieOptions
+  }
+  session?: {
+    enable?: boolean
+    secretKey?: string
+    providers?: SessionProvider[]
   }
   database?: Partial<ConnectionOptions> & {
     enable?: boolean

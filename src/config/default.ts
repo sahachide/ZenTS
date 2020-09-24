@@ -38,6 +38,9 @@ export const defaultConfig: ZenConfig = {
     enable: false,
     log: true,
   },
+  session: {
+    enable: false,
+  },
   template: {
     extension: 'njk',
     encoding: 'utf-8',
