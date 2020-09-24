@@ -11,6 +11,7 @@ import type { IncomingMessage, ServerResponse } from 'http'
 import type { Redis } from 'ioredis'
 import type { Stream } from 'stream'
 import type { TemplateResponse } from '../template/TemplateResponse'
+import type findMyWay from 'find-my-way'
 
 // ---- A
 // ---- B
@@ -102,6 +103,8 @@ export type RequestHeaders = Map<string, RequestHeadersValue>
 
 export type ResponseBody = Buffer | Stream | JsonValue | null
 
+export type Router = findMyWay.Instance<findMyWay.HTTPVersion.V1>
+
 export type RouteHandler = (
   controllerKey: string,
   route: ControllerRoute,
@@ -115,6 +118,8 @@ export type RouteHandler = (
 // ---- S
 
 export type Services = Map<string, Class>
+
+export type SessionProviderOptionType = 'html' | 'json'
 
 export type StaticHandler = (req: IncomingMessage, res: ServerResponse, next: () => void) => void
 

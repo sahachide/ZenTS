@@ -1,19 +1,24 @@
+import type { Controllers, Router } from '../types/types'
+
 import type { ControllerRoute } from '../types/interfaces'
-import type { Controllers } from '../types/types'
 import { RouteHandler } from '../types/types'
+import type { SessionProvider } from '../session'
 import { config } from '../config/config'
 import findMyWay from 'find-my-way'
 import serveStatic from 'serve-static'
 
 export class RouterFactory {
   private handler: RouteHandler
+
   public generate(
     controllers: Controllers,
+    sessionProviders: SessionProvider[],
     handler: RouteHandler,
-  ): findMyWay.Instance<findMyWay.HTTPVersion.V1> {
+  ): Router {
     const router = findMyWay(config.web?.router)
     this.handler = handler
 
+    this.bindSessionProviders(router, sessionProviders)
     this.bindStaticRoute(router)
 
     for (const [key, controllerDeclaration] of controllers) {
@@ -22,6 +27,7 @@ export class RouterFactory {
 
     return router
   }
+
   protected bindController(
     router: findMyWay.Instance<findMyWay.HTTPVersion.V1>,
     key: string,
@@ -33,7 +39,8 @@ export class RouterFactory {
       )
     }
   }
-  protected bindStaticRoute(router: findMyWay.Instance<findMyWay.HTTPVersion.V1>): void {
+
+  protected bindStaticRoute(router: Router): void {
     if (typeof config.paths?.public !== 'string' || typeof config.web?.publicPath !== 'string') {
       return
     }
@@ -64,5 +71,11 @@ export class RouterFactory {
         )
       })
     })
+  }
+
+  protected bindSessionProviders(router: Router, sessionProviders: SessionProvider[]): void {
+    for (const provider of sessionProviders) {
+      router.on('POST', provider.loginRoute, () => {})
+    }
   }
 }

@@ -10,6 +10,7 @@ export * from './filesystem/'
 export * from './http/'
 export * from './log/'
 export * from './service/'
+export * from './session/'
 export * from './template/'
 export {
   Context,

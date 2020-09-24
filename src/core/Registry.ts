@@ -5,6 +5,7 @@ import { ControllerFactory } from '../controller/ControllerFactory'
 import type { Redis } from 'ioredis'
 import { RouterFactory } from '../router/RouterFactory'
 import { ServiceFactory } from '../service/ServiceFactory'
+import type { SessionProvider } from '../session/SessionProvider'
 
 export class Registry {
   public factories: RegistryFactories
@@ -15,6 +16,7 @@ export class Registry {
     templateData: TemplateEngineLoaderResult,
     protected readonly connection: Connection | null,
     protected readonly redisClient: Redis,
+    protected readonly sessionProviders: SessionProvider[],
   ) {
     this.factories = {
       router: new RouterFactory(),
@@ -37,5 +39,9 @@ export class Registry {
 
   public getRedisClient(): Redis {
     return this.redisClient
+  }
+
+  public getSessionProviders(): SessionProvider[] {
+    return this.sessionProviders
   }
 }

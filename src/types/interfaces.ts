@@ -1,10 +1,11 @@
-import type { Class, Except, JsonValue, Promisable } from 'type-fest'
+import type { Class, JsonValue, Promisable } from 'type-fest'
 import type {
   ControllerMethodReturnType,
   ErrorResponseData,
   HTTPMethod,
   HeaderValue,
   LogLevel,
+  SessionProviderOptionType,
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
@@ -191,10 +192,16 @@ export interface RegistryFactories {
 
 // ---- S
 
-export interface SessionProvider {
+export interface SessionProviderOption {
   name?: string
+  entity: string
   store?: string
   maxCookieSize?: number
+  loginRoute?: string
+  logoutRoute?: string
+  successRedirect?: string
+  failureRedirect?: string
+  type?: SessionProviderOptionType
 }
 
 // ---- T
@@ -272,7 +279,7 @@ export interface ZenConfig {
   session?: {
     enable?: boolean
     secretKey?: string
-    providers?: SessionProvider[]
+    providers?: SessionProviderOption[]
   }
   database?: Partial<ConnectionOptions> & {
     enable?: boolean

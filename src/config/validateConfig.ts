@@ -32,6 +32,9 @@ function validateSessionConfig(config: ZenConfig): string[] | true {
           )
         }
       }
+      if (typeof provider.entity !== 'string') {
+        errors.push('Session provider is missing "entity" property.')
+      }
     }
   } else {
     errors.push(
