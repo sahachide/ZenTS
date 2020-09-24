@@ -34,9 +34,9 @@ Read the [request guide](./advancedguides/request.md) and the response guide [he
 
 ## Databases interactions
 
-Data is the new gold and even smaller web applications have some kind of database attached to it. ZenTS ships with a powerful and battle-tested ORM, which has builtin support for a lot of different databases.
+Data is the new gold and even smaller web applications have some kind of database attached to it. ZenTS ships with a powerful and battle-tested ORM, which has builtin support for a lot of different databases. Furthermore ZenTS comes with a (optional) Redis client out-of-the-box, so you can directly make use of the super fast key/value storage.
 
-Check out the database guide [here](./advancedguides/database.md).
+Check out the database guide [here](./advancedguides/database.md). The Redis guide can be found [here](./advancedguides/redis.md).
 
 ## Template engine
 

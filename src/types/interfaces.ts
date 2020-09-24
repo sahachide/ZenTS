@@ -13,6 +13,7 @@ import type { Cookie, Request, Response, ResponseError } from '../http/'
 import type { ConnectionOptions } from 'typeorm'
 import type { ControllerFactory } from '../controller/ControllerFactory'
 import type { REPOSITORY_TYPE } from './enums'
+import type { RedisOptions } from 'ioredis'
 import type { RouterFactory } from '../router/RouterFactory'
 import type { ServiceFactory } from '../service/ServiceFactory'
 
@@ -205,6 +206,13 @@ export interface TemplateStaticFilterModule {
   filtername?: string
 }
 
+// ---- U
+// ---- V
+// ---- W
+// ---- X
+// ---- Y
+// ---- Z
+
 export interface ZenConfig {
   [key: string]: any
   paths?: {
@@ -252,6 +260,10 @@ export interface ZenConfig {
   database?: Partial<ConnectionOptions> & {
     enable?: boolean
   }
+  redis?: Partial<RedisOptions> & {
+    enable?: boolean
+    log?: boolean
+  }
   template?: {
     autoescape?: boolean
     throwOnUndefined?: boolean
@@ -284,10 +296,3 @@ export interface ZenConfig {
     wrapConsole?: boolean
   }
 }
-
-// ---- U
-// ---- V
-// ---- W
-// ---- X
-// ---- Y
-// ---- Z

@@ -2,6 +2,7 @@ import {
   ConnectionAction,
   DependenciesAction,
   EntityManagerAction,
+  RedisAction,
   RepositoryAction,
 } from './InjectorAction'
 import type {
@@ -20,6 +21,7 @@ export class Injector {
     const actions = [
       new DependenciesAction(this),
       new ConnectionAction(this),
+      new RedisAction(this),
       new EntityManagerAction(this),
     ]
 

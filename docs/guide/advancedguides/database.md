@@ -1243,4 +1243,4 @@ Head over to the [official one-to-one documentation](https://github.com/typeorm/
 
 Congratulation! You've just finished the database guide. Now you should be familiar with the basics and more advanced topics of ZenTS ORM TypeORM. Of course, there is much more to learn about the ORM then this guide covers. Don't forget to visit the [official documentation](https://github.com/typeorm/typeorm/tree/master/docs) to learn more about the various topics. You can also check out TypeORM's [CLI](https://github.com/typeorm/typeorm/blob/master/docs/using-cli.md) if you like.
 
-You should be now familiar with the two (controllers and models) of three main concepts of a MVC application. The last part you're missing is the **View**, which will be covered in the [template guide](./templates.md).
+The [next guide](./redis.md) will cover how to use [Redis](https://redis.io) in a ZenTS application. This feature is totally optional, so if you wish you can continue learning the three main concepts of a MVC application. The last part you're missing is the **View**, which will be covered in the [template guide](./templates.md).

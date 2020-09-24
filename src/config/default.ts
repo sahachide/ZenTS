@@ -34,6 +34,10 @@ export const defaultConfig: ZenConfig = {
   database: {
     enable: false,
   },
+  redis: {
+    enable: false,
+    log: true,
+  },
   template: {
     extension: 'njk',
     encoding: 'utf-8',

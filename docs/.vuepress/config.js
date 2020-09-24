@@ -180,6 +180,10 @@ module.exports = {
         text: 'CLI',
         link: '/cli',
       },
+      {
+        text: 'Roadmap',
+        link: '/roadmap',
+      },
     ],
     sidebar: {
       '/api/': [
@@ -204,6 +208,7 @@ module.exports = {
             '/guide/advancedguides/response',
             '/guide/advancedguides/routing',
             '/guide/advancedguides/database',
+            '/guide/advancedguides/redis',
             '/guide/advancedguides/templates',
             '/guide/advancedguides/static_files',
             '/guide/advancedguides/services',
@@ -212,6 +217,7 @@ module.exports = {
         },
         '/configuration',
         '/cli',
+        '/roadmap',
       ],
     },
   },

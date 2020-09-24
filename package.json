@@ -48,6 +48,7 @@
   ],
   "dependencies": {
     "@types/formidable": "1.0.31",
+    "@types/ioredis": "~4.17.4",
     "@types/nunjucks": "3.1.3",
     "app-root-path": "3.0.0",
     "consola": "2.14.0",
@@ -55,6 +56,7 @@
     "cosmiconfig": "~6.0.0",
     "find-my-way": "~3.0.1",
     "formidable": "2.0.0-canary.20200504.1",
+    "ioredis": "~4.17.3",
     "lodash.merge": "~4.6.2",
     "mime-types": "~2.1.27",
     "nunjucks": "~3.2.2",
