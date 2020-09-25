@@ -9,14 +9,16 @@ import type {
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
-import type { Cookie, Request, Response, ResponseError } from '../http/'
+import type { REPOSITORY_TYPE, REQUEST_TYPE } from './enums'
 
 import type { ConnectionOptions } from 'typeorm'
+import type { Context } from '../http/Context'
 import type { ControllerFactory } from '../controller/ControllerFactory'
-import type { REPOSITORY_TYPE } from './enums'
 import type { RedisOptions } from 'ioredis'
+import type { RequestFactory } from '../http/RequestFactory'
 import type { RouterFactory } from '../router/RouterFactory'
 import type { ServiceFactory } from '../service/ServiceFactory'
+import { SessionProvider } from '../session'
 
 // ---- A
 // ---- B
@@ -40,25 +42,15 @@ export interface ConfigValidationResult {
   errors: string[]
 }
 
-export interface Context {
-  body: JsonValue
-  params: IncomingParams
-  query: QueryString
-  cookie: Cookie
-  req: Request
-  res: Response
-  error: ResponseError
-}
-
 export interface ControllerDeclaration {
   module: Class
-  routes: ControllerRoute[]
+  routes: Route[]
 }
 
-export interface ControllerRoute {
+export interface Route {
   method: HTTPMethod
   path: string
-  controllerMethod: string
+  controllerMethod?: string
 }
 
 export interface CommonJSZenModule<T> {
@@ -187,7 +179,18 @@ export interface RepositoryReflectionMetadata {
 export interface RegistryFactories {
   router: RouterFactory
   controller: ControllerFactory
+  request: RequestFactory
   service: ServiceFactory
+}
+
+export interface RequestConfigController {
+  type: REQUEST_TYPE.CONTROLLER
+  controllerKey: string
+}
+export interface RequestConfigSecurity {
+  type: REQUEST_TYPE.SECURITY
+  action: 'login' | 'logout'
+  provider: SessionProvider
 }
 
 // ---- S

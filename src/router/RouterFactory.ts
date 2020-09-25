@@ -1,7 +1,7 @@
-import type { Controllers, Router } from '../types/types'
+import type { Controllers, RouteHandler, Router } from '../types/types'
 
-import type { ControllerRoute } from '../types/interfaces'
-import { RouteHandler } from '../types/types'
+import { REQUEST_TYPE } from '../types/enums'
+import type { Route } from '../types/interfaces'
 import type { SessionProvider } from '../session'
 import { config } from '../config/config'
 import findMyWay from 'find-my-way'
@@ -31,11 +31,20 @@ export class RouterFactory {
   protected bindController(
     router: findMyWay.Instance<findMyWay.HTTPVersion.V1>,
     key: string,
-    routes: ControllerRoute[],
+    routes: Route[],
   ): void {
     for (const route of routes) {
       router.on(route.method, route.path, (req, res, params) =>
-        this.handler(key, route, req, res, params),
+        this.handler(
+          {
+            type: REQUEST_TYPE.CONTROLLER,
+            controllerKey: key,
+          },
+          route,
+          req,
+          res,
+          params,
+        ),
       )
     }
   }
@@ -75,7 +84,22 @@ export class RouterFactory {
 
   protected bindSessionProviders(router: Router, sessionProviders: SessionProvider[]): void {
     for (const provider of sessionProviders) {
-      router.on('POST', provider.loginRoute, () => {})
+      router.on('POST', provider.loginRoute, (req, res, params) => {
+        this.handler(
+          {
+            type: REQUEST_TYPE.SECURITY,
+            action: 'login',
+            provider,
+          },
+          {
+            method: 'POST',
+            path: provider.loginRoute,
+          },
+          req,
+          res,
+          params,
+        )
+      })
     }
   }
 }

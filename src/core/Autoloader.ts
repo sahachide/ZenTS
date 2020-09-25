@@ -8,6 +8,7 @@ import { TemplateEngineLoader } from '../template/TemplateEngineLoader'
 import { config } from '../config'
 import { createConnection } from '../database/createConnection'
 import { createRedisClient } from '../database/createRedisClient'
+import { isObject } from '../utils/isObject'
 
 export class Autoloader {
   public async createRegistry(): Promise<Registry> {
@@ -50,7 +51,7 @@ export class Autoloader {
   }
 
   protected loadSessionProviders(): SessionProvider[] {
-    if (config.session?.enable) {
+    if (!isObject(config.session) || !config.session.enable) {
       return []
     }
 

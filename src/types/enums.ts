@@ -34,6 +34,11 @@ export enum REFLECT_METADATA {
   URL_PREFIX = 'urlPrefix',
 }
 
+export enum REQUEST_TYPE {
+  CONTROLLER = 'controller',
+  SECURITY = 'security',
+}
+
 export enum RESPONSE_BODY_TYPE {
   BUFFER = 'buffer',
   JSON = 'json',

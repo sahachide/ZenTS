@@ -1,27 +1,13 @@
-import { ControllerRoute, Controllers, HTTPMethod, REFLECT_METADATA } from '../types/'
+import { Controllers, HTTPMethod, REFLECT_METADATA, Route } from '../types/'
 
 import { AbstractZenFileLoader } from '../filesystem/AbstractZenFileLoader'
 import type { Class } from 'type-fest'
 import { fs } from '../filesystem/FS'
 import { log } from '../log/logger'
 
-/**
- * The ControllerLoader loads all controller modules which are part of a project.
- * In addition, it analyze the routes a controller exposes via anotations, which are handled
- * by the {@link RouterFactory}.
- *
- * Usally you don't need to initialize a ControllerLoader by yourself. This is automaticly
- * done by the {@link Autoloader}.
- */
 export class ControllerLoader extends AbstractZenFileLoader {
-  /**
-   * A reference to all loaded controller modules.
-   */
   protected controllers: Controllers = new Map() as Controllers
 
-  /**
-   * Load all controller from the projects controller folder (specified in {@link config}).
-   */
   public async load(): Promise<Controllers> {
     const filePaths = (
       await fs.readDirContentRecursive(fs.resolveZenPath('controller'))
@@ -52,13 +38,8 @@ export class ControllerLoader extends AbstractZenFileLoader {
     return this.controllers
   }
 
-  /**
-   * Load all route related annotations from a controller module.
-   *
-   * @param classModule The exported controller module.
-   */
-  protected loadControllerRoutes(classModule: Class): ControllerRoute[] {
-    const routes: ControllerRoute[] = []
+  protected loadControllerRoutes(classModule: Class): Route[] {
+    const routes: Route[] = []
     const methods = this.getClassMethods(classModule.prototype)
     let prefix = Reflect.getMetadata(REFLECT_METADATA.URL_PREFIX, classModule) as string
 

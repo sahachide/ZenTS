@@ -2,8 +2,11 @@ import type { Class, JsonArray, JsonObject, JsonValue, Promisable } from 'type-f
 import type { Connection, EntityManager, Repository } from 'typeorm'
 import type {
   ControllerDeclaration,
-  ControllerRoute,
+  IncomingParams,
   LoaderTemplateItem,
+  RequestConfigController,
+  RequestConfigSecurity,
+  Route,
   TemplateFiltersMapItem,
 } from './interfaces'
 import type { IncomingMessage, ServerResponse } from 'http'
@@ -98,7 +101,10 @@ export type NunjucksFilterCallback = (err: any, result: any) => void
 
 export type RedisClient = Redis
 
+export type RequestConfig = RequestConfigController | RequestConfigSecurity
+
 export type RequestHeadersValue = string | string[]
+
 export type RequestHeaders = Map<string, RequestHeadersValue>
 
 export type ResponseBody = Buffer | Stream | JsonValue | null
@@ -106,13 +112,11 @@ export type ResponseBody = Buffer | Stream | JsonValue | null
 export type Router = findMyWay.Instance<findMyWay.HTTPVersion.V1>
 
 export type RouteHandler = (
-  controllerKey: string,
-  route: ControllerRoute,
+  config: RequestConfig,
+  route: Route,
   req: IncomingMessage,
   res: ServerResponse,
-  params: {
-    [key: string]: string
-  },
+  params: IncomingParams,
 ) => void
 
 // ---- S

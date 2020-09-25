@@ -3,6 +3,7 @@ import type { Controllers, RegistryFactories, Services, TemplateEngineLoaderResu
 import type { Connection } from 'typeorm'
 import { ControllerFactory } from '../controller/ControllerFactory'
 import type { Redis } from 'ioredis'
+import { RequestFactory } from '../http/RequestFactory'
 import { RouterFactory } from '../router/RouterFactory'
 import { ServiceFactory } from '../service/ServiceFactory'
 import type { SessionProvider } from '../session/SessionProvider'
@@ -21,6 +22,7 @@ export class Registry {
     this.factories = {
       router: new RouterFactory(),
       controller: new ControllerFactory(controllers, connection, redisClient, templateData),
+      request: new RequestFactory(this),
       service: new ServiceFactory(services, connection, redisClient),
     }
   }
