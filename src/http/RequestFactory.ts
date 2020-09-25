@@ -29,10 +29,13 @@ export class RequestFactory {
           config.controllerKey,
           route,
         )
+
         break
 
       case REQUEST_TYPE.SECURITY:
-        handler = new SecurityRequestHandler(context, config.provider)
+        handler = new SecurityRequestHandler(context, config)
+
+        break
     }
 
     return handler

@@ -54,6 +54,12 @@ export enum REPOSITORY_TYPE {
 }
 
 // ---- S
+
+export enum SECURITY_ACTION {
+  LOGIN = 'login',
+  LOGOUT = 'logout',
+}
+
 // ---- T
 // ---- U
 // ---- V

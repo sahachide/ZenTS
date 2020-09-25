@@ -1,6 +1,6 @@
 import type { Controllers, RouteHandler, Router } from '../types/types'
+import { REQUEST_TYPE, SECURITY_ACTION } from '../types/enums'
 
-import { REQUEST_TYPE } from '../types/enums'
 import type { Route } from '../types/interfaces'
 import type { SessionProvider } from '../session'
 import { config } from '../config/config'
@@ -88,7 +88,7 @@ export class RouterFactory {
         this.handler(
           {
             type: REQUEST_TYPE.SECURITY,
-            action: 'login',
+            action: SECURITY_ACTION.LOGIN,
             provider,
           },
           {

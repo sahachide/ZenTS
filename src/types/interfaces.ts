@@ -9,7 +9,7 @@ import type {
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
-import type { REPOSITORY_TYPE, REQUEST_TYPE } from './enums'
+import type { REPOSITORY_TYPE, REQUEST_TYPE, SECURITY_ACTION } from './enums'
 
 import type { ConnectionOptions } from 'typeorm'
 import type { Context } from '../http/Context'
@@ -18,7 +18,7 @@ import type { RedisOptions } from 'ioredis'
 import type { RequestFactory } from '../http/RequestFactory'
 import type { RouterFactory } from '../router/RouterFactory'
 import type { ServiceFactory } from '../service/ServiceFactory'
-import { SessionProvider } from '../session'
+import type { SessionProvider } from '../session/SessionProvider'
 
 // ---- A
 // ---- B
@@ -189,7 +189,7 @@ export interface RequestConfigController {
 }
 export interface RequestConfigSecurity {
   type: REQUEST_TYPE.SECURITY
-  action: 'login' | 'logout'
+  action: SECURITY_ACTION
   provider: SessionProvider
 }
 
