@@ -200,6 +200,8 @@ export interface SessionProviderOption {
   entity: string
   store?: string
   maxCookieSize?: number
+  usernameField?: string
+  passwordField?: string
   loginRoute?: string
   logoutRoute?: string
   successRedirect?: string

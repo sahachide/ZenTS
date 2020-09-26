@@ -1,6 +1,7 @@
-import type { Controllers, Services, TemplateEngineLoaderResult } from '../types/'
+import type { Controllers, Entities, Services, TemplateEngineLoaderResult } from '../types/'
 
 import { ControllerLoader } from '../controller/ControllerLoader'
+import { EntityLoader } from '../database/EntityLoader'
 import { Registry } from './Registry'
 import { ServiceLoader } from '../service/ServiceLoader'
 import { SessionProvider } from '../session/SessionProvider'
@@ -12,18 +13,27 @@ import { isObject } from '../utils/isObject'
 
 export class Autoloader {
   public async createRegistry(): Promise<Registry> {
-    const [controllers, services, templateData, connection, redisClient] = await Promise.all([
+    const [
+      controllers,
+      services,
+      templateData,
+      entities,
+      connection,
+      redisClient,
+    ] = await Promise.all([
       this.loadControllers(),
       this.loadServices(),
       this.loadTemplateData(),
+      this.loadEntities(),
       createConnection(),
       createRedisClient(),
     ])
-    const sessionProviders = this.loadSessionProviders()
+    const sessionProviders = this.loadSessionProviders(entities)
     const registry = new Registry(
       controllers,
       services,
       templateData,
+      entities,
       connection,
       redisClient,
       sessionProviders,
@@ -50,7 +60,13 @@ export class Autoloader {
     return await templateEngineLoader.load()
   }
 
-  protected loadSessionProviders(): SessionProvider[] {
+  protected async loadEntities(): Promise<Entities> {
+    const entityLoader = new EntityLoader()
+
+    return await entityLoader.load()
+  }
+
+  protected loadSessionProviders(entities: Entities): SessionProvider[] {
     if (!isObject(config.session) || !config.session.enable) {
       return []
     }
@@ -58,7 +74,8 @@ export class Autoloader {
     const providers = []
 
     for (const providerConfig of config.session.providers) {
-      const provider = new SessionProvider(providerConfig)
+      const entity = entities.get(providerConfig.entity)
+      const provider = new SessionProvider(entity, providerConfig)
 
       providers.push(provider)
     }

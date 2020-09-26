@@ -29,6 +29,8 @@ export type Controllers = Map<string, ControllerDeclaration>
 // ---- D
 // ---- E
 
+export type Entities = Map<string, Class>
+
 export type ErrorResponseData = JsonObject | JsonArray
 
 // ---- F

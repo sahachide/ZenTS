@@ -69,7 +69,7 @@ export async function loadConfig(
     manualConfig ? manualConfig : {},
   )
 
-  const { isValid, errors } = validateConfig(config)
+  const { isValid, errors } = await validateConfig(config)
 
   if (!isValid) {
     for (const error of errors) {

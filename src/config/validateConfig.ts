@@ -1,6 +1,9 @@
 import type { ConfigValidationResult, ZenConfig } from '../types/interfaces'
 
-function validateSessionConfig(config: ZenConfig): string[] | true {
+import { fs } from '../filesystem/FS'
+import { join } from 'path'
+
+async function validateSessionConfig(config: ZenConfig): Promise<string[] | true> {
   const errors = []
 
   if (typeof config.session?.secretKey !== 'string') {
@@ -34,6 +37,12 @@ function validateSessionConfig(config: ZenConfig): string[] | true {
       }
       if (typeof provider.entity !== 'string') {
         errors.push('Session provider is missing "entity" property.')
+      } else if (
+        !(await fs.exists(
+          join(fs.resolveZenPath('entity'), fs.resolveZenFileExtension(provider.entity)),
+        ))
+      ) {
+        errors.push(`Session provider entity "${provider.entity}" not found.`)
       }
     }
   } else {
@@ -45,11 +54,11 @@ function validateSessionConfig(config: ZenConfig): string[] | true {
   return !errors.length ? true : errors
 }
 
-export function validateConfig(config: ZenConfig): ConfigValidationResult {
+export async function validateConfig(config: ZenConfig): Promise<ConfigValidationResult> {
   let errors: string[] = []
 
   if (config.session?.enable) {
-    const result = validateSessionConfig(config)
+    const result = await validateSessionConfig(config)
 
     if (Array.isArray(result)) {
       errors = [...errors, ...result]

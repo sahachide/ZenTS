@@ -1,4 +1,10 @@
-import type { Controllers, RegistryFactories, Services, TemplateEngineLoaderResult } from '../types'
+import type {
+  Controllers,
+  Entities,
+  RegistryFactories,
+  Services,
+  TemplateEngineLoaderResult,
+} from '../types'
 
 import type { Connection } from 'typeorm'
 import { ControllerFactory } from '../controller/ControllerFactory'
@@ -15,6 +21,7 @@ export class Registry {
     protected readonly controllers: Controllers,
     protected readonly services: Services,
     templateData: TemplateEngineLoaderResult,
+    protected readonly entities: Entities,
     protected readonly connection: Connection | null,
     protected readonly redisClient: Redis,
     protected readonly sessionProviders: SessionProvider[],
@@ -33,6 +40,10 @@ export class Registry {
 
   public getServices(): Services {
     return this.services
+  }
+
+  public getEntities(): Entities {
+    return this.entities
   }
 
   public getConnection(): Connection {

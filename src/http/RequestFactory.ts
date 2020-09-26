@@ -33,7 +33,7 @@ export class RequestFactory {
         break
 
       case REQUEST_TYPE.SECURITY:
-        handler = new SecurityRequestHandler(context, config)
+        handler = new SecurityRequestHandler(context, this.registry.getConnection(), config)
 
         break
     }
