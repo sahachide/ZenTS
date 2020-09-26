@@ -6,9 +6,8 @@ import { fs } from '../filesystem/FS'
 import { log } from '../log/logger'
 
 export class ControllerLoader extends AbstractZenFileLoader {
-  protected controllers: Controllers = new Map() as Controllers
-
   public async load(): Promise<Controllers> {
+    const controllers = new Map() as Controllers
     const filePaths = (
       await fs.readDirContentRecursive(fs.resolveZenPath('controller'))
     ).filter((filePath: string) =>
@@ -23,19 +22,19 @@ export class ControllerLoader extends AbstractZenFileLoader {
       const controllerKey =
         typeof keyMetadata !== 'string' ? key : `${keyMetadata}Controller`.toLowerCase()
 
-      if (this.controllers.has(controllerKey)) {
+      if (controllers.has(controllerKey)) {
         log.warn(`Controller with key "${controllerKey}" is already registered!`)
 
         continue
       }
 
-      this.controllers.set(controllerKey, {
+      controllers.set(controllerKey, {
         module,
         routes: this.loadControllerRoutes(module),
       })
     }
 
-    return this.controllers
+    return controllers
   }
 
   protected loadControllerRoutes(classModule: Class): Route[] {

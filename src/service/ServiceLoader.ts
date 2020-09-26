@@ -3,10 +3,11 @@ import type { Services } from '../types/types'
 import { fs } from '../filesystem'
 
 export class ServiceLoader extends AbstractZenFileLoader {
-  protected services: Services = new Map() as Services
   public async load(): Promise<Services> {
+    const services = new Map() as Services
+
     if (!(await fs.exists(fs.resolveZenPath('service')))) {
-      return this.services
+      return services
     }
 
     const filePaths = (
@@ -18,9 +19,9 @@ export class ServiceLoader extends AbstractZenFileLoader {
     for (const filePath of filePaths) {
       const { key, module } = await this.loadModule(filePath)
 
-      this.services.set(key, module)
+      services.set(key, module)
     }
 
-    return this.services
+    return services
   }
 }
