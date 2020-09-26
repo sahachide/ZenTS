@@ -13,6 +13,7 @@ export * from './service/'
 export * from './session/'
 export * from './template/'
 export {
+  Context,
   TemplateFilter,
   QueryString,
   InjectedConnection,

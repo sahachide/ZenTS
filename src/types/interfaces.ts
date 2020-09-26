@@ -1,4 +1,4 @@
-import type { Class, JsonValue, Promisable } from 'type-fest'
+import type { Class, JsonObject, Promisable } from 'type-fest'
 import type {
   ControllerMethodReturnType,
   ErrorResponseData,
@@ -12,9 +12,10 @@ import type {
 import type { REPOSITORY_TYPE, REQUEST_TYPE, SECURITY_ACTION } from './enums'
 
 import type { ConnectionOptions } from 'typeorm'
-import type { Context } from '../http/Context'
+import type { Context as ContextClass } from '../http/Context'
 import type { ControllerFactory } from '../controller/ControllerFactory'
 import type { RedisOptions } from 'ioredis'
+import type { Request } from '../http/Request'
 import type { RequestFactory } from '../http/RequestFactory'
 import type { RouterFactory } from '../router/RouterFactory'
 import type { ServiceFactory } from '../service/ServiceFactory'
@@ -23,6 +24,22 @@ import type { SessionProvider } from '../session/SessionProvider'
 // ---- A
 // ---- B
 // ---- C
+
+export interface Context<Params = any, Body = any, Query = any> extends ContextClass {
+  query: QueryString & Query
+  params: IncomingParams & Params
+  body: ParsedBody['fields'] & Body
+  req: Request & {
+    query: QueryString & Query
+    params: IncomingParams & Params
+    body: ParsedBody['fields'] & Body
+  }
+  request: Request & {
+    query: QueryString & Query
+    params: IncomingParams & Params
+    body: ParsedBody['fields'] & Body
+  }
+}
 
 export interface CookieOptions {
   enable?: boolean
@@ -130,7 +147,7 @@ export interface ModuleDependency {
 // ---- P
 
 export interface ParsedBody {
-  fields: JsonValue
+  fields: JsonObject
   files: {
     [key: string]: {
       size: number

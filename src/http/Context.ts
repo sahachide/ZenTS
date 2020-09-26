@@ -3,7 +3,7 @@ import type { IncomingParams, ParsedBody, QueryString } from '../types/interface
 
 import { BodyParser } from './BodyParser'
 import { Cookie } from './Cookie'
-import { JsonValue } from 'type-fest'
+import type { JsonObject } from 'type-fest'
 import { Request } from './Request'
 import { Response } from './Response'
 import { ResponseError } from './ResponseError'
@@ -69,7 +69,7 @@ export class Context {
     return this.container.res
   }
 
-  get body(): JsonValue {
+  get body(): JsonObject {
     return this.container.body?.fields ?? null
   }
 
