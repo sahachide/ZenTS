@@ -4,6 +4,7 @@ import {
   EntityManagerAction,
   RedisAction,
   RepositoryAction,
+  SecurityStrategyAction,
 } from './InjectorAction'
 import type {
   GenericControllerInstance,
@@ -32,7 +33,7 @@ export class Injector {
     return instance as T
   }
   public injectFunctionParameters(instance: GenericControllerInstance, method: string): unknown[] {
-    const actions = [new RepositoryAction(this)]
+    const actions = [new RepositoryAction(this), new SecurityStrategyAction(this)]
     let params: InjectorFunctionParameter[] = []
 
     for (const action of actions) {

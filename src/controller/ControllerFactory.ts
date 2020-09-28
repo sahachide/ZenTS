@@ -1,4 +1,4 @@
-import type { Controllers, TemplateEngineLoaderResult } from '../types/'
+import type { Controllers, SecurityStrategies, TemplateEngineLoaderResult } from '../types/'
 import { Environment, Loader } from '../template/'
 
 import { AbstractFactory } from '../core/AbstractFactory'
@@ -10,15 +10,16 @@ export class ControllerFactory extends AbstractFactory {
 
   constructor(
     protected readonly controllers: Controllers,
-    protected readonly connection: Connection | null,
-    protected readonly redisClient: Redis,
+    securityStrategies: SecurityStrategies,
+    connection: Connection | null,
+    redisClient: Redis,
     templateData: TemplateEngineLoaderResult,
   ) {
     super()
 
     const templateLoader = new Loader(templateData.files)
     this.templateEnvironment = new Environment(templateLoader, templateData)
-    this.injector = this.buildInjector({ connection, redisClient })
+    this.injector = this.buildInjector({ connection, redisClient, securityStrategies })
   }
 
   public build<T>(key: string): T {

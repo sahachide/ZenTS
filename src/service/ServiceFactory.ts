@@ -1,16 +1,18 @@
+import type { SecurityStrategies, Services } from '../types/types'
+
 import { AbstractFactory } from '../core/AbstractFactory'
 import type { Connection } from 'typeorm'
 import type { Redis } from 'ioredis'
-import type { Services } from '../types/types'
 
 export class ServiceFactory extends AbstractFactory {
   constructor(
     protected services: Services,
-    protected readonly connection: Connection,
-    protected readonly redisClient: Redis,
+    securityStrategies: SecurityStrategies,
+    connection: Connection,
+    redisClient: Redis,
   ) {
     super()
-    this.injector = this.buildInjector({ connection, redisClient })
+    this.injector = this.buildInjector({ connection, redisClient, securityStrategies })
   }
   public build<T>(key: string): T {
     const module = this.services.get(key)

@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http'
-import type { IncomingParams, RequestConfig, Route } from '../types/'
+import type { IncomingParams, RequestConfig, Route, SecurityRequestContext } from '../types/'
 
 import { Context } from './Context'
 import { ControllerRequestHandler } from './requesthandlers/ControllerRequestHandler'
@@ -33,7 +33,11 @@ export class RequestFactory {
         break
 
       case REQUEST_TYPE.SECURITY:
-        handler = new SecurityRequestHandler(context, this.registry.getConnection(), config)
+        handler = new SecurityRequestHandler(
+          context as SecurityRequestContext,
+          this.registry.getConnection(),
+          config,
+        )
 
         break
     }

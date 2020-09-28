@@ -1,8 +1,7 @@
-import type { Controllers, RouteHandler, Router } from '../types/types'
+import type { Controllers, RouteHandler, Router, SecurityStrategies } from '../types/types'
 import { REQUEST_TYPE, SECURITY_ACTION } from '../types/enums'
 
 import type { Route } from '../types/interfaces'
-import type { SessionProvider } from '../session'
 import { config } from '../config/config'
 import findMyWay from 'find-my-way'
 import serveStatic from 'serve-static'
@@ -12,13 +11,13 @@ export class RouterFactory {
 
   public generate(
     controllers: Controllers,
-    sessionProviders: SessionProvider[],
+    securityStrategies: SecurityStrategies,
     handler: RouteHandler,
   ): Router {
     const router = findMyWay(config.web?.router)
     this.handler = handler
 
-    this.bindSessionProviders(router, sessionProviders)
+    this.bindSecurityStrategyRoutes(router, securityStrategies)
     this.bindStaticRoute(router)
 
     for (const [key, controllerDeclaration] of controllers) {
@@ -82,14 +81,19 @@ export class RouterFactory {
     })
   }
 
-  protected bindSessionProviders(router: Router, sessionProviders: SessionProvider[]): void {
-    for (const provider of sessionProviders) {
+  protected bindSecurityStrategyRoutes(
+    router: Router,
+    securityStrategies: SecurityStrategies,
+  ): void {
+    for (const strategy of securityStrategies.values()) {
+      const provider = strategy.provider
+
       router.on('POST', provider.loginRoute, (req, res, params) => {
         this.handler(
           {
             type: REQUEST_TYPE.SECURITY,
             action: SECURITY_ACTION.LOGIN,
-            provider,
+            strategy,
           },
           {
             method: 'POST',

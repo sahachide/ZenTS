@@ -1,15 +1,20 @@
-import type { Controllers, Entities, Services, TemplateEngineLoaderResult } from '../types/'
+import type {
+  Controllers,
+  Entities,
+  SecurityStrategies,
+  Services,
+  TemplateEngineLoaderResult,
+} from '../types/'
 
+import type { Connection } from 'typeorm'
 import { ControllerLoader } from '../controller/ControllerLoader'
 import { EntityLoader } from '../database/EntityLoader'
 import { Registry } from './Registry'
+import { SecurityStrategyLoader } from '../security/SecurityStrategyLoader'
 import { ServiceLoader } from '../service/ServiceLoader'
-import { SessionProvider } from '../session/SessionProvider'
 import { TemplateEngineLoader } from '../template/TemplateEngineLoader'
-import { config } from '../config'
 import { createConnection } from '../database/createConnection'
 import { createRedisClient } from '../database/createRedisClient'
-import { isObject } from '../utils/isObject'
 
 export class Autoloader {
   public async createRegistry(): Promise<Registry> {
@@ -28,7 +33,7 @@ export class Autoloader {
       createConnection(),
       createRedisClient(),
     ])
-    const sessionProviders = this.loadSessionProviders(entities)
+    const securityStrategies = this.loadSecurityStrategies(entities, connection)
     const registry = new Registry(
       controllers,
       services,
@@ -36,7 +41,7 @@ export class Autoloader {
       entities,
       connection,
       redisClient,
-      sessionProviders,
+      securityStrategies,
     )
 
     return registry
@@ -66,20 +71,9 @@ export class Autoloader {
     return await entityLoader.load()
   }
 
-  protected loadSessionProviders(entities: Entities): SessionProvider[] {
-    if (!isObject(config.session) || !config.session.enable) {
-      return []
-    }
+  protected loadSecurityStrategies(entities: Entities, connection: Connection): SecurityStrategies {
+    const securityStrategyLoader = new SecurityStrategyLoader()
 
-    const providers = []
-
-    for (const providerConfig of config.session.providers) {
-      const entity = entities.get(providerConfig.entity)
-      const provider = new SessionProvider(entity, providerConfig)
-
-      providers.push(provider)
-    }
-
-    return providers
+    return securityStrategyLoader.load(entities, connection)
   }
 }

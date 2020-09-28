@@ -30,6 +30,7 @@ export enum REFLECT_METADATA {
   DEPENDENCIES = 'dependencies',
   HTTP_METHOD = 'httpMethod',
   REDIS_CLIENT = 'redisClient',
+  SECURITY_STRATEGY = 'securityStrategy',
   URL_PATH = 'urlPath',
   URL_PREFIX = 'urlPrefix',
 }

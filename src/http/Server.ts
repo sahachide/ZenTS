@@ -15,7 +15,7 @@ export class Server {
     this.controllers = registry.getControllers()
     this.router = registry.factories.router.generate(
       this.controllers,
-      registry.getSessionProviders(),
+      registry.getSecurityStrategies(),
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       async (config, route, req, res, params): Promise<void> => {
         const handler = await registry.factories.request.build(config, req, res, params, route)

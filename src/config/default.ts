@@ -38,8 +38,13 @@ export const defaultConfig: ZenConfig = {
     enable: false,
     log: true,
   },
-  session: {
+  security: {
     enable: false,
+    strategies: [
+      {
+        strategy: 'default',
+      },
+    ],
   },
   template: {
     extension: 'njk',

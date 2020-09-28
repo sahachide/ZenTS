@@ -1,11 +1,12 @@
 import type { Class, JsonObject, Promisable } from 'type-fest'
 import type {
   ControllerMethodReturnType,
+  DefaultSecurityStrategyAlgorithm,
   ErrorResponseData,
   HTTPMethod,
   HeaderValue,
   LogLevel,
-  SessionProviderOptionType,
+  SecurityStrategyOptions,
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
@@ -18,8 +19,8 @@ import type { RedisOptions } from 'ioredis'
 import type { Request } from '../http/Request'
 import type { RequestFactory } from '../http/RequestFactory'
 import type { RouterFactory } from '../router/RouterFactory'
+import { SecurityStrategy } from '../security/SecurityStrategy'
 import type { ServiceFactory } from '../service/ServiceFactory'
-import type { SessionProvider } from '../session/SessionProvider'
 
 // ---- A
 // ---- B
@@ -81,6 +82,19 @@ export interface CosmicConfigResult {
 }
 
 // ---- D
+
+export interface DefaultSecurityStrategy {
+  strategy: 'default'
+  name?: string
+  algorithm?: DefaultSecurityStrategyAlgorithm
+  memLimit?: number
+  opsLimit?: number
+  saltRounds?: number
+  entity?: string
+  loginRoute?: string
+  logoutRoute?: string
+}
+
 // ---- E
 
 export interface ErrorResponsePayload {
@@ -207,23 +221,16 @@ export interface RequestConfigController {
 export interface RequestConfigSecurity {
   type: REQUEST_TYPE.SECURITY
   action: SECURITY_ACTION
-  provider: SessionProvider
+  strategy: SecurityStrategy
 }
 
 // ---- S
 
-export interface SessionProviderOption {
-  name?: string
-  entity: string
-  store?: string
-  maxCookieSize?: number
-  usernameField?: string
-  passwordField?: string
-  loginRoute?: string
-  logoutRoute?: string
-  successRedirect?: string
-  failureRedirect?: string
-  type?: SessionProviderOptionType
+export interface SecurityStrategyReflectionMetadata {
+  index: number
+  propertyKey: string
+  target: Class
+  name: string
 }
 
 // ---- T
@@ -298,10 +305,10 @@ export interface ZenConfig {
     }
     cookie?: CookieOptions
   }
-  session?: {
+  security?: {
     enable?: boolean
     secretKey?: string
-    providers?: SessionProviderOption[]
+    strategies?: SecurityStrategyOptions[]
   }
   database?: Partial<ConnectionOptions> & {
     enable?: boolean
