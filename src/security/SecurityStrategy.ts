@@ -1,4 +1,5 @@
 import type { Connection } from 'typeorm'
+import { JWT } from './JWT'
 import SecurePassword from 'secure-password'
 import type { SecurityProvider } from './SecurityProvider'
 import type { SecurityRequestContext } from '../types/types'
@@ -18,8 +19,8 @@ export class SecurityStrategy {
   }
 
   public async login(context: SecurityRequestContext): Promise<void> {
-    const username = context.body.username
-    const password = context.body.password
+    const username = context.body[this.provider.usernameField]
+    const password = context.body[this.provider.passwordField]
 
     if (
       typeof username !== 'string' ||
@@ -37,15 +38,23 @@ export class SecurityStrategy {
       username,
     })
 
-    if (!user || typeof user.password !== 'string') {
+    if (
+      !user ||
+      typeof user[this.provider.passwordColumn] !== 'string' ||
+      typeof user[this.provider.identifierColumn] === 'undefined'
+    ) {
       return this.forbiddenResponse(context)
     }
 
-    const passwordHash = user.password
+    const passwordHash = user[this.provider.passwordColumn]
 
     if (!(await bcrypt.compare(password, passwordHash))) {
       return this.forbiddenResponse(context)
     }
+
+    const token = await JWT.sign({
+      userId: user[this.provider.identifierColumn],
+    })
 
     return context.res
       .json({

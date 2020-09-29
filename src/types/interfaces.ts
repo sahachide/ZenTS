@@ -87,12 +87,26 @@ export interface DefaultSecurityStrategy {
   strategy: 'default'
   name?: string
   algorithm?: DefaultSecurityStrategyAlgorithm
-  memLimit?: number
-  opsLimit?: number
-  saltRounds?: number
+  argon?: {
+    memLimit?: number
+    opsLimit?: number
+  }
+  bcrypt?: {
+    saltRounds?: number
+  }
   entity?: string
-  loginRoute?: string
-  logoutRoute?: string
+  table?: {
+    identifierColumn?: string
+    passwordColumn?: string
+  }
+  fields?: {
+    username?: string
+    password?: string
+  }
+  routes?: {
+    login?: string
+    logout?: string
+  }
 }
 
 // ---- E
