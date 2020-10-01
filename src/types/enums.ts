@@ -23,6 +23,7 @@ export enum ERROR {
 // ---- R
 
 export enum REFLECT_METADATA {
+  AUTH_STRATEGY = 'auth',
   CONTROLLER_KEY = 'controllerKey',
   DATABASE_CONNECTION = 'database:connection',
   DATABASE_EM = 'database:em',

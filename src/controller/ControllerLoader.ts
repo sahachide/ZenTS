@@ -1,7 +1,8 @@
-import { Controllers, HTTPMethod, REFLECT_METADATA, Route } from '../types/'
+import type { Controllers, HTTPMethod, Route } from '../types/'
 
 import { AbstractZenFileLoader } from '../filesystem/AbstractZenFileLoader'
 import type { Class } from 'type-fest'
+import { REFLECT_METADATA } from '../types/enums'
 import { fs } from '../filesystem/FS'
 import { log } from '../log/logger'
 
@@ -60,6 +61,11 @@ export class ControllerLoader extends AbstractZenFileLoader {
       ) as HTTPMethod
 
       if (httpMethod) {
+        const route: Route = {
+          method: httpMethod.toUpperCase() as HTTPMethod,
+          path: '',
+        }
+
         let urlPath = Reflect.getMetadata(
           REFLECT_METADATA.URL_PATH,
           classModule.prototype,
@@ -70,11 +76,19 @@ export class ControllerLoader extends AbstractZenFileLoader {
           urlPath = `/${urlPath}`
         }
 
-        routes.push({
-          method: httpMethod.toUpperCase() as HTTPMethod,
-          path: `${prefix}${urlPath}`,
-          controllerMethod: method,
-        })
+        route.path = `${prefix}${urlPath}`
+
+        const authStrategy = Reflect.getMetadata(
+          REFLECT_METADATA.AUTH_STRATEGY,
+          classModule.prototype,
+          method,
+        ) as string
+
+        if (typeof authStrategy === 'string') {
+          route.authStrategy = authStrategy
+        }
+
+        routes.push(route)
       }
     }
 

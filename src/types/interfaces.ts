@@ -69,6 +69,7 @@ export interface Route {
   method: HTTPMethod
   path: string
   controllerMethod?: string
+  authStrategy?: string
 }
 
 export interface CommonJSZenModule<T> {
@@ -231,6 +232,7 @@ export interface RegistryFactories {
 export interface RequestConfigController {
   type: REQUEST_TYPE.CONTROLLER
   controllerKey: string
+  authStrategy?: string
 }
 export interface RequestConfigSecurity {
   type: REQUEST_TYPE.SECURITY

@@ -17,7 +17,10 @@ export class SecurityStrategyLoader {
 
     for (const strategyConfig of config.security.strategies) {
       const entity =
-        typeof strategyConfig.entity === 'string' ? entities.get(strategyConfig.entity) : null
+        typeof strategyConfig.entity === 'string'
+          ? entities.get(strategyConfig.entity.toLowerCase())
+          : null
+
       const provider = new SecurityProvider(strategyConfig, entity)
 
       if (strategies.has(provider.name)) {

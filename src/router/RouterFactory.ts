@@ -1,7 +1,7 @@
 import type { Controllers, RouteHandler, Router, SecurityStrategies } from '../types/types'
 import { REQUEST_TYPE, SECURITY_ACTION } from '../types/enums'
+import type { RequestConfigController, Route } from '../types/interfaces'
 
-import type { Route } from '../types/interfaces'
 import { config } from '../config/config'
 import findMyWay from 'find-my-way'
 import serveStatic from 'serve-static'
@@ -33,18 +33,18 @@ export class RouterFactory {
     routes: Route[],
   ): void {
     for (const route of routes) {
-      router.on(route.method, route.path, (req, res, params) =>
-        this.handler(
-          {
-            type: REQUEST_TYPE.CONTROLLER,
-            controllerKey: key,
-          },
-          route,
-          req,
-          res,
-          params,
-        ),
-      )
+      router.on(route.method, route.path, (req, res, params) => {
+        const handlerConfig: RequestConfigController = {
+          type: REQUEST_TYPE.CONTROLLER,
+          controllerKey: key,
+        }
+
+        if (typeof route.authStrategy === 'string') {
+          handlerConfig.authStrategy = route.authStrategy
+        }
+
+        this.handler(handlerConfig, route, req, res, params)
+      })
     }
   }
 

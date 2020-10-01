@@ -2,7 +2,7 @@ import type { Class } from 'type-fest'
 import { REFLECT_METADATA } from '../types/enums'
 import type { SecurityStrategyReflectionMetadata } from '../types/interfaces'
 
-export function securityStrategy(name: string = 'default') {
+export function securityStrategy(strategy: string = 'default') {
   return (target: Class, propertyKey: string, parameterIndex: number): void => {
     const strategies =
       (Reflect.getMetadata(
@@ -15,9 +15,15 @@ export function securityStrategy(name: string = 'default') {
       index: parameterIndex,
       propertyKey,
       target,
-      name,
+      name: strategy,
     })
 
     Reflect.defineMetadata(REFLECT_METADATA.SECURITY_STRATEGY, strategies, target, propertyKey)
+  }
+}
+
+export function auth(strategy: string = 'default') {
+  return (target: any, propertyKey: string): void => {
+    Reflect.defineMetadata(REFLECT_METADATA.AUTH_STRATEGY, strategy, target, propertyKey)
   }
 }

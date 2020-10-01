@@ -58,7 +58,7 @@ export class SecurityStrategy {
 
     return context.res
       .json({
-        success: true,
+        token,
       })
       .send()
   }
