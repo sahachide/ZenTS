@@ -150,6 +150,12 @@ export interface InjectorFunctionParameter {
 }
 
 // ---- J
+
+export interface JWTVerifyResponse {
+  isValid: boolean
+  decoded?: string | Buffer | JsonObject
+}
+
 // ---- K
 // ---- L
 

@@ -2,6 +2,7 @@ import type { HTTPVersion, Instance as RouterInstance } from 'find-my-way'
 import type { IncomingMessage, Server as NodeHttpServer, ServerResponse } from 'http'
 
 import type { Controllers } from '../types/types'
+import { IncomingRequest } from './IncomingRequest'
 import type { Server as NodeHttpsServer } from 'https'
 import type { Registry } from '../core/Registry'
 import { config } from '../config/config'
@@ -12,15 +13,25 @@ export class Server {
   public router: RouterInstance<HTTPVersion.V1>
   protected controllers: Controllers
   constructor(registry: Registry) {
+    const securityStrategies = registry.getSecurityStrategies()
+
     this.controllers = registry.getControllers()
     this.router = registry.factories.router.generate(
       this.controllers,
-      registry.getSecurityStrategies(),
+      securityStrategies,
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       async (config, route, req, res, params): Promise<void> => {
-        const handler = await registry.factories.request.build(config, req, res, params, route)
+        const incomingRequest = new IncomingRequest()
 
-        await handler.run()
+        await incomingRequest.handle(
+          registry.factories.request,
+          securityStrategies,
+          config,
+          route,
+          req,
+          res,
+          params,
+        )
       },
     )
   }

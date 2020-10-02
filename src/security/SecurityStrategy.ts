@@ -1,4 +1,5 @@
 import type { Connection } from 'typeorm'
+import type { Context } from '../http/Context'
 import { JWT } from './JWT'
 import SecurePassword from 'secure-password'
 import type { SecurityProvider } from './SecurityProvider'
@@ -61,6 +62,25 @@ export class SecurityStrategy {
         token,
       })
       .send()
+  }
+
+  public async verify(context: Context): Promise<boolean> {
+    const headerToken = context.request.header.get('Authorization')
+
+    if (typeof headerToken !== 'string') {
+      return false
+    }
+
+    const splitted = headerToken.trim().split(' ')
+
+    if (splitted.length < 2) {
+      return false
+    }
+
+    const token = splitted[1]
+    const verify = await JWT.verify(token)
+
+    return verify.isValid
   }
 
   public async generatePasswordHash(plainTextPassword: string): Promise<string> {

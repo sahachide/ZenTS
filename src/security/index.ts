@@ -1,4 +1,5 @@
 export * from './JWT'
+export * from './RequestAuthenticator'
 export * from './SecurityProvider'
 export * from './SecurityStrategy'
 export * from './SecurityStrategyLoader'
