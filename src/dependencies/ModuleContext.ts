@@ -1,13 +1,15 @@
 import type { Connection } from 'typeorm'
 import type { Redis } from 'ioredis'
-import type { SecurityStrategies } from '../types/types'
-import type { SecurityStrategy } from '../security/SecurityStrategy'
+import type { SecurityProvider } from '../security/SecurityProvider'
+import type { SecurityProviders } from '../types/types'
+import type { SessionFactory } from '../security/SessionFactory'
 
 export class ModuleContext {
   constructor(
     protected readonly connection: Connection,
     protected readonly redisClient: Redis,
-    protected readonly securityStrategies: SecurityStrategies,
+    protected readonly sessionFactory: SessionFactory,
+    protected readonly securityProviders: SecurityProviders,
   ) {}
   public getConnection(): Connection {
     return this.connection
@@ -18,7 +20,10 @@ export class ModuleContext {
   public getRedisClient(): Redis {
     return this.redisClient
   }
-  public getSecurityStrategy(key: string): SecurityStrategy {
-    return this.securityStrategies.get(key)
+  public getSecurityProvider(key: string): SecurityProvider {
+    return this.securityProviders.get(key)
+  }
+  public getSessionFactory(): SessionFactory {
+    return this.sessionFactory
   }
 }

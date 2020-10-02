@@ -64,6 +64,7 @@ export class ControllerLoader extends AbstractZenFileLoader {
         const route: Route = {
           method: httpMethod.toUpperCase() as HTTPMethod,
           path: '',
+          controllerMethod: method,
         }
 
         let urlPath = Reflect.getMetadata(
@@ -78,14 +79,14 @@ export class ControllerLoader extends AbstractZenFileLoader {
 
         route.path = `${prefix}${urlPath}`
 
-        const authStrategy = Reflect.getMetadata(
-          REFLECT_METADATA.AUTH_STRATEGY,
+        const authProvider = Reflect.getMetadata(
+          REFLECT_METADATA.AUTH_PROVIDER,
           classModule.prototype,
           method,
         ) as string
 
-        if (typeof authStrategy === 'string') {
-          route.authStrategy = authStrategy
+        if (typeof authProvider === 'string') {
+          route.authProvider = authProvider
         }
 
         routes.push(route)

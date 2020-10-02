@@ -1,16 +1,18 @@
-import type { Controllers, SecurityStrategies, TemplateEngineLoaderResult } from '../types/'
+import type { Controllers, SecurityProviders, TemplateEngineLoaderResult } from '../types/'
 import { Environment, Loader } from '../template/'
 
 import { AbstractFactory } from '../core/AbstractFactory'
 import type { Connection } from 'typeorm'
 import type { Redis } from 'ioredis'
+import type { SessionFactory } from '../security/SessionFactory'
 
 export class ControllerFactory extends AbstractFactory {
   protected templateEnvironment: Environment
 
   constructor(
     protected readonly controllers: Controllers,
-    securityStrategies: SecurityStrategies,
+    sessionFactory: SessionFactory,
+    securityProviders: SecurityProviders,
     connection: Connection | null,
     redisClient: Redis,
     templateData: TemplateEngineLoaderResult,
@@ -19,7 +21,12 @@ export class ControllerFactory extends AbstractFactory {
 
     const templateLoader = new Loader(templateData.files)
     this.templateEnvironment = new Environment(templateLoader, templateData)
-    this.injector = this.buildInjector({ connection, redisClient, securityStrategies })
+    this.injector = this.buildInjector({
+      connection,
+      redisClient,
+      securityProviders,
+      sessionFactory,
+    })
   }
 
   public build<T>(key: string): T {

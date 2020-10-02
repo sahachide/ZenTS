@@ -1,7 +1,7 @@
 import type {
   Controllers,
   Entities,
-  SecurityStrategies,
+  SecurityProviders,
   Services,
   TemplateEngineLoaderResult,
 } from '../types/'
@@ -10,7 +10,7 @@ import type { Connection } from 'typeorm'
 import { ControllerLoader } from '../controller/ControllerLoader'
 import { EntityLoader } from '../database/EntityLoader'
 import { Registry } from './Registry'
-import { SecurityStrategyLoader } from '../security/SecurityStrategyLoader'
+import { SecurityProviderLoader } from '../security/SecurityProviderLoader'
 import { ServiceLoader } from '../service/ServiceLoader'
 import { TemplateEngineLoader } from '../template/TemplateEngineLoader'
 import { createConnection } from '../database/createConnection'
@@ -33,7 +33,7 @@ export class Autoloader {
       createConnection(),
       createRedisClient(),
     ])
-    const securityStrategies = this.loadSecurityStrategies(entities, connection)
+    const securityProviders = this.loadSecurityProviders(entities, connection)
     const registry = new Registry(
       controllers,
       services,
@@ -41,7 +41,7 @@ export class Autoloader {
       entities,
       connection,
       redisClient,
-      securityStrategies,
+      securityProviders,
     )
 
     return registry
@@ -71,9 +71,9 @@ export class Autoloader {
     return await entityLoader.load()
   }
 
-  protected loadSecurityStrategies(entities: Entities, connection: Connection): SecurityStrategies {
-    const securityStrategyLoader = new SecurityStrategyLoader()
+  protected loadSecurityProviders(entities: Entities, connection: Connection): SecurityProviders {
+    const securityProviderLoader = new SecurityProviderLoader()
 
-    return securityStrategyLoader.load(entities, connection)
+    return securityProviderLoader.load(entities, connection)
   }
 }

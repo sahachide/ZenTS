@@ -1,20 +1,20 @@
 import type { Connection } from 'typeorm'
 import type { RequestConfigSecurity } from '../../types/interfaces'
 import { SECURITY_ACTION } from '../../types/enums'
+import type { SecurityProvider } from '../../security/SecurityProvider'
 import type { SecurityRequestContext } from '../../types/types'
-import type { SecurityStrategy } from '../../security/SecurityStrategy'
 
 export class SecurityRequestHandler {
-  protected strategy: SecurityStrategy
+  protected provider: SecurityProvider
   protected action: SECURITY_ACTION
   private didRun: boolean = false
 
   constructor(
     protected context: SecurityRequestContext,
     protected connection: Connection,
-    { action, strategy }: RequestConfigSecurity,
+    { action, provider }: RequestConfigSecurity,
   ) {
-    this.strategy = strategy
+    this.provider = provider
     this.action = action
   }
 
@@ -33,6 +33,6 @@ export class SecurityRequestHandler {
   }
 
   protected async login(): Promise<void> {
-    await this.strategy.login(this.context)
+    await this.provider.login(this.context)
   }
 }

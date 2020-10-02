@@ -23,7 +23,7 @@ export enum ERROR {
 // ---- R
 
 export enum REFLECT_METADATA {
-  AUTH_STRATEGY = 'auth',
+  AUTH_PROVIDER = 'authProvider',
   CONTROLLER_KEY = 'controllerKey',
   DATABASE_CONNECTION = 'database:connection',
   DATABASE_EM = 'database:em',
@@ -31,7 +31,8 @@ export enum REFLECT_METADATA {
   DEPENDENCIES = 'dependencies',
   HTTP_METHOD = 'httpMethod',
   REDIS_CLIENT = 'redisClient',
-  SECURITY_STRATEGY = 'securityStrategy',
+  SECURITY_PROVIDER = 'securityProvider',
+  SESSION = 'session',
   URL_PATH = 'urlPath',
   URL_PREFIX = 'urlPrefix',
 }

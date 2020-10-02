@@ -1,12 +1,10 @@
 import type { Class, JsonObject, Promisable } from 'type-fest'
 import type {
   ControllerMethodReturnType,
-  DefaultSecurityStrategyAlgorithm,
   ErrorResponseData,
   HTTPMethod,
   HeaderValue,
   LogLevel,
-  SecurityStrategyOptions,
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
@@ -19,8 +17,10 @@ import type { RedisOptions } from 'ioredis'
 import type { Request } from '../http/Request'
 import type { RequestFactory } from '../http/RequestFactory'
 import type { RouterFactory } from '../router/RouterFactory'
-import { SecurityStrategy } from '../security/SecurityStrategy'
+import type { SecurityProvider } from '../security/SecurityProvider'
 import type { ServiceFactory } from '../service/ServiceFactory'
+import type { Session as SessionClass } from '../security/Session'
+import type { SessionFactory } from '../security'
 
 // ---- A
 // ---- B
@@ -69,7 +69,7 @@ export interface Route {
   method: HTTPMethod
   path: string
   controllerMethod?: string
-  authStrategy?: string
+  authProvider?: string
 }
 
 export interface CommonJSZenModule<T> {
@@ -83,33 +83,6 @@ export interface CosmicConfigResult {
 }
 
 // ---- D
-
-export interface DefaultSecurityStrategy {
-  strategy: 'default'
-  name?: string
-  algorithm?: DefaultSecurityStrategyAlgorithm
-  argon?: {
-    memLimit?: number
-    opsLimit?: number
-  }
-  bcrypt?: {
-    saltRounds?: number
-  }
-  entity?: string
-  table?: {
-    identifierColumn?: string
-    passwordColumn?: string
-  }
-  fields?: {
-    username?: string
-    password?: string
-  }
-  routes?: {
-    login?: string
-    logout?: string
-  }
-}
-
 // ---- E
 
 export interface ErrorResponsePayload {
@@ -136,6 +109,12 @@ export interface HeaderValues {
 
 // ---- I
 
+export interface IncomingRequestAuthenticateResult {
+  isAuth: boolean
+  securityProvider?: SecurityProvider
+  user?: { [key: string]: string }
+}
+
 export interface IncomingParams {
   [key: string]: string
 }
@@ -150,12 +129,6 @@ export interface InjectorFunctionParameter {
 }
 
 // ---- J
-
-export interface JWTVerifyResponse {
-  isValid: boolean
-  decoded?: string | Buffer | JsonObject
-}
-
 // ---- K
 // ---- L
 
@@ -233,26 +206,79 @@ export interface RegistryFactories {
   controller: ControllerFactory
   request: RequestFactory
   service: ServiceFactory
+  session: SessionFactory
 }
 
 export interface RequestConfigController {
   type: REQUEST_TYPE.CONTROLLER
   controllerKey: string
-  authStrategy?: string
+  controllerMethod: string
+  authProvider?: string
+  loadedUser?: RequestConfigControllerUser
 }
+
+export interface RequestConfigControllerUser {
+  provider: string
+  user: { [key: string]: string }
+  sessionId: string
+}
+
 export interface RequestConfigSecurity {
   type: REQUEST_TYPE.SECURITY
   action: SECURITY_ACTION
-  strategy: SecurityStrategy
+  provider: SecurityProvider
 }
 
 // ---- S
 
-export interface SecurityStrategyReflectionMetadata {
+export interface SecurityProviderAuthorizeResponse {
+  isAuth: boolean
+  user?: { [key: string]: string }
+  sessionId?: string
+}
+
+export interface SecurityProviderOption {
+  name?: string
+  algorithm?: 'bcrypt' | 'argon2id'
+  argon?: {
+    memLimit?: number
+    opsLimit?: number
+  }
+  bcrypt?: {
+    saltRounds?: number
+  }
+  store?:
+    | {
+        type: 'redis'
+        prefix?: string
+      }
+    | {
+        type: 'cookie'
+      }
+  entity?: string
+  table?: {
+    identifierColumn?: string
+    passwordColumn?: string
+  }
+  fields?: {
+    username?: string
+    password?: string
+  }
+  routes?: {
+    login?: string
+    logout?: string
+  }
+}
+
+export interface SecurityProviderReflectionMetadata {
   index: number
   propertyKey: string
   target: Class
   name: string
+}
+
+export interface Session<U = { [key: string]: string }> extends SessionClass {
+  user: U
 }
 
 // ---- T
@@ -274,6 +300,12 @@ export interface TemplateFiltersMapItem {
 export interface TemplateStaticFilterModule {
   async?: boolean
   filtername?: string
+}
+
+export interface TokenData {
+  provider: string
+  userId: string
+  sessionId: string
 }
 
 // ---- U
@@ -329,8 +361,9 @@ export interface ZenConfig {
   }
   security?: {
     enable?: boolean
+    strategy?: 'header' | 'cookie'
     secretKey?: string
-    strategies?: SecurityStrategyOptions[]
+    providers?: SecurityProviderOption[]
   }
   database?: Partial<ConnectionOptions> & {
     enable?: boolean

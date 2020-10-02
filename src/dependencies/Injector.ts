@@ -4,19 +4,23 @@ import {
   EntityManagerAction,
   RedisAction,
   RepositoryAction,
-  SecurityStrategyAction,
+  SecurityProviderAction,
+  SessionAction,
 } from './InjectorAction'
 import type {
   GenericControllerInstance,
   InjectModuleInstance,
   InjectorFunctionParameter,
+  RequestConfigControllerUser,
 } from '../types/interfaces'
 
 import type { Class } from 'type-fest'
+import type { Context } from '../http/Context'
 import type { ModuleContext } from './ModuleContext'
 
 export class Injector {
   constructor(public context: ModuleContext) {}
+
   public inject<T>(module: Class, ctorArgs: unknown[]): T {
     const instance: InjectModuleInstance = new module(...ctorArgs)
     const actions = [
@@ -32,12 +36,22 @@ export class Injector {
 
     return instance as T
   }
-  public injectFunctionParameters(instance: GenericControllerInstance, method: string): unknown[] {
-    const actions = [new RepositoryAction(this), new SecurityStrategyAction(this)]
+
+  public async injectFunctionParameters(
+    instance: GenericControllerInstance,
+    method: string,
+    context: Context,
+    loadedUser: RequestConfigControllerUser,
+  ): Promise<unknown[]> {
+    const actions = [
+      new RepositoryAction(this),
+      new SecurityProviderAction(this),
+      new SessionAction(this, context, loadedUser),
+    ]
     let params: InjectorFunctionParameter[] = []
 
     for (const action of actions) {
-      const result = action.run(instance, method)
+      const result = await action.run(instance, method)
 
       if (Array.isArray(result)) {
         if (result.length) {

@@ -1,4 +1,4 @@
-import type { Controllers, RouteHandler, Router, SecurityStrategies } from '../types/types'
+import type { Controllers, RouteHandler, Router, SecurityProviders } from '../types/types'
 import { REQUEST_TYPE, SECURITY_ACTION } from '../types/enums'
 import type { RequestConfigController, Route } from '../types/interfaces'
 
@@ -11,13 +11,13 @@ export class RouterFactory {
 
   public generate(
     controllers: Controllers,
-    securityStrategies: SecurityStrategies,
+    securityProviders: SecurityProviders,
     handler: RouteHandler,
   ): Router {
     const router = findMyWay(config.web?.router)
     this.handler = handler
 
-    this.bindSecurityStrategyRoutes(router, securityStrategies)
+    this.bindSecurityProviderRoutes(router, securityProviders)
     this.bindStaticRoute(router)
 
     for (const [key, controllerDeclaration] of controllers) {
@@ -36,11 +36,12 @@ export class RouterFactory {
       router.on(route.method, route.path, (req, res, params) => {
         const handlerConfig: RequestConfigController = {
           type: REQUEST_TYPE.CONTROLLER,
+          controllerMethod: route.controllerMethod,
           controllerKey: key,
         }
 
-        if (typeof route.authStrategy === 'string') {
-          handlerConfig.authStrategy = route.authStrategy
+        if (typeof route.authProvider === 'string') {
+          handlerConfig.authProvider = route.authProvider
         }
 
         this.handler(handlerConfig, route, req, res, params)
@@ -81,29 +82,28 @@ export class RouterFactory {
     })
   }
 
-  protected bindSecurityStrategyRoutes(
-    router: Router,
-    securityStrategies: SecurityStrategies,
-  ): void {
-    for (const strategy of securityStrategies.values()) {
-      const provider = strategy.provider
+  protected bindSecurityProviderRoutes(router: Router, securityProviders: SecurityProviders): void {
+    for (const provider of securityProviders.values()) {
+      const options = provider.options
 
-      router.on('POST', provider.loginRoute, (req, res, params) => {
-        this.handler(
-          {
-            type: REQUEST_TYPE.SECURITY,
-            action: SECURITY_ACTION.LOGIN,
-            strategy,
-          },
-          {
-            method: 'POST',
-            path: provider.loginRoute,
-          },
-          req,
-          res,
-          params,
-        )
-      })
+      if (typeof options.loginRoute === 'string') {
+        router.on('POST', options.loginRoute, (req, res, params) => {
+          this.handler(
+            {
+              type: REQUEST_TYPE.SECURITY,
+              action: SECURITY_ACTION.LOGIN,
+              provider,
+            },
+            {
+              method: 'POST',
+              path: options.loginRoute,
+            },
+            req,
+            res,
+            params,
+          )
+        })
+      }
     }
   }
 }

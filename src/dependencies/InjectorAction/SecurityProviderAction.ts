@@ -2,22 +2,22 @@ import type { GenericControllerInstance, InjectorFunctionParameter } from '../..
 
 import { AbstractAction } from './AbstractAction'
 import { REFLECT_METADATA } from '../../types'
-import { SecurityStrategyReflectionMetadata } from '../../types/interfaces'
+import { SecurityProviderReflectionMetadata } from '../../types/interfaces'
 
-export class SecurityStrategyAction extends AbstractAction {
+export class SecurityProviderAction extends AbstractAction {
   public run(instance: GenericControllerInstance, method: string): InjectorFunctionParameter[] {
-    if (!Reflect.hasMetadata(REFLECT_METADATA.SECURITY_STRATEGY, instance, method)) {
+    if (!Reflect.hasMetadata(REFLECT_METADATA.SECURITY_PROVIDER, instance, method)) {
       return []
     }
 
     const metadata = Reflect.getMetadata(
-      REFLECT_METADATA.SECURITY_STRATEGY,
+      REFLECT_METADATA.SECURITY_PROVIDER,
       instance,
       method,
-    ) as SecurityStrategyReflectionMetadata[]
+    ) as SecurityProviderReflectionMetadata[]
 
     const parameters = metadata.map((meta) => {
-      const value = this.injector.context.getSecurityStrategy(meta.name)
+      const value = this.injector.context.getSecurityProvider(meta.name)
 
       if (!value) {
         return null

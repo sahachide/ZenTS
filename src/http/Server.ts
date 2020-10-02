@@ -13,24 +13,24 @@ export class Server {
   public router: RouterInstance<HTTPVersion.V1>
   protected controllers: Controllers
   constructor(registry: Registry) {
-    const securityStrategies = registry.getSecurityStrategies()
+    const securityProviders = registry.getSecurityProviders()
 
     this.controllers = registry.getControllers()
     this.router = registry.factories.router.generate(
       this.controllers,
-      securityStrategies,
+      securityProviders,
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       async (config, route, req, res, params): Promise<void> => {
         const incomingRequest = new IncomingRequest()
 
         await incomingRequest.handle(
           registry.factories.request,
-          securityStrategies,
-          config,
           route,
           req,
           res,
           params,
+          config,
+          securityProviders,
         )
       },
     )

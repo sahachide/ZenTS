@@ -20,4 +20,5 @@ export {
   InjectedEntityManager,
   InjectedRepository,
   RedisClient,
+  Session,
 } from './types/'

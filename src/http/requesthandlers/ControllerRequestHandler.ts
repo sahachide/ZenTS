@@ -1,4 +1,9 @@
-import type { ControllerMethodReturnType, GenericControllerInstance, Route } from '../../types'
+import type {
+  ControllerMethodReturnType,
+  GenericControllerInstance,
+  RequestConfigControllerUser,
+  Route,
+} from '../../types'
 
 import { Context } from '../Context'
 import { ControllerFactory } from '../../controller/ControllerFactory'
@@ -11,17 +16,21 @@ export class ControllerRequestHandler {
   protected controllerInstance: GenericControllerInstance
   protected controllerMethod: string
   protected injector: Injector
+
   private didRun: boolean = false
+
   constructor(
-    protected context: Context,
+    protected readonly context: Context,
     controllerFactory: ControllerFactory,
     controllerKey: string,
+    protected readonly loadedUser: RequestConfigControllerUser,
     { controllerMethod }: Route,
   ) {
     this.controllerInstance = controllerFactory.build<GenericControllerInstance>(controllerKey)
     this.controllerMethod = controllerMethod
     this.injector = controllerFactory.getInjector()
   }
+
   public async run(): Promise<void> {
     if (this.didRun) {
       return
@@ -30,9 +39,11 @@ export class ControllerRequestHandler {
     }
 
     this.didRun = true
-    const injectedParameters = this.injector.injectFunctionParameters(
+    const injectedParameters = await this.injector.injectFunctionParameters(
       this.controllerInstance,
       this.controllerMethod,
+      this.context,
+      this.loadedUser,
     )
     const result = await this.controllerInstance[this.controllerMethod](
       this.context,
@@ -43,6 +54,7 @@ export class ControllerRequestHandler {
       this.handleResult(this.context, result)
     }
   }
+
   protected handleResult(context: Context, result: ControllerMethodReturnType): void {
     if (!result) {
       return

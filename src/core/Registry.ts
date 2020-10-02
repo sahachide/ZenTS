@@ -2,7 +2,7 @@ import type {
   Controllers,
   Entities,
   RegistryFactories,
-  SecurityStrategies,
+  SecurityProviders,
   Services,
   TemplateEngineLoaderResult,
 } from '../types'
@@ -13,6 +13,7 @@ import type { Redis } from 'ioredis'
 import { RequestFactory } from '../http/RequestFactory'
 import { RouterFactory } from '../router/RouterFactory'
 import { ServiceFactory } from '../service/ServiceFactory'
+import { SessionFactory } from '../security/SessionFactory'
 
 export class Registry {
   public factories: RegistryFactories
@@ -24,19 +25,29 @@ export class Registry {
     protected readonly entities: Entities,
     protected readonly connection: Connection | null,
     protected readonly redisClient: Redis,
-    protected readonly securityStrategies: SecurityStrategies,
+    protected readonly securityProviders: SecurityProviders,
   ) {
+    const sessionFactory = new SessionFactory(securityProviders)
+
     this.factories = {
       router: new RouterFactory(),
       controller: new ControllerFactory(
         controllers,
-        securityStrategies,
+        sessionFactory,
+        securityProviders,
         connection,
         redisClient,
         templateData,
       ),
       request: new RequestFactory(this),
-      service: new ServiceFactory(services, securityStrategies, connection, redisClient),
+      service: new ServiceFactory(
+        services,
+        sessionFactory,
+        securityProviders,
+        connection,
+        redisClient,
+      ),
+      session: sessionFactory,
     }
   }
 
@@ -60,7 +71,7 @@ export class Registry {
     return this.redisClient
   }
 
-  public getSecurityStrategies(): SecurityStrategies {
-    return this.securityStrategies
+  public getSecurityProviders(): SecurityProviders {
+    return this.securityProviders
   }
 }

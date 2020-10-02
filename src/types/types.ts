@@ -3,7 +3,6 @@ import type { Connection, EntityManager, Repository } from 'typeorm'
 import type {
   Context,
   ControllerDeclaration,
-  DefaultSecurityStrategy,
   IncomingParams,
   LoaderTemplateItem,
   RequestConfigController,
@@ -14,7 +13,7 @@ import type {
 import type { IncomingMessage, ServerResponse } from 'http'
 
 import type { Redis } from 'ioredis'
-import type { SecurityStrategy } from '../security/SecurityStrategy'
+import type { SecurityProvider } from '../security/SecurityProvider'
 import type { Stream } from 'stream'
 import type { TemplateResponse } from '../template/TemplateResponse'
 import type findMyWay from 'find-my-way'
@@ -30,9 +29,6 @@ export type ControllerMethodReturnType = Promisable<
 export type Controllers = Map<string, ControllerDeclaration>
 
 // ---- D
-
-export type DefaultSecurityStrategyAlgorithm = 'bcrypt' | 'argon2id'
-
 // ---- E
 
 export type Entities = Map<string, Class>
@@ -131,9 +127,7 @@ export type RouteHandler = (
 
 export type SecurityRequestContext = Context<any, { username: string; password: string }>
 
-export type SecurityStrategies = Map<string, SecurityStrategy>
-
-export type SecurityStrategyOptions = DefaultSecurityStrategy
+export type SecurityProviders = Map<string, SecurityProvider>
 
 export type Services = Map<string, Class>
 

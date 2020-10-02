@@ -1,11 +1,9 @@
-import { sign, verify } from 'jsonwebtoken'
+import { decode, sign, verify } from 'jsonwebtoken'
 
-import type { JWTVerifyResponse } from '../types/interfaces'
-import type { JsonObject } from 'type-fest'
 import { config } from '../config/config'
 
 export abstract class JWT {
-  public static async sign(payload: string | Buffer | JsonObject): Promise<string> {
+  public static async sign(payload: { [key: string]: any }): Promise<string> {
     return new Promise((resolve, reject) => {
       sign(payload, config.security.secretKey, (err, jwt: string) => {
         if (err) {
@@ -17,20 +15,21 @@ export abstract class JWT {
     })
   }
 
-  public static async verify(token: string): Promise<JWTVerifyResponse> {
+  public static async verify(token: string): Promise<boolean> {
     return new Promise((resolve) => {
-      verify(token, config.security.secretKey, (err, decoded: string | Buffer | JsonObject) => {
+      verify(token, config.security.secretKey, (err) => {
         if (err) {
-          return resolve({
-            isValid: false,
-          })
+          return resolve(false)
         }
 
-        return resolve({
-          isValid: true,
-          decoded,
-        })
+        return resolve(true)
       })
     })
+  }
+
+  public static decode<T>(token: string): T {
+    return decode(token, {
+      json: true,
+    }) as T
   }
 }

@@ -1,9 +1,6 @@
 import type { ConfigValidationResult, ZenConfig } from '../types/interfaces'
 
-import { fs } from '../filesystem/FS'
-import { join } from 'path'
-
-async function validateSecurityConfig(config: ZenConfig): Promise<string[] | true> {
+function validateSecurityConfig(config: ZenConfig): string[] | true {
   const errors = []
 
   if (typeof config.security?.secretKey !== 'string') {
@@ -14,20 +11,20 @@ async function validateSecurityConfig(config: ZenConfig): Promise<string[] | tru
     errors.push('Property "secretKey" in "config.security" must be at least 32 characters long.')
   }
 
-  if (Array.isArray(config.security?.strategies) && !config.security.strategies.length) {
+  if (!Array.isArray(config.security?.providers) || !config.security.providers.length) {
     errors.push(
-      'Security Strategy config is missing in "config.security". Please add at least one security strategy..',
+      'Security provider config is missing in "config.security". Please add at least one security provider...',
     )
   }
 
   return !errors.length ? true : errors
 }
 
-export async function validateConfig(config: ZenConfig): Promise<ConfigValidationResult> {
+export function validateConfig(config: ZenConfig): ConfigValidationResult {
   let errors: string[] = []
 
   if (config.security?.enable) {
-    const result = await validateSecurityConfig(config)
+    const result = validateSecurityConfig(config)
 
     if (Array.isArray(result)) {
       errors = [...errors, ...result]

@@ -40,7 +40,6 @@ export const defaultConfig: ZenConfig = {
   },
   security: {
     enable: false,
-    strategies: [],
   },
   template: {
     extension: 'njk',

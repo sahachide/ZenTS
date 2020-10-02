@@ -8,19 +8,20 @@ import { SecurityRequestHandler } from './requesthandlers/SecurityRequestHandler
 
 export class RequestFactory {
   constructor(protected registry: Registry) {}
+
   public build(
     context: Context,
     config: RequestConfig,
     route: Route,
   ): ControllerRequestHandler | SecurityRequestHandler {
     let handler
-
     switch (config.type) {
       case REQUEST_TYPE.CONTROLLER:
         handler = new ControllerRequestHandler(
           context,
           this.registry.factories.controller,
           config.controllerKey,
+          config.loadedUser,
           route,
         )
 

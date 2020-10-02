@@ -1,35 +1,39 @@
 import type { IncomingMessage, ServerResponse } from 'http'
-import type { IncomingParams, Route } from '../types/interfaces'
-import type { RequestConfig, SecurityStrategies } from '../types/types'
+import type { IncomingParams, IncomingRequestAuthenticateResult, Route } from '../types/interfaces'
+import type { RequestConfig, SecurityProviders } from '../types/types'
 
 import { Context } from './Context'
-import { RequestAuthenticator } from '../security/RequestAuthenticator'
+import { REQUEST_TYPE } from '../types/enums'
 import type { RequestFactory } from './RequestFactory'
+import { config } from '../config'
 
 export class IncomingRequest {
   public async handle(
     factory: RequestFactory,
-    securityStrategies: SecurityStrategies,
-    config: RequestConfig,
     route: Route,
     req: IncomingMessage,
     res: ServerResponse,
     params: IncomingParams,
+    requestConfig: RequestConfig,
+    securityProviders: SecurityProviders,
   ): Promise<void> {
     const context = await this.buildContext(req, res, params)
-    let isAuth = true
+    const authentication = await this.authenticate(route.authProvider, context, securityProviders)
 
-    if (typeof route.authStrategy === 'string') {
-      const requestAuthenticator = new RequestAuthenticator(
-        securityStrategies.get(route.authStrategy),
-      )
+    if (authentication.isAuth) {
+      if (requestConfig.type === REQUEST_TYPE.CONTROLLER) {
+        requestConfig.loadedUser = {
+          provider: route.authProvider,
+          user: authentication.user,
+        }
+      }
+      const handler = factory.build(context, requestConfig, route)
 
-      isAuth = await requestAuthenticator.authenticate(context)
-    }
-
-    if (isAuth) {
-      const handler = factory.build(context, config, route)
       await handler.run()
+    } else if (authentication.securityProvider) {
+      await authentication.securityProvider.forbidden(context)
+    } else {
+      context.error.forbidden()
     }
   }
 
@@ -43,5 +47,33 @@ export class IncomingRequest {
     await context.build(req, res, params)
 
     return context
+  }
+
+  protected async authenticate(
+    authProvider: unknown,
+    context: Context,
+    securityProviders: SecurityProviders,
+  ): Promise<IncomingRequestAuthenticateResult> {
+    if (!config.security?.enable || typeof authProvider !== 'string') {
+      return {
+        isAuth: true,
+      }
+    }
+
+    const securityProvider = securityProviders.get(authProvider)
+
+    if (typeof securityProviders === 'undefined') {
+      return {
+        isAuth: false,
+      }
+    }
+
+    const authorize = await securityProvider.authorize(context)
+
+    return {
+      isAuth: authorize.isAuth,
+      user: authorize.user,
+      securityProvider,
+    }
   }
 }
