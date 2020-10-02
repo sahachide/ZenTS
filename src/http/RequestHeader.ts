@@ -15,17 +15,17 @@ export class RequestHeader {
   public all(): IterableIterator<[string, RequestHeadersValue]> {
     return this.data.entries()
   }
-  public get(key: string): RequestHeadersValue {
-    return this.data.get(key)
+  public get<T extends RequestHeadersValue>(key: string): T {
+    return this.data.get(key.toLowerCase()) as T
   }
   public has(key: string): boolean {
-    return this.data.has(key)
+    return this.data.has(key.toLowerCase())
   }
   public remove(key: string): void {
-    this.data.delete(key)
+    this.data.delete(key.toLowerCase())
   }
   public set(key: string, value: RequestHeadersValue): void {
-    this.data.set(key, value)
+    this.data.set(key.toLowerCase(), value)
   }
   public getHost(): string | undefined {
     return this.data.get('host') as string | undefined
