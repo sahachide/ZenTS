@@ -9,17 +9,25 @@ import type { Context } from '../../http/Context'
 import type { Injector } from '../Injector'
 import { REFLECT_METADATA } from '../../types/enums'
 import { SecurityProviderReflectionMetadata } from '../../types/interfaces'
+import type { Session } from '../../security/Session'
 import { isObject } from '../../utils/isObject'
 
 export class SessionAction extends AbstractAction {
-  private readonly loadedUser: RequestConfigControllerUser
-  private readonly context: Context
+  protected readonly loadedUser: RequestConfigControllerUser
+  protected readonly context: Context
+  protected injectedSessions: Session[]
 
-  constructor(injector: Injector, context: Context, loadedUser: RequestConfigControllerUser) {
+  constructor(
+    injector: Injector,
+    context: Context,
+    loadedUser: RequestConfigControllerUser,
+    injectedSessions: Session[],
+  ) {
     super(injector)
 
     this.context = context
     this.loadedUser = loadedUser
+    this.injectedSessions = injectedSessions
   }
 
   public async run(
@@ -49,6 +57,7 @@ export class SessionAction extends AbstractAction {
           : undefined,
       )
 
+      this.injectedSessions.push(session)
       parameters.push({
         index: meta.index,
         value: session,

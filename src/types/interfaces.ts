@@ -113,6 +113,7 @@ export interface IncomingRequestAuthenticateResult {
   isAuth: boolean
   securityProvider?: SecurityProvider
   user?: { [key: string]: string }
+  sessionId?: string
 }
 
 export interface IncomingParams {
@@ -129,6 +130,11 @@ export interface InjectorFunctionParameter {
 }
 
 // ---- J
+
+export interface JWTOptions {
+  [key: string]: string | string[]
+}
+
 // ---- K
 // ---- L
 
@@ -251,9 +257,13 @@ export interface SecurityProviderOption {
     | {
         type: 'redis'
         prefix?: string
+        keepTTL?: boolean
       }
     | {
-        type: 'cookie'
+        type: 'database'
+      }
+    | {
+        type: 'file'
       }
   entity?: string
   table?: {
@@ -268,6 +278,7 @@ export interface SecurityProviderOption {
     login?: string
     logout?: string
   }
+  expire?: number | string
 }
 
 export interface SecurityProviderReflectionMetadata {
@@ -361,9 +372,17 @@ export interface ZenConfig {
   }
   security?: {
     enable?: boolean
-    strategy?: 'header' | 'cookie'
+    strategy?: 'header' | 'cookie' | 'hybrid'
     secretKey?: string
     providers?: SecurityProviderOption[]
+    token?: {
+      algorithm?: 'HS256' | 'HS384' | 'HS512'
+      audience?: string | string[]
+      issuer?: string
+      subject?: string
+      jwtid?: string
+      keyid?: string
+    }
   }
   database?: Partial<ConnectionOptions> & {
     enable?: boolean

@@ -104,6 +104,25 @@ export class RouterFactory {
           )
         })
       }
+
+      if (typeof options.logoutRoute === 'string') {
+        router.on('GET', options.logoutRoute, (req, res, params) => {
+          this.handler(
+            {
+              type: REQUEST_TYPE.SECURITY,
+              action: SECURITY_ACTION.LOGOUT,
+              provider,
+            },
+            {
+              method: 'GET',
+              path: options.logoutRoute,
+            },
+            req,
+            res,
+            params,
+          )
+        })
+      }
     }
   }
 }

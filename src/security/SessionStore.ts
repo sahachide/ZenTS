@@ -1,11 +1,36 @@
+import type { RedisSessionStoreAdapter } from './stores/RedisSessionStoreAdapter'
+import { get } from '../utils/get'
+import { set } from '../utils/set'
+import { unset } from '../utils/unset'
+
 export class SessionStore {
-  constructor(protected adapter: any) {}
+  private isModified = false
 
-  public save() {}
+  constructor(
+    protected sessionId: string,
+    protected data: Record<string, unknown>,
+    protected adapter: RedisSessionStoreAdapter,
+  ) {}
 
-  public get<T = any>(path: string): T {}
+  public async save(): Promise<void> {
+    if (!this.isModified) {
+      return
+    }
 
-  public set(path: string, value: any): void {}
+    await this.adapter.persist(this.sessionId, this.data)
+  }
 
-  public remove(path: string): void {}
+  public get<T = any>(path: string): T {
+    return get(this.data, path)
+  }
+
+  public set(path: string, value: any): void {
+    set(this.data, path, value)
+    this.isModified = true
+  }
+
+  public remove(path: string): void {
+    unset(this.data, path)
+    this.isModified = true
+  }
 }

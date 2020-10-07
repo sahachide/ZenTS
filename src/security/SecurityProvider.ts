@@ -3,6 +3,7 @@ import type { SecurityProviderAuthorizeResponse, TokenData } from '../types/inte
 import type { Connection } from 'typeorm'
 import type { Context } from '../http/Context'
 import { JWT } from './JWT'
+import type { RedisSessionStoreAdapter } from './stores/RedisSessionStoreAdapter'
 import SecurePassword from 'secure-password'
 import type { SecurityProviderOptions } from './SecurityProviderOptions'
 import type { SecurityRequestContext } from '../types/types'
@@ -12,7 +13,11 @@ import crypto from 'crypto'
 export class SecurityProvider {
   private argon2idGenerator: SecurePassword
 
-  constructor(public options: SecurityProviderOptions, protected connection: Connection) {
+  constructor(
+    public options: SecurityProviderOptions,
+    protected adapter: RedisSessionStoreAdapter,
+    protected connection: Connection,
+  ) {
     this.argon2idGenerator =
       this.options.algorithm === 'argon2id'
         ? new SecurePassword({
@@ -56,9 +61,31 @@ export class SecurityProvider {
 
     const token = await this.generateToken(context, user[this.options.identifierColumn])
 
+    await this.adapter.create(token.sessionId)
+
     return context.res
       .json({
-        token,
+        token: token.token,
+      })
+      .send()
+  }
+
+  public async logout(context: SecurityRequestContext): Promise<void> {
+    if (!context.request.header.has('authorization')) {
+      return context.error.badRequest('Authorization header missing')
+    }
+
+    const token = await this.getToken(context.request.header.get<string>('authorization'))
+
+    if (token === false) {
+      return context.error.forbidden('Invalid token')
+    }
+
+    await this.adapter.remove(token.sessionId)
+
+    return context.res
+      .json({
+        success: true,
       })
       .send()
   }
@@ -72,40 +99,19 @@ export class SecurityProvider {
       return isNotAuth
     }
 
-    const headerToken = context.request.header.get<string>('authorization')
-    const splitted = headerToken.trim().split(' ')
+    const token = await this.getToken(context.request.header.get<string>('authorization'))
 
-    if (splitted.length < 2 || splitted[0].toLowerCase() !== 'bearer') {
+    if (token === false) {
       return isNotAuth
     }
 
-    const token = splitted[1]
-
-    if (!(await JWT.verify(token))) {
+    if (!(await this.adapter.has(token.sessionId))) {
       return isNotAuth
     }
-
-    const decoded = JWT.decode<{
-      providers: TokenData[]
-    }>(token)
-
-    if (!Array.isArray(decoded.providers)) {
-      return isNotAuth
-    }
-
-    let provider: TokenData[] | TokenData = decoded.providers.filter(
-      (data) => data.provider === this.options.name,
-    )
-
-    if (!provider.length) {
-      return isNotAuth
-    }
-
-    provider = provider[0]
 
     const repository = this.connection.getRepository<{ [key: string]: string }>(this.options.entity)
     const user = await repository.findOne({
-      [this.options.identifierColumn]: provider.userId,
+      [this.options.identifierColumn]: token.userId,
     })
 
     if (!user) {
@@ -114,7 +120,7 @@ export class SecurityProvider {
 
     return {
       isAuth: true,
-      sessionId: provider.sessionId,
+      sessionId: token.sessionId,
       user,
     }
   }
@@ -144,11 +150,18 @@ export class SecurityProvider {
     return crypto.randomBytes(16).toString('hex')
   }
 
-  protected async generateToken(context: SecurityRequestContext, userId: string): Promise<string> {
+  protected async generateToken(
+    context: SecurityRequestContext,
+    userId: string,
+  ): Promise<{
+    token: string
+    sessionId: string
+  }> {
+    const sessionId = this.generateSessionId()
     let providers: TokenData[] = [
       {
         provider: this.options.name,
-        sessionId: this.generateSessionId(),
+        sessionId,
         userId,
       },
     ]
@@ -167,9 +180,12 @@ export class SecurityProvider {
       }
     }
 
-    return await JWT.sign({
-      providers,
-    })
+    return {
+      token: await JWT.sign({
+        providers,
+      }),
+      sessionId,
+    }
   }
 
   protected async verifyToken(token: string): Promise<boolean> {
@@ -186,7 +202,43 @@ export class SecurityProvider {
     return await JWT.verify(splitted[1])
   }
 
-  protected forbiddenResponse(context: SecurityRequestContext): void {
+  protected async getToken(headerToken: string | undefined): Promise<TokenData | false> {
+    if (typeof headerToken === 'undefined') {
+      return false
+    }
+
+    const splitted = headerToken.trim().split(' ')
+
+    if (splitted.length < 2 || splitted[0].toLowerCase() !== 'bearer') {
+      return false
+    }
+
+    const token = splitted[1]
+
+    if (!(await JWT.verify(token))) {
+      return false
+    }
+
+    const decoded = JWT.decode<{
+      providers: TokenData[]
+    }>(token)
+
+    if (!Array.isArray(decoded.providers)) {
+      return false
+    }
+
+    const provider: TokenData[] | TokenData = decoded.providers.filter(
+      (data) => data.provider === this.options.name,
+    )
+
+    if (!provider.length) {
+      return false
+    }
+
+    return provider[0]
+  }
+
+  private forbiddenResponse(context: SecurityRequestContext): void {
     return context.error.forbidden('Unauthorized access', {
       detail: 'Username or password not found',
     })

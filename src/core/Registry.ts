@@ -27,7 +27,7 @@ export class Registry {
     protected readonly redisClient: Redis,
     protected readonly securityProviders: SecurityProviders,
   ) {
-    const sessionFactory = new SessionFactory(securityProviders)
+    const sessionFactory = new SessionFactory(securityProviders, redisClient)
 
     this.factories = {
       router: new RouterFactory(),

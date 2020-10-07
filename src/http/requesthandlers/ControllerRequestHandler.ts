@@ -9,6 +9,7 @@ import { Context } from '../Context'
 import { ControllerFactory } from '../../controller/ControllerFactory'
 import { Injector } from '../../dependencies/Injector'
 import type { JsonObject } from 'type-fest'
+import type { Session } from '../../security/Session'
 import { TemplateResponse } from '../../template/TemplateResponse'
 import { isObject } from '../../utils/isObject'
 
@@ -39,11 +40,13 @@ export class ControllerRequestHandler {
     }
 
     this.didRun = true
+    const injectedSessions: Session[] = []
     const injectedParameters = await this.injector.injectFunctionParameters(
       this.controllerInstance,
       this.controllerMethod,
       this.context,
       this.loadedUser,
+      injectedSessions,
     )
     const result = await this.controllerInstance[this.controllerMethod](
       this.context,
@@ -51,31 +54,39 @@ export class ControllerRequestHandler {
     )
 
     if (!this.context.res.isSend) {
-      this.handleResult(this.context, result)
+      this.handleResult(result)
     }
+
+    await this.saveSessionStores(injectedSessions)
   }
 
-  protected handleResult(context: Context, result: ControllerMethodReturnType): void {
+  protected handleResult(result: ControllerMethodReturnType): void {
     if (!result) {
       return
     }
 
-    if (context.req.httpMethod === 'post' && !context.res.isStatuscodeSetManual) {
-      context.res.setStatusCode(201)
+    if (this.context.req.httpMethod === 'post' && !this.context.res.isStatuscodeSetManual) {
+      this.context.res.setStatusCode(201)
     }
 
     if (result instanceof TemplateResponse) {
-      return context.res.html(result.html).send()
+      return this.context.res.html(result.html).send()
     } else if (isObject(result)) {
-      return context.res.json(result as JsonObject).send()
+      return this.context.res.json(result as JsonObject).send()
     } else if (Array.isArray(result)) {
-      return context.res.json(result).send()
+      return this.context.res.json(result).send()
     } else if (typeof result === 'string') {
-      return context.res.text(result).send()
+      return this.context.res.text(result).send()
     } else {
-      return context.error.internal(
+      return this.context.error.internal(
         'Controller returned an unsupported value. Please return an object, an array or a string.',
       )
+    }
+  }
+
+  protected async saveSessionStores(injectedSessions: Session[]): Promise<void> {
+    for (const session of injectedSessions) {
+      await session.data.save()
     }
   }
 }

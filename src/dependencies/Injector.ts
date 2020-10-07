@@ -17,6 +17,7 @@ import type {
 import type { Class } from 'type-fest'
 import type { Context } from '../http/Context'
 import type { ModuleContext } from './ModuleContext'
+import type { Session } from '../security/Session'
 
 export class Injector {
   constructor(public context: ModuleContext) {}
@@ -42,11 +43,12 @@ export class Injector {
     method: string,
     context: Context,
     loadedUser: RequestConfigControllerUser,
+    injectedSessions: Session[],
   ): Promise<unknown[]> {
     const actions = [
       new RepositoryAction(this),
       new SecurityProviderAction(this),
-      new SessionAction(this, context, loadedUser),
+      new SessionAction(this, context, loadedUser, injectedSessions),
     ]
     let params: InjectorFunctionParameter[] = []
 
@@ -55,7 +57,7 @@ export class Injector {
 
       if (Array.isArray(result)) {
         if (result.length) {
-          params = [...params, ...result]
+          params = [...params, ...result.filter((val) => val !== null)]
         }
       } else {
         params.push(result)

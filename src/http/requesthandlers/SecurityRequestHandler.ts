@@ -27,12 +27,17 @@ export class SecurityRequestHandler {
 
     switch (this.action) {
       case SECURITY_ACTION.LOGIN:
-        await this.login()
-        break
-    }
-  }
+        await this.provider.login(this.context)
 
-  protected async login(): Promise<void> {
-    await this.provider.login(this.context)
+        break
+
+      case SECURITY_ACTION.LOGOUT:
+        await this.provider.logout(this.context)
+
+        break
+
+      default:
+        this.context.error.internal()
+    }
   }
 }

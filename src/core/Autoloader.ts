@@ -9,6 +9,7 @@ import type {
 import type { Connection } from 'typeorm'
 import { ControllerLoader } from '../controller/ControllerLoader'
 import { EntityLoader } from '../database/EntityLoader'
+import type { Redis } from 'ioredis'
 import { Registry } from './Registry'
 import { SecurityProviderLoader } from '../security/SecurityProviderLoader'
 import { ServiceLoader } from '../service/ServiceLoader'
@@ -33,7 +34,7 @@ export class Autoloader {
       createConnection(),
       createRedisClient(),
     ])
-    const securityProviders = this.loadSecurityProviders(entities, connection)
+    const securityProviders = this.loadSecurityProviders(entities, connection, redisClient)
     const registry = new Registry(
       controllers,
       services,
@@ -71,9 +72,13 @@ export class Autoloader {
     return await entityLoader.load()
   }
 
-  protected loadSecurityProviders(entities: Entities, connection: Connection): SecurityProviders {
+  protected loadSecurityProviders(
+    entities: Entities,
+    connection: Connection,
+    redisClient: Redis,
+  ): SecurityProviders {
     const securityProviderLoader = new SecurityProviderLoader()
 
-    return securityProviderLoader.load(entities, connection)
+    return securityProviderLoader.load(entities, connection, redisClient)
   }
 }

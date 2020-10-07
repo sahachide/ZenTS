@@ -25,6 +25,7 @@ export class IncomingRequest {
         requestConfig.loadedUser = {
           provider: route.authProvider,
           user: authentication.user,
+          sessionId: authentication.sessionId,
         }
       }
       const handler = factory.build(context, requestConfig, route)
@@ -73,6 +74,7 @@ export class IncomingRequest {
     return {
       isAuth: authorize.isAuth,
       user: authorize.user,
+      sessionId: authorize.sessionId,
       securityProvider,
     }
   }
