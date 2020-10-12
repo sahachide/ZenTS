@@ -369,6 +369,7 @@ export interface ZenConfig {
       maxParamLength?: number
     }
     cookie?: CookieOptions
+    redirectBodyType?: 'html' | 'text' | 'none'
   }
   security?: {
     enable?: boolean

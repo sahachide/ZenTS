@@ -30,6 +30,7 @@ export const defaultConfig: ZenConfig = {
     cookie: {
       enable: true,
     },
+    redirectBodyType: 'none',
   },
   database: {
     enable: false,
