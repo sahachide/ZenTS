@@ -26,12 +26,28 @@ export class SecurityProviderOptions {
     return ms(value)
   }
 
-  get loginRoute(): string {
-    return this.options.routes?.login ?? '/login'
+  get loginUrl(): string {
+    return this.options.url?.login ?? '/login'
   }
 
-  get logoutRoute(): string {
-    return this.options.routes?.logout ?? '/logout'
+  get logoutUrl(): string {
+    return this.options.url?.logout ?? '/logout'
+  }
+
+  get loginRedirectUrl(): string {
+    return this.options.redirect?.login ?? '/'
+  }
+
+  get logoutRedirectUrl(): string {
+    return this.options.redirect?.logout ?? '/'
+  }
+
+  get failedRedirectUrl(): string {
+    return this.options.redirect?.failed ?? '/'
+  }
+
+  get forbiddenRedirectUrl(): string {
+    return this.options.redirect?.forbidden ?? '/'
   }
 
   get memLimit(): number {
@@ -64,6 +80,10 @@ export class SecurityProviderOptions {
 
   get storeType(): string | null {
     return this.options.store?.type ?? null
+  }
+
+  get responseType(): 'json' | 'redirect' {
+    return this.options.responseType ?? 'json'
   }
 
   get redisStorePrefix(): string {

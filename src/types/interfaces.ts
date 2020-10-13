@@ -274,11 +274,18 @@ export interface SecurityProviderOption {
     username?: string
     password?: string
   }
-  routes?: {
+  url?: {
     login?: string
     logout?: string
   }
+  redirect?: {
+    login?: string
+    logout?: string
+    failed?: string
+    forbidden?: string
+  }
   expire?: number | string
+  responseType?: 'json' | 'redirect'
 }
 
 export interface SecurityProviderReflectionMetadata {
@@ -286,6 +293,12 @@ export interface SecurityProviderReflectionMetadata {
   propertyKey: string
   target: Class
   name: string
+}
+
+export interface SecurityStrategy {
+  hasToken(context: Context): boolean
+  getToken(context: Context): string | false
+  setToken(context: Context, token: string): void
 }
 
 export interface Session<U = { [key: string]: string }> extends SessionClass {
@@ -374,6 +387,7 @@ export interface ZenConfig {
   security?: {
     enable?: boolean
     strategy?: 'header' | 'cookie' | 'hybrid'
+    cookieKey?: string
     secretKey?: string
     providers?: SecurityProviderOption[]
     token?: {

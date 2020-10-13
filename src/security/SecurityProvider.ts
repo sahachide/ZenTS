@@ -1,4 +1,8 @@
-import type { SecurityProviderAuthorizeResponse, TokenData } from '../types/interfaces'
+import type {
+  SecurityProviderAuthorizeResponse,
+  SecurityStrategy,
+  TokenData,
+} from '../types/interfaces'
 
 import type { Connection } from 'typeorm'
 import type { Context } from '../http/Context'
@@ -7,6 +11,7 @@ import type { RedisSessionStoreAdapter } from './stores/RedisSessionStoreAdapter
 import SecurePassword from 'secure-password'
 import type { SecurityProviderOptions } from './SecurityProviderOptions'
 import type { SecurityRequestContext } from '../types/types'
+import type { SecurityResponse } from './SecurityResponse'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 
@@ -15,7 +20,9 @@ export class SecurityProvider {
 
   constructor(
     public options: SecurityProviderOptions,
+    protected response: SecurityResponse,
     protected adapter: RedisSessionStoreAdapter,
+    protected strategy: SecurityStrategy,
     protected connection: Connection,
   ) {
     this.argon2idGenerator =
@@ -37,7 +44,7 @@ export class SecurityProvider {
       typeof password !== 'string' ||
       !password.length
     ) {
-      return this.forbiddenResponse(context)
+      return this.response.loginFailed(context)
     }
 
     const repository = this.connection.getRepository<{ [key: string]: string }>(this.options.entity)
@@ -50,44 +57,41 @@ export class SecurityProvider {
       typeof user[this.options.passwordColumn] !== 'string' ||
       typeof user[this.options.identifierColumn] === 'undefined'
     ) {
-      return this.forbiddenResponse(context)
+      return this.response.loginFailed(context)
     }
 
     const passwordHash = user[this.options.passwordColumn]
 
     if (!(await bcrypt.compare(password, passwordHash))) {
-      return this.forbiddenResponse(context)
+      return this.response.loginFailed(context)
     }
 
     const token = await this.generateToken(context, user[this.options.identifierColumn])
 
     await this.adapter.create(token.sessionId)
+    this.strategy.setToken(context, token.token)
 
-    return context.res
-      .json({
-        token: token.token,
-      })
-      .send()
+    return this.response.loginSuccess(context, token.token)
   }
 
   public async logout(context: SecurityRequestContext): Promise<void> {
-    if (!context.request.header.has('authorization')) {
-      return context.error.badRequest('Authorization header missing')
+    if (!this.strategy.hasToken(context)) {
+      return this.response.logoutFailed(context)
     }
 
-    const token = await this.getToken(context.request.header.get<string>('authorization'))
-
+    const token = this.strategy.getToken(context)
     if (token === false) {
-      return context.error.forbidden('Invalid token')
+      return this.response.forbidden(context)
     }
 
-    await this.adapter.remove(token.sessionId)
+    const parsedToken = await this.parseToken(token)
+    if (parsedToken === false) {
+      return this.response.forbidden(context)
+    }
 
-    return context.res
-      .json({
-        success: true,
-      })
-      .send()
+    await this.adapter.remove(parsedToken.sessionId)
+
+    return this.response.logoutSuccess(context)
   }
 
   public async authorize(context: Context): Promise<SecurityProviderAuthorizeResponse> {
@@ -95,23 +99,24 @@ export class SecurityProvider {
       isAuth: false,
     }
 
-    if (!context.request.header.has('authorization')) {
+    if (!this.strategy.hasToken(context)) {
       return isNotAuth
     }
 
-    const token = await this.getToken(context.request.header.get<string>('authorization'))
-
+    const token = this.strategy.getToken(context)
     if (token === false) {
       return isNotAuth
     }
 
-    if (!(await this.adapter.has(token.sessionId))) {
+    const parsedToken = await this.parseToken(token)
+
+    if (parsedToken === false || !(await this.adapter.has(parsedToken.sessionId))) {
       return isNotAuth
     }
 
     const repository = this.connection.getRepository<{ [key: string]: string }>(this.options.entity)
     const user = await repository.findOne({
-      [this.options.identifierColumn]: token.userId,
+      [this.options.identifierColumn]: parsedToken.userId,
     })
 
     if (!user) {
@@ -120,14 +125,14 @@ export class SecurityProvider {
 
     return {
       isAuth: true,
-      sessionId: token.sessionId,
+      sessionId: parsedToken.sessionId,
       user,
     }
   }
 
   public async forbidden(context: Context): Promise<void> {
     return new Promise((resolve) => {
-      context.error.forbidden()
+      this.response.forbidden(context)
       resolve()
     })
   }
@@ -166,8 +171,8 @@ export class SecurityProvider {
       },
     ]
 
-    if (context.request.header.has('authorization')) {
-      const currentToken = context.request.header.get<string>('authorization')
+    if (this.strategy.hasToken(context)) {
+      const currentToken = this.strategy.getToken(context) as string
 
       if (await this.verifyToken(currentToken)) {
         const currentData = JWT.decode<{
@@ -202,19 +207,7 @@ export class SecurityProvider {
     return await JWT.verify(splitted[1])
   }
 
-  protected async getToken(headerToken: string | undefined): Promise<TokenData | false> {
-    if (typeof headerToken === 'undefined') {
-      return false
-    }
-
-    const splitted = headerToken.trim().split(' ')
-
-    if (splitted.length < 2 || splitted[0].toLowerCase() !== 'bearer') {
-      return false
-    }
-
-    const token = splitted[1]
-
+  protected async parseToken(token: string): Promise<TokenData | false> {
     if (!(await JWT.verify(token))) {
       return false
     }
@@ -236,11 +229,5 @@ export class SecurityProvider {
     }
 
     return provider[0]
-  }
-
-  private forbiddenResponse(context: SecurityRequestContext): void {
-    return context.error.forbidden('Unauthorized access', {
-      detail: 'Username or password not found',
-    })
   }
 }

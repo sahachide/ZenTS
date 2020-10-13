@@ -86,8 +86,8 @@ export class RouterFactory {
     for (const provider of securityProviders.values()) {
       const options = provider.options
 
-      if (typeof options.loginRoute === 'string') {
-        router.on('POST', options.loginRoute, (req, res, params) => {
+      if (typeof options.loginUrl === 'string') {
+        router.on('POST', options.loginUrl, (req, res, params) => {
           this.handler(
             {
               type: REQUEST_TYPE.SECURITY,
@@ -96,7 +96,7 @@ export class RouterFactory {
             },
             {
               method: 'POST',
-              path: options.loginRoute,
+              path: options.loginUrl,
             },
             req,
             res,
@@ -105,8 +105,8 @@ export class RouterFactory {
         })
       }
 
-      if (typeof options.logoutRoute === 'string') {
-        router.on('GET', options.logoutRoute, (req, res, params) => {
+      if (typeof options.logoutUrl === 'string') {
+        router.on('GET', options.logoutUrl, (req, res, params) => {
           this.handler(
             {
               type: REQUEST_TYPE.SECURITY,
@@ -115,7 +115,7 @@ export class RouterFactory {
             },
             {
               method: 'GET',
-              path: options.logoutRoute,
+              path: options.logoutUrl,
             },
             req,
             res,
