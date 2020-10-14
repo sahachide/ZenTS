@@ -1,5 +1,6 @@
-import type {
+import {
   Controllers,
+  DB_TYPE,
   Entities,
   RegistryFactories,
   SecurityProviders,
@@ -9,6 +10,7 @@ import type {
 
 import type { Connection } from 'typeorm'
 import { ControllerFactory } from '../controller/ControllerFactory'
+import { DatabaseContainer } from '../database/DatabaseContainer'
 import type { Redis } from 'ioredis'
 import { RequestFactory } from '../http/RequestFactory'
 import { RouterFactory } from '../router/RouterFactory'
@@ -22,12 +24,11 @@ export class Registry {
     protected readonly controllers: Controllers,
     protected readonly services: Services,
     templateData: TemplateEngineLoaderResult,
+    protected readonly databaseContainer: DatabaseContainer,
     protected readonly entities: Entities,
-    protected readonly connection: Connection | null,
-    protected readonly redisClient: Redis,
     protected readonly securityProviders: SecurityProviders,
   ) {
-    const sessionFactory = new SessionFactory(securityProviders, redisClient)
+    const sessionFactory = new SessionFactory(securityProviders, databaseContainer)
 
     this.factories = {
       router: new RouterFactory(),
@@ -35,18 +36,11 @@ export class Registry {
         controllers,
         sessionFactory,
         securityProviders,
-        connection,
-        redisClient,
+        databaseContainer,
         templateData,
       ),
       request: new RequestFactory(this),
-      service: new ServiceFactory(
-        services,
-        sessionFactory,
-        securityProviders,
-        connection,
-        redisClient,
-      ),
+      service: new ServiceFactory(services, sessionFactory, securityProviders, databaseContainer),
       session: sessionFactory,
     }
   }
@@ -64,11 +58,11 @@ export class Registry {
   }
 
   public getConnection(): Connection {
-    return this.connection
+    return this.databaseContainer.get(DB_TYPE.ORM)
   }
 
   public getRedisClient(): Redis {
-    return this.redisClient
+    return this.databaseContainer.get(DB_TYPE.REDIS)
   }
 
   public getSecurityProviders(): SecurityProviders {

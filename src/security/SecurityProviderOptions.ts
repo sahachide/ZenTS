@@ -1,10 +1,16 @@
+import type { SecurityProviderOption, SecurityProviderOptionEntities } from '../types/interfaces'
+
 import type { Class } from 'type-fest'
 import SecurePassword from 'secure-password'
-import type { SecurityProviderOption } from '../types/interfaces'
+import { fs } from '../filesystem/FS'
+import { join } from 'path'
 import ms from 'ms'
 
 export class SecurityProviderOptions {
-  constructor(public options: SecurityProviderOption, public entity: Class) {}
+  constructor(
+    public options: SecurityProviderOption,
+    protected entities: SecurityProviderOptionEntities,
+  ) {}
 
   get name(): string {
     return this.options.name ?? 'default'
@@ -12,6 +18,10 @@ export class SecurityProviderOptions {
 
   get algorithm(): 'bcrypt' | 'argon2id' {
     return this.options.algorithm ?? 'argon2id'
+  }
+
+  get userEntity(): Class {
+    return this.entities.user
   }
 
   get expireInMS(): number {
@@ -78,7 +88,7 @@ export class SecurityProviderOptions {
     return this.options.fields?.password ?? 'password'
   }
 
-  get storeType(): string | null {
+  get storeType(): 'redis' | 'database' | 'file' | null {
     return this.options.store?.type ?? null
   }
 
@@ -86,8 +96,8 @@ export class SecurityProviderOptions {
     return this.options.responseType ?? 'json'
   }
 
-  get redisStorePrefix(): string {
-    const defaultPrefix = 'zen:'
+  get storePrefix(): string {
+    const defaultPrefix = 'zen_'
 
     return this.options.store?.type === 'redis'
       ? this.options.store?.prefix ?? defaultPrefix
@@ -99,6 +109,18 @@ export class SecurityProviderOptions {
 
     return this.options.store?.type === 'redis'
       ? this.options.store?.keepTTL ?? defaultValue
+      : defaultValue
+  }
+
+  get dbStoreEntity(): Class {
+    return this.entities.dbStore ?? null
+  }
+
+  get fileStoreFolder(): string {
+    const defaultValue = join(fs.appDir(), 'session')
+
+    return this.options.store?.type === 'file'
+      ? this.options.store?.folder ?? defaultValue
       : defaultValue
   }
 }

@@ -55,6 +55,7 @@
     "consola": "2.14.0",
     "cookie": "~0.4.1",
     "cosmiconfig": "~6.0.0",
+    "dayjs": "^1.9.3",
     "find-my-way": "~3.0.1",
     "formidable": "2.0.0-canary.20200504.1",
     "ioredis": "~4.17.3",

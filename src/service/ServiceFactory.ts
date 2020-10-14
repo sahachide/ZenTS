@@ -1,8 +1,7 @@
 import type { SecurityProviders, Services } from '../types/types'
 
 import { AbstractFactory } from '../core/AbstractFactory'
-import type { Connection } from 'typeorm'
-import type { Redis } from 'ioredis'
+import type { DatabaseContainer } from '../database/DatabaseContainer'
 import type { SessionFactory } from '../security/SessionFactory'
 
 export class ServiceFactory extends AbstractFactory {
@@ -10,13 +9,11 @@ export class ServiceFactory extends AbstractFactory {
     protected services: Services,
     sessionFactory: SessionFactory,
     securityProviders: SecurityProviders,
-    connection: Connection,
-    redisClient: Redis,
+    databaseContainer: DatabaseContainer,
   ) {
     super()
     this.injector = this.buildInjector({
-      connection,
-      redisClient,
+      databaseContainer,
       sessionFactory,
       securityProviders,
     })

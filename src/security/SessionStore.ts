@@ -1,4 +1,4 @@
-import type { RedisSessionStoreAdapter } from './stores/RedisSessionStoreAdapter'
+import type { SessionStoreAdapter } from '../types/interfaces'
 import { get } from '../utils/get'
 import { set } from '../utils/set'
 import { unset } from '../utils/unset'
@@ -9,7 +9,7 @@ export class SessionStore {
   constructor(
     protected sessionId: string,
     protected data: Record<string, unknown>,
-    protected adapter: RedisSessionStoreAdapter,
+    protected adapter: SessionStoreAdapter,
   ) {}
 
   public async save(): Promise<void> {

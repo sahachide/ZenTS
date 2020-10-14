@@ -1,16 +1,19 @@
 import type { Context } from '../http/Context'
-import type { Redis } from 'ioredis'
-import { RedisSessionStoreAdapter } from './stores/RedisSessionStoreAdapter'
+import type { DatabaseContainer } from '../database/DatabaseContainer'
 import type { RequestConfigControllerUser } from '../types/interfaces'
 import type { SecurityProviders } from '../types/types'
 import { Session } from './Session'
 import { SessionStore } from './SessionStore'
+import { SessionStoreAdapterFactory } from './SessionStoreAdapterFactory'
 
 export class SessionFactory {
+  protected storeFactory: SessionStoreAdapterFactory
   constructor(
     protected readonly securityProviders: SecurityProviders,
-    protected readonly redisClient: Redis,
-  ) {}
+    databaseContainer: DatabaseContainer,
+  ) {
+    this.storeFactory = new SessionStoreAdapterFactory(databaseContainer)
+  }
 
   public async build(
     providerKey: string,
@@ -37,7 +40,7 @@ export class SessionFactory {
       sessionId = securityProvider.generateSessionId()
     }
 
-    const adapter = new RedisSessionStoreAdapter(this.redisClient, securityProvider.options)
+    const adapter = this.storeFactory.build(securityProvider.options)
     const storeData = await adapter.load(sessionId)
     const store = new SessionStore(sessionId, storeData, adapter)
     const session = new Session(sessionId, user, store, providerKey)

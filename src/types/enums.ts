@@ -2,6 +2,12 @@
 // ---- B
 // ---- C
 // ---- D
+
+export enum DB_TYPE {
+  ORM = 'orm',
+  REDIS = 'redis',
+}
+
 // ---- E
 
 export enum ERROR {

@@ -83,6 +83,14 @@ export interface CosmicConfigResult {
 }
 
 // ---- D
+
+export interface DatabaseSessionStoreAdapterEntity {
+  id: string
+  data: string
+  created_at: Date
+  expired_at: Date
+}
+
 // ---- E
 
 export interface ErrorResponsePayload {
@@ -261,11 +269,14 @@ export interface SecurityProviderOption {
       }
     | {
         type: 'database'
+        entity: string
       }
     | {
         type: 'file'
+        prefix?: string
+        folder: string
       }
-  entity?: string
+  entity: string
   table?: {
     identifierColumn?: string
     passwordColumn?: string
@@ -288,6 +299,11 @@ export interface SecurityProviderOption {
   responseType?: 'json' | 'redirect'
 }
 
+export interface SecurityProviderOptionEntities {
+  user: Class
+  dbStore?: Class
+}
+
 export interface SecurityProviderReflectionMetadata {
   index: number
   propertyKey: string
@@ -303,6 +319,14 @@ export interface SecurityStrategy {
 
 export interface Session<U = { [key: string]: string }> extends SessionClass {
   user: U
+}
+
+export interface SessionStoreAdapter {
+  create(sessionId: string): Promise<void>
+  load(sessionId: string): Promise<Record<string, unknown>>
+  persist(sessionId: string, data: Record<string, unknown>): Promise<void>
+  remove(sessionId: string): Promise<void>
+  has(sessionId: string): Promise<boolean>
 }
 
 // ---- T

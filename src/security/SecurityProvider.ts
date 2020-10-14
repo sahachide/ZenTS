@@ -1,13 +1,15 @@
 import type {
   SecurityProviderAuthorizeResponse,
   SecurityStrategy,
+  SessionStoreAdapter,
   TokenData,
 } from '../types/interfaces'
 
 import type { Connection } from 'typeorm'
 import type { Context } from '../http/Context'
+import { DB_TYPE } from '../types/enums'
+import type { DatabaseContainer } from '../database/DatabaseContainer'
 import { JWT } from './JWT'
-import type { RedisSessionStoreAdapter } from './stores/RedisSessionStoreAdapter'
 import SecurePassword from 'secure-password'
 import type { SecurityProviderOptions } from './SecurityProviderOptions'
 import type { SecurityRequestContext } from '../types/types'
@@ -16,15 +18,17 @@ import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 
 export class SecurityProvider {
+  protected connection: Connection
   private argon2idGenerator: SecurePassword
 
   constructor(
     public options: SecurityProviderOptions,
     protected response: SecurityResponse,
-    protected adapter: RedisSessionStoreAdapter,
+    protected adapter: SessionStoreAdapter,
     protected strategy: SecurityStrategy,
-    protected connection: Connection,
+    databaseContainer: DatabaseContainer,
   ) {
+    this.connection = databaseContainer.get(DB_TYPE.ORM)
     this.argon2idGenerator =
       this.options.algorithm === 'argon2id'
         ? new SecurePassword({
@@ -47,7 +51,9 @@ export class SecurityProvider {
       return this.response.loginFailed(context)
     }
 
-    const repository = this.connection.getRepository<{ [key: string]: string }>(this.options.entity)
+    const repository = this.connection.getRepository<{ [key: string]: string }>(
+      this.options.userEntity,
+    )
     const user = await repository.findOne({
       username,
     })
@@ -114,7 +120,9 @@ export class SecurityProvider {
       return isNotAuth
     }
 
-    const repository = this.connection.getRepository<{ [key: string]: string }>(this.options.entity)
+    const repository = this.connection.getRepository<{ [key: string]: string }>(
+      this.options.userEntity,
+    )
     const user = await repository.findOne({
       [this.options.identifierColumn]: parsedToken.userId,
     })

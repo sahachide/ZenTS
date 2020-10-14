@@ -3,6 +3,7 @@ import type { Connection, EntityManager, Repository } from 'typeorm'
 import type {
   Context,
   ControllerDeclaration,
+  DatabaseSessionStoreAdapterEntity,
   IncomingParams,
   LoaderTemplateItem,
   RequestConfigController,
@@ -12,6 +13,7 @@ import type {
 } from './interfaces'
 import type { IncomingMessage, ServerResponse } from 'http'
 
+import type { DB_TYPE } from './enums'
 import type { Redis } from 'ioredis'
 import type { SecurityProvider } from '../security/SecurityProvider'
 import type { Stream } from 'stream'
@@ -29,6 +31,11 @@ export type ControllerMethodReturnType = Promisable<
 export type Controllers = Map<string, ControllerDeclaration>
 
 // ---- D
+
+export type DatabaseSessionStoreAdapterEntityClass = Class<DatabaseSessionStoreAdapterEntity>
+
+export type DatabaseObjectType<T> = T extends DB_TYPE.ORM ? Connection : Redis
+
 // ---- E
 
 export type Entities = Map<string, Class>

@@ -6,10 +6,9 @@ import type {
   TemplateEngineLoaderResult,
 } from '../types/'
 
-import type { Connection } from 'typeorm'
 import { ControllerLoader } from '../controller/ControllerLoader'
+import { DatabaseContainer } from '../database/DatabaseContainer'
 import { EntityLoader } from '../database/EntityLoader'
-import type { Redis } from 'ioredis'
 import { Registry } from './Registry'
 import { SecurityProviderLoader } from '../security/SecurityProviderLoader'
 import { ServiceLoader } from '../service/ServiceLoader'
@@ -34,14 +33,16 @@ export class Autoloader {
       createConnection(),
       createRedisClient(),
     ])
-    const securityProviders = this.loadSecurityProviders(entities, connection, redisClient)
+
+    const databaseContainer = new DatabaseContainer(connection, redisClient)
+
+    const securityProviders = this.loadSecurityProviders(entities, databaseContainer)
     const registry = new Registry(
       controllers,
       services,
       templateData,
+      databaseContainer,
       entities,
-      connection,
-      redisClient,
       securityProviders,
     )
 
@@ -74,11 +75,10 @@ export class Autoloader {
 
   protected loadSecurityProviders(
     entities: Entities,
-    connection: Connection,
-    redisClient: Redis,
+    databaseContainer: DatabaseContainer,
   ): SecurityProviders {
     const securityProviderLoader = new SecurityProviderLoader()
 
-    return securityProviderLoader.load(entities, connection, redisClient)
+    return securityProviderLoader.load(entities, databaseContainer)
   }
 }

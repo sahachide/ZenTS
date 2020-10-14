@@ -1,14 +1,19 @@
+import { DB_TYPE } from '../../types/enums'
+import type { DatabaseContainer } from '../../database/DatabaseContainer'
 import type { Redis } from 'ioredis'
 import type { SecurityProviderOptions } from '../SecurityProviderOptions'
+import type { SessionStoreAdapter } from '../../types/interfaces'
 import { log } from '../../log/logger'
 
-export class RedisSessionStoreAdapter {
-  private prefix: string
-  private expire: number
-  private keepTTL: boolean
+export class RedisSessionStoreAdapter implements SessionStoreAdapter {
+  protected readonly redisClient: Redis
+  protected readonly prefix: string
+  protected readonly expire: number
+  protected readonly keepTTL: boolean
 
-  constructor(protected readonly redisClient: Redis, providerOptions: SecurityProviderOptions) {
-    this.prefix = providerOptions.redisStorePrefix
+  constructor(databaseContainer: DatabaseContainer, providerOptions: SecurityProviderOptions) {
+    this.redisClient = databaseContainer.get(DB_TYPE.REDIS)
+    this.prefix = providerOptions.storePrefix
     this.expire = providerOptions.expireInMS
     this.keepTTL = providerOptions.redisKeepTTL
   }
@@ -37,11 +42,11 @@ export class RedisSessionStoreAdapter {
   public async load(sessionId: string): Promise<Record<string, unknown>> {
     const record = await this.redisClient.get(this.getPrefixedSessionId(sessionId))
 
-    if (!record || !record.length) {
-      return {}
-    }
-
     let data = {}
+
+    if (!record || !record.length) {
+      return data
+    }
 
     try {
       data = JSON.parse(record) as Record<string, unknown>
