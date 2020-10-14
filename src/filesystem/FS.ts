@@ -6,6 +6,13 @@ import { log } from '../log/logger'
 import { promises } from 'fs'
 import { readDirRecursive } from './readDirRecursiveGenerator'
 
+const illegalRegEx = /[/?<>\\:*|"]/g
+// eslint-disable-next-line no-control-regex
+const controlRegEx = /[\x00-\x1f\x80-\x9f]/g
+const reservedRegEx = /^\.+$/
+const windowsReservedRegEx = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i
+const windowsTrailingRegEx = /[. ]+$/
+
 export abstract class fs {
   // @ts-ignore
   public static isTsNode = !!process[Symbol.for('ts-node.register.instance')]
@@ -73,6 +80,17 @@ export abstract class fs {
     }
 
     return !this.isDev() ? `${filename}.js` : `${filename}.ts`
+  }
+
+  public static sanitizeFilename(filename: string): string {
+    const sanitized = filename
+      .replace(illegalRegEx, '')
+      .replace(controlRegEx, '')
+      .replace(reservedRegEx, '')
+      .replace(windowsReservedRegEx, '')
+      .replace(windowsTrailingRegEx, '')
+
+    return sanitized.substring(0, 255)
   }
 
   public static appDir(): string {
