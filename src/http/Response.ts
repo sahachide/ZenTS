@@ -9,6 +9,7 @@ import type { Stream } from 'stream'
 import { config } from '../config/config'
 import { encodeUrl } from '../utils/encodeUrl'
 import { escapeHtml } from '../utils/escapeHtml'
+import { log } from '../log/logger'
 import status from 'statuses'
 
 export class Response {
@@ -89,6 +90,15 @@ export class Response {
 
   public redirect(url: string, statusCode: number = 302): void {
     const encodedUrl = encodeUrl(url)
+
+    if (statusCode < 300 || statusCode > 308) {
+      log.warn(
+        `Failed to redirect to ${encodedUrl}. Status code has to be between 300 and 308. ${statusCode} given`,
+      )
+
+      return
+    }
+
     const escapedUrl = escapeHtml(url)
 
     this.header.set('Location', encodedUrl)
