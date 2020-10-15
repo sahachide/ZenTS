@@ -22,19 +22,22 @@ function validateSecurityConfig(config: ZenConfig): string[] | true {
       }
 
       if (providerConfig.store) {
-        if (
-          providerConfig.store.type === 'database' &&
-          typeof providerConfig.store.entity !== 'string'
-        ) {
-          errors.push('Missing entity property in security provider store.')
-        }
-        if (
+        if (providerConfig.store.type === 'database') {
+          if (typeof providerConfig.store.entity !== 'string') {
+            errors.push('Missing entity property in security provider store.')
+          }
+          if (!config.database?.enable) {
+            errors.push('Security provider needs database access. Please enable database support.')
+          }
+        } else if (
           providerConfig.store.type === 'file' &&
           typeof providerConfig.store.folder !== 'string'
         ) {
           errors.push(
             'Missing folder property in security provider store. Please provide a absolute path',
           )
+        } else if (providerConfig.store.type === 'redis' && !config.redis.enable) {
+          errors.push('Security provider needs database access. Please enable database support.')
         }
       }
     }
