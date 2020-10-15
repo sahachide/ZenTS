@@ -41,7 +41,6 @@ export class DatabaseSessionStoreAdapter implements SessionStoreAdapter {
 
   public async load(sessionId: string): Promise<Record<string, unknown>> {
     const record = await this.getRecord(sessionId)
-
     let data = {}
 
     if (!record) {

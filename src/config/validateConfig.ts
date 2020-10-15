@@ -15,6 +15,29 @@ function validateSecurityConfig(config: ZenConfig): string[] | true {
     errors.push(
       'Security provider config is missing in "config.security". Please add at least one security provider...',
     )
+  } else {
+    for (const providerConfig of config.security?.providers) {
+      if (typeof providerConfig.entity !== 'string') {
+        errors.push('Missing entity property in security provider config.')
+      }
+
+      if (providerConfig.store) {
+        if (
+          providerConfig.store.type === 'database' &&
+          typeof providerConfig.store.entity !== 'string'
+        ) {
+          errors.push('Missing entity property in security provider store.')
+        }
+        if (
+          providerConfig.store.type === 'file' &&
+          typeof providerConfig.store.folder !== 'string'
+        ) {
+          errors.push(
+            'Missing folder property in security provider store. Please provide a absolute path',
+          )
+        }
+      }
+    }
   }
 
   return !errors.length ? true : errors

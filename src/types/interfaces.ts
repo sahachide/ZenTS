@@ -102,6 +102,14 @@ export interface ErrorResponsePayload {
 }
 
 // ---- F
+
+export interface FileSessionStoreAdapterFileContent {
+  sessionId: string
+  createdAt: string
+  expiredAt: string
+  data: Record<string, unknown>
+}
+
 // ---- G
 
 export interface GenericControllerInstance {

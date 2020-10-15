@@ -1,4 +1,3 @@
-import type { JsonValue } from 'type-fest'
 import { path as appDir } from 'app-root-path'
 import { config } from '../config/config'
 import { join } from 'path'
@@ -52,14 +51,14 @@ export abstract class fs {
     return success
   }
 
-  public static async readJson(filePath: string): Promise<JsonValue> {
+  public static async readJson<T>(filePath: string): Promise<T> {
     let json = null
 
     try {
       const content = await promises.readFile(filePath, {
         encoding: 'utf-8',
       })
-      json = JSON.parse(content) as JsonValue
+      json = JSON.parse(content) as T
     } catch (e) {
       log.error(e)
     }
