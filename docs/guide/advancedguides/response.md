@@ -206,6 +206,22 @@ public index({ res }: Context) {
 }
 ```
 
+## URL Redirects
+
+Redirects are commonly used to send the visitor of a webpage to a different URL, for example when a link has changed or is removed over time. A controller action can answer with a redirect response using the `res.redirect()` method:
+
+```typescript
+public index({ res }: Context) {
+  return res.redirect('/new-location', 302)
+}
+```
+
+The first argument is the URL, to which the browser will redirect the user. The second one is the status code, which defaults to `302`. Please take a look at [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections) about redirects for more information about the status codes.
+
+:::warning
+After a controller action has called `res.redirect()` the response is send to the client. Therefore you should make sure, that no other response is send anymore (e.g. by returning a different value in the controller action or by calling `res.send()` manually), otherwise an error will be thrown, because Node.js isn't able to send the response again. While not mandatory, it's a good idea to return the value of `res.redirect()` in a controller action (like shown in the example above).
+:::
+
 ## Handling response errors
 
 In complex web-application things go wrong. For example, in a REST-API your controller action might expect some body parameters the client didn't pass in or in another scenario a given entity ID isn't found in the database (thus resulting in a _404_ error). For these kind of errors, the [HTTP protocol](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) has a wide range of error status codes. The controller action context provides a helpful `error` property, which exposes serval methods that directly maps to the HTTP codes in the 4xx-5xx range.
