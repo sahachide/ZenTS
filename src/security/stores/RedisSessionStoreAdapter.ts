@@ -4,6 +4,7 @@ import type { Redis } from 'ioredis'
 import type { SecurityProviderOptions } from '../SecurityProviderOptions'
 import type { SessionStoreAdapter } from '../../types/interfaces'
 import { log } from '../../log/logger'
+import ms from 'ms'
 
 export class RedisSessionStoreAdapter implements SessionStoreAdapter {
   protected readonly redisClient: Redis
@@ -30,10 +31,12 @@ export class RedisSessionStoreAdapter implements SessionStoreAdapter {
 
     if (this.expire !== -1) {
       options.push('PX', this.expire)
+    } else {
+      options.push('PX', ms('7d'))
+    }
 
-      if (this.keepTTL) {
-        options.push('KEEPTTL')
-      }
+    if (this.keepTTL) {
+      options.push('KEEPTTL')
     }
 
     await this.redisClient.set(prefixedSessionId, '{}', ...options)

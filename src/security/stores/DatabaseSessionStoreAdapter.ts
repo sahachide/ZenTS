@@ -34,7 +34,7 @@ export class DatabaseSessionStoreAdapter implements SessionStoreAdapter {
     session.data = JSON.stringify({})
     session.created_at = new Date()
     session.expired_at =
-      this.expire > 0 ? dayjs().add(this.expire, 'ms').toDate() : dayjs().add(20, 'year').toDate()
+      this.expire > 0 ? dayjs().add(this.expire, 'ms').toDate() : dayjs().add(7, 'day').toDate()
 
     await this.repository.save(session)
   }

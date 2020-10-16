@@ -42,7 +42,7 @@ export class FileSessionStoreAdapter implements SessionStoreAdapter {
       expiredAt:
         this.expire > 0
           ? dayjs().add(this.expire, 'ms').toString()
-          : dayjs().add(20, 'year').toString(),
+          : dayjs().add(7, 'day').toString(),
     }
 
     await fs.writeJson(filePath, data)
