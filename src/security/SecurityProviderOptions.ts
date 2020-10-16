@@ -88,12 +88,12 @@ export class SecurityProviderOptions {
     return this.options.fields?.password ?? 'password'
   }
 
-  get storeType(): 'redis' | 'database' | 'file' | null {
-    return this.options.store?.type ?? null
+  get storeType(): 'redis' | 'database' | 'file' {
+    return this.options.store?.type
   }
 
   get responseType(): 'json' | 'redirect' {
-    return this.options.responseType ?? 'json'
+    return this.options.responseType ?? 'redirect'
   }
 
   get storePrefix(): string {
