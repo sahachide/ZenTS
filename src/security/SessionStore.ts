@@ -7,7 +7,7 @@ export class SessionStore {
   private isModified = false
 
   constructor(
-    protected sessionId: string,
+    public sessionId: string,
     protected data: Record<string, unknown>,
     protected adapter: SessionStoreAdapter,
   ) {}
@@ -18,6 +18,7 @@ export class SessionStore {
     }
 
     await this.adapter.persist(this.sessionId, this.data)
+    this.isModified = false
   }
 
   public get<T = any>(path: string): T {
