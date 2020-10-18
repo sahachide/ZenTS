@@ -506,6 +506,22 @@ The above example will set the expire time for session to 30 days. The `expire` 
 Sessions are automatically deleted from the redis store when they expire. That is done by setting the TTL for each key in the redis store. That isn't currently done for the database and file stores. ZenTS will only make sure, that the session hasn't been expired yet when a request has been made, but it won't delete old sessions from the database (or filesystem). Currently you've to do this by hand, but sooner or later ZenTS will provide a CLI command to automatically clean expired sessions. The only exception from this behavior is, when the user calls `/logout`. The store data will then be deleted no matter which store the application is using.  
 :::
 
+## Manually destroy a session
+
+A session can be manually destroyed before it expire by calling the `destroy()` method:
+
+```typescript
+@auth()
+public async deleteMySelf(
+  context: Context,
+  @session() session: Session<User>
+) {
+  await session.destroy()
+}
+```
+
+This will destroy the session immediately and all members of the session variable will become `null` (e.g. `session.user` becomes `null`).
+
 ## Auto responses
 
 ZenTS will send auto responses when specific actions happen, e.g. when a user calls `/login` with wrong credentials. These responses can be configured for every security provider, allowing you to fine tune the behavior of each action.
