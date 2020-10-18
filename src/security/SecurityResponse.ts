@@ -30,7 +30,7 @@ export class SecurityResponse {
     if (this.options.responseType === 'json') {
       return context.res
         .json({
-          success: true,
+          logout: true,
         })
         .send()
     }
