@@ -43,7 +43,7 @@ export class SessionFactory {
     const adapter = this.storeFactory.build(securityProvider.options)
     const storeData = await adapter.load(sessionId)
     const store = new SessionStore(sessionId, storeData, adapter)
-    const session = new Session(sessionId, user, store, providerKey)
+    const session = new Session(sessionId, user, store, adapter, providerKey)
 
     return session
   }
