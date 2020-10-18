@@ -213,6 +213,7 @@ module.exports = {
             '/guide/advancedguides/routing',
             '/guide/advancedguides/database',
             '/guide/advancedguides/redis',
+            '/guide/advancedguides/user_management',
             '/guide/advancedguides/templates',
             '/guide/advancedguides/static_files',
             '/guide/advancedguides/services',

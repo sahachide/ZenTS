@@ -119,4 +119,4 @@ ZenTS uses _ioredis_ under the hood to manage Redis clients. This client has bee
 
 ## Next steps
 
-Congratulation :tada:! You've just learned how to use to Redis in your web application. Now you should be familiar on using different databases with ZenTS. Head over to the [template guide](./templates.md) to learn how to render HTML code in your application.
+Congratulation :tada:! You've just learned how to use to Redis in your web application. Now you should be familiar on using different databases with ZenTS. Head over to the [template guide](./templates.md) to learn how to render HTML code in your application or check out the [user and session management guide](./user_management.md) guide to learn how to secure routes and handle different user resources.
