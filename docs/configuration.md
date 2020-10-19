@@ -214,9 +214,23 @@ web:
 
 In this example, the _default_ **port** the webserver is listening at is set to `3000`. This value is overwritten by the _base_ config (`zen.json`) with `8080`. This would be the webserver port when starting the application with `zen dev` (or `npm start`). But in production your webserver probably want to listen to the default HTTP port (`80`), which is set in the _environment_ specific config file (`zen.production.json`).
 
+## Time formatting
+
+ZenTS supports time formatting to milliseconds when it accepts a configuration value to be in milliseconds. Take for example the `expire` for sessions, they can either be given in milliseconds or with a time string (e.g. `7 days`) which will automatically converted to milliseconds.
+
+The following time strings can be used:
+
+- Year (e.g. `7 years`, `3y`): `years`, `year`, `yrs`, `yr`, `y`
+- Week (e.g. `7 weeks`, `3w`): `weeks`, `week`, `w`
+- Day (e.g. `7days`, `3d`): `days`, `day`, `d`
+- Hour (e.g. `7hours`, `3h`): `hours`, `hour`, `hrs`, `hr`, `h`
+- Minute (e.g. `7 min`, `3m`): `minutes`, `minute`, `mins`, `min`, `m`
+- Second (e.g. `7seconds`, `3s`): `seconds`, `second`, `secs`, `sec`, `s`
+- Millisecond (e.g. `7ms`): `milliseconds`, `millisecond`, `msecs`, `msec`, `ms`
+
 ## Configuration options
 
-The following chapter listen all possible configuration options. All options are optional.
+The following chapter listen all possible configuration options. Most options are optional.
 
 ### Path related options
 
