@@ -133,6 +133,10 @@ export class Product {
 A entity can also be created using the CLI. Use the `zen add:entity Product` command to create a entity. Read the [CLI guide](./../../cli.md) to learn more about this and other commands.
 :::
 
+::: warning
+Entities can't be put in a sub-folders.
+:::
+
 Similar to route definitions, entities are using annotations (e.g. `@Column()`) to tell the ORM how to map specific table columns to the corresponding class members. Every entity needs an `@Entity()` annotation above its class definition.
 
 ### Specifying column types
@@ -555,13 +559,17 @@ ZenTS offers you three ways to access a repository (or multiple repositories) in
 Repositories can be injected into a controller / service method by using the `@repository()` annotation, which requires one argument (the entity). This is the recommended way to use a repository, because it allows your application to be written in the [SOLID principle](https://en.wikipedia.org/wiki/Single-responsibility_principle):
 
 ```typescript
-import { Controller, Context, entityManager, get, log } from 'zents'
+import { Controller, Context, entityManager, get, log, repository } from 'zents'
+import type { Repository } from 'typeorm'
 
 import { Product } from '../entity/Product'
 
 export default class extends Controller {
   @get('/product/:productId')
-  public async detailProduct(context: Context, @repository(Product) productRepo) {
+  public async detailProduct(
+    context: Context,
+    @repository(Product) productRepo: Repository<Product>,
+  ) {
     // use productRepo.find() etc. here
   }
 }

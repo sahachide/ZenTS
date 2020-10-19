@@ -159,6 +159,10 @@ module.exports = {
     lastUpdated: 'Last Updated',
     smoothScroll: false,
     sidebarDepth: 3,
+    algolia: {
+      apiKey: '1c03de24a87faf1bfd8b7e760c63b3ab',
+      indexName: 'zents',
+    },
     nav: [
       {
         text: 'Home',
@@ -209,6 +213,7 @@ module.exports = {
             '/guide/advancedguides/routing',
             '/guide/advancedguides/database',
             '/guide/advancedguides/redis',
+            '/guide/advancedguides/user_management',
             '/guide/advancedguides/templates',
             '/guide/advancedguides/static_files',
             '/guide/advancedguides/services',

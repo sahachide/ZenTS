@@ -20,9 +20,9 @@ export class TemplateEngineLoader extends AbstractZenFileLoader {
     }
   }
   protected async loadFiles(): Promise<string[]> {
-    return (
-      await fs.readDirContentRecursive(fs.resolveZenPath('view'))
-    ).filter((filePath: string) => filePath.endsWith(`.${config.template.extension}`))
+    return (await fs.readDir(fs.resolveZenPath('view'))).filter((filePath: string) =>
+      filePath.endsWith(`.${config.template.extension}`),
+    )
   }
   protected async loadFilters(): Promise<TemplateFiltersMap> {
     const filters = new Map() as TemplateFiltersMap
@@ -32,7 +32,7 @@ export class TemplateEngineLoader extends AbstractZenFileLoader {
       return filters
     }
 
-    const filePaths = (await fs.readDirContentRecursive(dir)).filter((filePath: string) =>
+    const filePaths = (await fs.readDir(dir)).filter((filePath: string) =>
       filePath.endsWith(fs.resolveZenFileExtension()),
     )
 

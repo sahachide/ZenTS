@@ -343,6 +343,16 @@ public index({ req }: Context) {
 }
 ```
 
+In addition, the `get()` method has a type generic, which you can use to cast the correct type for the header value (either `string` or `string[]`)
+
+```typescript
+public index({ req }: Context) {
+  const example = req.header.get<string>('example')
+
+  log.info(typeof example) // logs "string"
+}
+```
+
 To return all request headers, you can call `req.header.all()`, which returns an iterable iterator:
 
 ```typescript

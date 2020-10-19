@@ -214,9 +214,23 @@ web:
 
 In this example, the _default_ **port** the webserver is listening at is set to `3000`. This value is overwritten by the _base_ config (`zen.json`) with `8080`. This would be the webserver port when starting the application with `zen dev` (or `npm start`). But in production your webserver probably want to listen to the default HTTP port (`80`), which is set in the _environment_ specific config file (`zen.production.json`).
 
+## Time formatting
+
+ZenTS supports time formatting to milliseconds when it accepts a configuration value to be in milliseconds. Take for example the `expire` for sessions, they can either be given in milliseconds or with a time string (e.g. `7 days`) which will automatically converted to milliseconds.
+
+The following time strings can be used:
+
+- Year (e.g. `7 years`, `3y`): `years`, `year`, `yrs`, `yr`, `y`
+- Week (e.g. `7 weeks`, `3w`): `weeks`, `week`, `w`
+- Day (e.g. `7days`, `3d`): `days`, `day`, `d`
+- Hour (e.g. `7hours`, `3h`): `hours`, `hour`, `hrs`, `hr`, `h`
+- Minute (e.g. `7 min`, `3m`): `minutes`, `minute`, `mins`, `min`, `m`
+- Second (e.g. `7seconds`, `3s`): `seconds`, `second`, `secs`, `sec`, `s`
+- Millisecond (e.g. `7ms`): `milliseconds`, `millisecond`, `msecs`, `msec`, `ms`
+
 ## Configuration options
 
-The following chapter listen all possible configuration options. All options are optional.
+The following chapter listen all possible configuration options. Most options are optional.
 
 ### Path related options
 
@@ -404,6 +418,136 @@ Depending on the database you're using, TypeORM supports a wide range of extra o
 ::: warning
 TypeORM's multiple connections are currently not supported by ZenTS. This feature will be added as soon as possible to ZenTS.
 :::
+
+### Security related options
+
+These options let you setup different security providers and stores, so that specific URL resources can only be accessed by allowed users. Please take a look at the [user and session management guide](./guide/advancedguides/user_management.md) for a full tutorial.
+
+- `security.enable` (boolean, default: `false`):
+  Set this value to `true` to enable security and session support in your application.
+
+- `security.strategy` (string, default: `cookie`):
+  The place ZenTS will look for the JSON Web Token. Can either be `cookie`, `header` or `hybrid` ([guide](./guide/advancedguides/user_management.md#choosing-the-right-auth-strategy)).
+
+- `security.cookieKey` (string, default: `zenapp_jwt`):
+  The key of the cookie when using the `cookie` security strategy.
+
+- `security.secretKey` (string, default: `undefined`):
+  The secret key has to be at least 32 characters strong and shouldn't been shared public. You can use `zen security:secret-key` to generate a secret key for your application ([CLI](./cli.md) needs to be installed for that).
+
+- `security.token` (object)
+  Contains settings related to [JSON Web Token](https://jwt.io/).
+
+- `security.token.algorithm` (string, default: `HS256`):
+  The algorithm used to encrypt the JSON web token. Either `HS256`, `HS384` or `HS512`.
+
+- `security.token.audience` (string | string[], default: `undefined`):
+  Provide one or more audiences that are checked against the token.
+
+- `security.token.issuer` (string, default: `undefined`):
+  Provide one issuer that is checked against the token.
+
+- `security.token.subject` (string, default: `undefined`):
+  The subject of the JSON web token.
+
+- `security.token.jwtid` (string, default: `undefined`):
+  The JWT ID of the JSON web token.
+
+- `security.token.keyid` (string, default: `undefined`):
+  The Key ID of the JSON web token.
+
+- `security.providers` (array)
+  Contains so-called security providers activated for the application. Each element must be an object with the following properties.
+
+- `security.providers[].name` (string, default: `default`):
+  The name of the provider. It's mandatory to specify a name when using more then one security provider.
+
+- `security.providers[].entity` (string, default: `undefined`):
+  A valid entity identifier that holds user credentials.
+
+- `security.providers[].table` (object)
+  Options related to the entity.
+
+- `security.providers[].table.identifierColumn` (string, default: `id`):
+  The primary column (usually the ID) of the entity.
+
+- `security.providers[].table.passwordColumn` (string, default: `password`):
+  The column where the users password is stored.
+
+- `security.providers[].algorithm` (string, default: `argon2id`):
+  The algorithm used to encrypt/verify a users password field. Either `argon2id` or `bcrypt`.
+
+- `security.providers[].argon` (object)
+  Options related to the `argon2id` algorithm.
+
+- `security.providers[].argon.memLimit` (number):
+  See [here](https://github.com/emilbayes/secure-password#var-pwd--new-securepasswordopts).
+
+- `security.providers[].argon.opsLimit` (number):
+  See [here](https://github.com/emilbayes/secure-password#var-pwd--new-securepasswordopts).
+
+- `security.providers[].bcrypt` (object)
+  Options related to the `bcrypt` algorithm.
+
+- `security.providers[].bcrypt.saltRounds` (number, default: `12`):
+  The number of salt rounds used to encrypt the password. The higher the value the more secure the created hash will be and the longer it takes to generate one.
+
+- `security.providers[].store` (object)
+  Options related to the session store. It's mandatory to configure a store for a security provider.
+
+- `security.providers[].type` (string):
+  The store type, either `redis`, `database` or `file`.
+
+- `security.providers[].prefix` (string, default: `zen_`) _redis and file only_:
+  The prefix used for the keys in redis or filenames.
+
+- `security.providers[].keepTTL` (boolean, default: `false`) _redis only_:
+  Should the TTL be renewed when data is written to the store?
+
+- `security.providers[].entity` (string) _database only_:
+  The key of the entity which is used to store session related data.
+
+- `security.providers[].folder` (string) _file only_:
+  A absolute path to a folder where session data files are stored.
+
+- `security.providers[].expire` (string | number, default: `7d`):
+  The session expire time, either as number in milliseconds or as a time string (e.g. `7d`, `8h`, ...).
+
+- `security.providers[].url` (object)
+  Options related to the login and logout URL.
+
+- `security.providers[].url.login` (string, default: `/login`):
+  The login URL for this provider. If you use more then one security provider you've to configure this URL.
+
+- `security.providers[].url.logout` (string, default: `/logout`):
+  The logout URL for this provider. If you use more then one security provider you've to configure this URL.
+
+- `security.providers[].fields` (object)
+  Options related to body request fields when requesting the login URL.
+
+- `security.providers[].fields.username` (string, default: `username`):
+  The request body parameter that contains the username.
+
+- `security.providers[].fields.password` (string, default: `password`):
+  The request body parameter that contains the password.
+
+- `security.providers[].responseType` (string, default: `redirect`):
+  The response type from the security system when calling auto response URLs like `/login`, `/logout`, etc.
+
+- `security.providers[].redirect` (object)
+  Options related to the redirect response type
+
+- `security.providers[].redirect.login` (string, default: `/`):
+  The redirect URL after a successful login has happened.
+
+- `security.providers[].redirect.logout` (string, default: `/`):
+  The redirect URL after a successful logout has happened.
+
+- `security.providers[].redirect.failed` (string, default: `/`):
+  The redirect URL after a security request has failed.
+
+- `security.providers[].redirect.forbidden` (string, default: `/`):
+  The redirect URL after a user tries to access a forbidden resource.
 
 ### Template engine related options
 

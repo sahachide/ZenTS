@@ -3,5 +3,6 @@
 docs/
 node_modules/
 npm-debug.log
+test/
 .vscode/
 .env

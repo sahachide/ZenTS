@@ -1,7 +1,7 @@
 import { config, loadConfig } from '../config/config'
 import { createLogger, log } from '../log/logger'
 
-import { Autoloader } from './Autoloader'
+import { AutoLoader } from './AutoLoader'
 import type { Server as NodeHttpServer } from 'http'
 import type { Server as NodeHttpsServer } from 'https'
 import type { Registry } from './Registry'
@@ -30,7 +30,7 @@ export class ZenApp {
     createLogger()
     await validateInstallation()
 
-    const autoloader = new Autoloader()
+    const autoloader = new AutoLoader()
     this.registry = await autoloader.createRegistry()
 
     await this.startServer()

@@ -7,6 +7,9 @@ import { ResponseHeader } from './ResponseHeader'
 import type { ServerResponse } from 'http'
 import type { Stream } from 'stream'
 import { config } from '../config/config'
+import { encodeUrl } from '../utils/encodeUrl'
+import { escapeHtml } from '../utils/escapeHtml'
+import { log } from '../log/logger'
 import status from 'statuses'
 
 export class Response {
@@ -46,6 +49,7 @@ export class Response {
 
     this.sendDefaultResponse()
   }
+
   public json<T extends JsonValue>(data: T): this {
     this._body = data
     this.header.setContentType('application/json')
@@ -53,6 +57,7 @@ export class Response {
 
     return this
   }
+
   public html(html: string): this {
     this._body = html
     this.header.setContentType('html')
@@ -60,6 +65,7 @@ export class Response {
 
     return this
   }
+
   public text(text: string): this {
     this._body = text
     this.header.setContentType('text')
@@ -67,21 +73,52 @@ export class Response {
 
     return this
   }
+
   public buffer(buffer: Buffer): this {
     this._body = buffer
     this.bodyType = RESPONSE_BODY_TYPE.BUFFER
 
     return this
   }
+
   public stream(stream: Stream): this {
     this._body = stream
     this.bodyType = RESPONSE_BODY_TYPE.STREAM
 
     return this
   }
+
+  public redirect(url: string, statusCode: number = 302): void {
+    const encodedUrl = encodeUrl(url)
+
+    if (statusCode < 300 || statusCode > 308) {
+      log.warn(
+        `Failed to redirect to ${encodedUrl}. Status code has to be between 300 and 308. ${statusCode} given`,
+      )
+
+      return
+    }
+
+    const escapedUrl = escapeHtml(url)
+
+    this.header.set('Location', encodedUrl)
+    this.setStatusCode(statusCode)
+
+    if (config.web?.redirectBodyType === 'html') {
+      this.html(
+        `<div>${this.getStatusMessage()} - Redirecting to <a href="${escapedUrl}">${escapedUrl}</a></div>`,
+      )
+    } else if (config.web?.redirectBodyType === 'text') {
+      this.text(`${this.getStatusMessage()} - Redirecting to ${url}`)
+    }
+
+    return this.send()
+  }
+
   public getStatusCode(): number {
     return this.nodeRes.statusCode
   }
+
   public setStatusCode(statusCode: number): this {
     if (this.header.isSend() || (statusCode <= 100 && statusCode >= 999)) {
       return this
@@ -98,6 +135,7 @@ export class Response {
 
     return this
   }
+
   public getStatusMessage(): string {
     if (!this.nodeRes.statusMessage.length) {
       return this.getStatusMessageFromStatusCode(this.getStatusCode())
@@ -105,6 +143,7 @@ export class Response {
 
     return this.nodeRes.statusMessage
   }
+
   public setStatusMessage(message: string): this {
     if (this.header.isSend()) {
       return this
@@ -114,6 +153,7 @@ export class Response {
 
     return this
   }
+
   private setCookies(): void {
     const cookies = this.cookie.serialize()
 
@@ -121,6 +161,7 @@ export class Response {
       this.header.set('Set-Cookie', cookies)
     }
   }
+
   private getStatusMessageFromStatusCode(statusCode: number): string {
     let message = status(statusCode)
 
@@ -130,19 +171,27 @@ export class Response {
 
     return message
   }
+
   private sendJsonResponse(): void {
     const body = JSON.stringify(this._body)
 
     this.setContentLengthByByteLength(body)
     this.nodeRes.end(body)
   }
+
   private sendBufferOrStreamResponse(): void {
     this.nodeRes.end(this._body)
   }
+
   private sendDefaultResponse(): void {
+    if (!this._body) {
+      return this.nodeRes.end()
+    }
+
     this.setContentLengthByByteLength(this._body as string)
     this.nodeRes.end(this._body)
   }
+
   private setContentLengthByByteLength(body: string): void {
     if (!this.header.isSend()) {
       const length = Buffer.byteLength(body)

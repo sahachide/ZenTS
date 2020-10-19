@@ -2,7 +2,9 @@ import type { CosmicConfigResult, ZenConfig } from './../types/interfaces'
 
 import { cosmiconfig } from 'cosmiconfig'
 import { defaultConfig } from './default'
+import { log } from '../log/logger'
 import merge from 'lodash.merge'
+import { validateConfig } from './validateConfig'
 
 const moduleName = 'zen'
 
@@ -42,17 +44,9 @@ async function loadEnviormentFile(searchFrom?: string): Promise<CosmicConfigResu
   return await explorer.search(searchFrom)
 }
 
-/**
- * Allows easy access of the loaded ZenTS config. Before the config is loaded by {@link ZenApp} it will hold the
- * default config supplied by ZenTS
- */
 export let config: ZenConfig = defaultConfig
-
 export let isConfigLoaded: boolean = false
 
-/**
- * Load the config file. This function should never be called by custom code.
- */
 export async function loadConfig(
   manualConfig?: ZenConfig,
   searchFrom?: string,
@@ -74,4 +68,14 @@ export async function loadConfig(
     envFileConfig ? envFileConfig.config : {},
     manualConfig ? manualConfig : {},
   )
+
+  const { isValid, errors } = validateConfig(config)
+
+  if (!isValid) {
+    for (const error of errors) {
+      log.error(error)
+
+      throw new Error('Failed to boot! Config is invalid.')
+    }
+  }
 }

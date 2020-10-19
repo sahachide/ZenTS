@@ -1,16 +1,24 @@
 import type { Class, JsonArray, JsonObject, JsonValue, Promisable } from 'type-fest'
 import type { Connection, EntityManager, Repository } from 'typeorm'
 import type {
+  Context,
   ControllerDeclaration,
-  ControllerRoute,
+  DatabaseSessionStoreAdapterEntity,
+  IncomingParams,
   LoaderTemplateItem,
+  RequestConfigController,
+  RequestConfigSecurity,
+  Route,
   TemplateFiltersMapItem,
 } from './interfaces'
 import type { IncomingMessage, ServerResponse } from 'http'
 
+import type { DB_TYPE } from './enums'
 import type { Redis } from 'ioredis'
+import type { SecurityProvider } from '../security/SecurityProvider'
 import type { Stream } from 'stream'
 import type { TemplateResponse } from '../template/TemplateResponse'
+import type findMyWay from 'find-my-way'
 
 // ---- A
 // ---- B
@@ -23,7 +31,14 @@ export type ControllerMethodReturnType = Promisable<
 export type Controllers = Map<string, ControllerDeclaration>
 
 // ---- D
+
+export type DatabaseSessionStoreAdapterEntityClass = Class<DatabaseSessionStoreAdapterEntity>
+
+export type DatabaseObjectType<T> = T extends DB_TYPE.ORM ? Connection : Redis
+
 // ---- E
+
+export type Entities = Map<string, Class>
 
 export type ErrorResponseData = JsonObject | JsonArray
 
@@ -97,22 +112,29 @@ export type NunjucksFilterCallback = (err: any, result: any) => void
 
 export type RedisClient = Redis
 
+export type RequestConfig = RequestConfigController | RequestConfigSecurity
+
 export type RequestHeadersValue = string | string[]
+
 export type RequestHeaders = Map<string, RequestHeadersValue>
 
 export type ResponseBody = Buffer | Stream | JsonValue | null
 
+export type Router = findMyWay.Instance<findMyWay.HTTPVersion.V1>
+
 export type RouteHandler = (
-  controllerKey: string,
-  route: ControllerRoute,
+  config: RequestConfig,
+  route: Route,
   req: IncomingMessage,
   res: ServerResponse,
-  params: {
-    [key: string]: string
-  },
+  params: IncomingParams,
 ) => void
 
 // ---- S
+
+export type SecurityRequestContext = Context<any, { username: string; password: string }>
+
+export type SecurityProviders = Map<string, SecurityProvider>
 
 export type Services = Map<string, Class>
 

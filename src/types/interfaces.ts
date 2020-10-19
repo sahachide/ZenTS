@@ -1,4 +1,4 @@
-import type { Class, JsonValue, Promisable } from 'type-fest'
+import type { Class, JsonObject, Promisable } from 'type-fest'
 import type {
   ControllerMethodReturnType,
   ErrorResponseData,
@@ -8,18 +8,39 @@ import type {
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
-import type { Cookie, Request, Response, ResponseError } from '../http/'
+import type { REPOSITORY_TYPE, REQUEST_TYPE, SECURITY_ACTION } from './enums'
 
 import type { ConnectionOptions } from 'typeorm'
+import type { Context as ContextClass } from '../http/Context'
 import type { ControllerFactory } from '../controller/ControllerFactory'
-import type { REPOSITORY_TYPE } from './enums'
 import type { RedisOptions } from 'ioredis'
+import type { Request } from '../http/Request'
+import type { RequestFactory } from '../http/RequestFactory'
 import type { RouterFactory } from '../router/RouterFactory'
+import type { SecurityProvider } from '../security/SecurityProvider'
 import type { ServiceFactory } from '../service/ServiceFactory'
+import type { Session as SessionClass } from '../security/Session'
+import type { SessionFactory } from '../security'
 
 // ---- A
 // ---- B
 // ---- C
+
+export interface Context<Params = any, Body = any, Query = any> extends ContextClass {
+  query: QueryString & Query
+  params: IncomingParams & Params
+  body: ParsedBody['fields'] & Body
+  req: Request & {
+    query: QueryString & Query
+    params: IncomingParams & Params
+    body: ParsedBody['fields'] & Body
+  }
+  request: Request & {
+    query: QueryString & Query
+    params: IncomingParams & Params
+    body: ParsedBody['fields'] & Body
+  }
+}
 
 export interface CookieOptions {
   enable?: boolean
@@ -34,25 +55,21 @@ export interface CookieOptions {
   secure?: boolean
 }
 
-export interface Context {
-  body: JsonValue
-  params: IncomingParams
-  query: QueryString
-  cookie: Cookie
-  req: Request
-  res: Response
-  error: ResponseError
+export interface ConfigValidationResult {
+  isValid: boolean
+  errors: string[]
 }
 
 export interface ControllerDeclaration {
   module: Class
-  routes: ControllerRoute[]
+  routes: Route[]
 }
 
-export interface ControllerRoute {
+export interface Route {
   method: HTTPMethod
   path: string
-  controllerMethod: string
+  controllerMethod?: string
+  authProvider?: string
 }
 
 export interface CommonJSZenModule<T> {
@@ -66,6 +83,14 @@ export interface CosmicConfigResult {
 }
 
 // ---- D
+
+export interface DatabaseSessionStoreAdapterEntity {
+  id: string
+  data: string
+  created_at: Date
+  expired_at: Date
+}
+
 // ---- E
 
 export interface ErrorResponsePayload {
@@ -77,6 +102,14 @@ export interface ErrorResponsePayload {
 }
 
 // ---- F
+
+export interface FileSessionStoreAdapterFileContent {
+  sessionId: string
+  createdAt: string
+  expiredAt: string
+  data: Record<string, unknown>
+}
+
 // ---- G
 
 export interface GenericControllerInstance {
@@ -92,6 +125,13 @@ export interface HeaderValues {
 
 // ---- I
 
+export interface IncomingRequestAuthenticateResult {
+  isAuth: boolean
+  securityProvider?: SecurityProvider
+  user?: { [key: string]: string }
+  sessionId?: string
+}
+
 export interface IncomingParams {
   [key: string]: string
 }
@@ -106,6 +146,11 @@ export interface InjectorFunctionParameter {
 }
 
 // ---- J
+
+export interface JWTOptions {
+  [key: string]: string | string[]
+}
+
 // ---- K
 // ---- L
 
@@ -132,7 +177,7 @@ export interface ModuleDependency {
 // ---- P
 
 export interface ParsedBody {
-  fields: JsonValue
+  fields: JsonObject
   files: {
     [key: string]: {
       size: number
@@ -181,10 +226,117 @@ export interface RepositoryReflectionMetadata {
 export interface RegistryFactories {
   router: RouterFactory
   controller: ControllerFactory
+  request: RequestFactory
   service: ServiceFactory
+  session: SessionFactory
+}
+
+export interface RequestConfigController {
+  type: REQUEST_TYPE.CONTROLLER
+  controllerKey: string
+  controllerMethod: string
+  authProvider?: string
+  loadedUser?: RequestConfigControllerUser
+}
+
+export interface RequestConfigControllerUser {
+  provider: string
+  user: { [key: string]: string }
+  sessionId: string
+}
+
+export interface RequestConfigSecurity {
+  type: REQUEST_TYPE.SECURITY
+  action: SECURITY_ACTION
+  provider: SecurityProvider
 }
 
 // ---- S
+
+export interface SecurityProviderAuthorizeResponse {
+  isAuth: boolean
+  user?: { [key: string]: string }
+  sessionId?: string
+}
+
+export interface SecurityProviderOption {
+  name?: string
+  algorithm?: 'bcrypt' | 'argon2id'
+  argon?: {
+    memLimit?: number
+    opsLimit?: number
+  }
+  bcrypt?: {
+    saltRounds?: number
+  }
+  store?:
+    | {
+        type: 'redis'
+        prefix?: string
+        keepTTL?: boolean
+      }
+    | {
+        type: 'database'
+        entity: string
+      }
+    | {
+        type: 'file'
+        prefix?: string
+        folder: string
+      }
+  entity: string
+  table?: {
+    identifierColumn?: string
+    passwordColumn?: string
+  }
+  fields?: {
+    username?: string
+    password?: string
+  }
+  url?: {
+    login?: string
+    logout?: string
+  }
+  redirect?: {
+    login?: string
+    logout?: string
+    failed?: string
+    forbidden?: string
+  }
+  expire?: number | string
+  responseType?: 'json' | 'redirect'
+}
+
+export interface SecurityProviderOptionEntities {
+  user: Class
+  dbStore?: Class
+}
+
+export interface SecurityProviderReflectionMetadata {
+  index: number
+  propertyKey: string
+  target: Class
+  name: string
+}
+
+export interface SecurityStrategy {
+  hasToken(context: Context): boolean
+  getToken(context: Context): string | false
+  setToken(context: Context, token: string): void
+}
+
+export interface Session<U = { [key: string]: string }> extends SessionClass {
+  user: U
+}
+
+export interface SessionStoreAdapter {
+  create(sessionId: string): Promise<void>
+  load(sessionId: string): Promise<Record<string, unknown>>
+  persist(sessionId: string, data: Record<string, unknown>): Promise<void>
+  remove(sessionId: string): Promise<void>
+  has(sessionId: string): Promise<boolean>
+}
+
 // ---- T
 
 export interface TemplateEngineLoaderResult {
@@ -204,6 +356,12 @@ export interface TemplateFiltersMapItem {
 export interface TemplateStaticFilterModule {
   async?: boolean
   filtername?: string
+}
+
+export interface TokenData {
+  provider: string
+  userId: string
+  sessionId: string
 }
 
 // ---- U
@@ -256,6 +414,22 @@ export interface ZenConfig {
       maxParamLength?: number
     }
     cookie?: CookieOptions
+    redirectBodyType?: 'html' | 'text' | 'none'
+  }
+  security?: {
+    enable?: boolean
+    strategy?: 'header' | 'cookie' | 'hybrid'
+    cookieKey?: string
+    secretKey?: string
+    providers?: SecurityProviderOption[]
+    token?: {
+      algorithm?: 'HS256' | 'HS384' | 'HS512'
+      audience?: string | string[]
+      issuer?: string
+      subject?: string
+      jwtid?: string
+      keyid?: string
+    }
   }
   database?: Partial<ConnectionOptions> & {
     enable?: boolean

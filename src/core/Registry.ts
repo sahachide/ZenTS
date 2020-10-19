@@ -1,10 +1,21 @@
-import type { Controllers, RegistryFactories, Services, TemplateEngineLoaderResult } from '../types'
+import {
+  Controllers,
+  DB_TYPE,
+  Entities,
+  RegistryFactories,
+  SecurityProviders,
+  Services,
+  TemplateEngineLoaderResult,
+} from '../types'
 
 import type { Connection } from 'typeorm'
 import { ControllerFactory } from '../controller/ControllerFactory'
+import { DatabaseContainer } from '../database/DatabaseContainer'
 import type { Redis } from 'ioredis'
+import { RequestFactory } from '../http/RequestFactory'
 import { RouterFactory } from '../router/RouterFactory'
 import { ServiceFactory } from '../service/ServiceFactory'
+import { SessionFactory } from '../security/SessionFactory'
 
 export class Registry {
   public factories: RegistryFactories
@@ -13,13 +24,24 @@ export class Registry {
     protected readonly controllers: Controllers,
     protected readonly services: Services,
     templateData: TemplateEngineLoaderResult,
-    protected readonly connection: Connection | null,
-    protected readonly redisClient: Redis,
+    protected readonly databaseContainer: DatabaseContainer,
+    protected readonly entities: Entities,
+    protected readonly securityProviders: SecurityProviders,
   ) {
+    const sessionFactory = new SessionFactory(securityProviders, databaseContainer)
+
     this.factories = {
       router: new RouterFactory(),
-      controller: new ControllerFactory(controllers, connection, redisClient, templateData),
-      service: new ServiceFactory(services, connection, redisClient),
+      controller: new ControllerFactory(
+        controllers,
+        sessionFactory,
+        securityProviders,
+        databaseContainer,
+        templateData,
+      ),
+      request: new RequestFactory(this),
+      service: new ServiceFactory(services, sessionFactory, securityProviders, databaseContainer),
+      session: sessionFactory,
     }
   }
 
@@ -31,11 +53,19 @@ export class Registry {
     return this.services
   }
 
+  public getEntities(): Entities {
+    return this.entities
+  }
+
   public getConnection(): Connection {
-    return this.connection
+    return this.databaseContainer.get(DB_TYPE.ORM)
   }
 
   public getRedisClient(): Redis {
-    return this.redisClient
+    return this.databaseContainer.get(DB_TYPE.REDIS)
+  }
+
+  public getSecurityProviders(): SecurityProviders {
+    return this.securityProviders
   }
 }

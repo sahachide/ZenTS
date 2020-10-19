@@ -32,7 +32,7 @@ Lets be honest, no good Node.js framework without some plugin or/and middleware 
 
 A good documentation is the key to a successful framework. It doesn't help if a framework is full of great features, but if nobody knows how to use them they become useless (or unused). ZenTS's documentation isn't complete yet, even it contains already a lot of guides. But there is more to come: more guides, improve existing guides, a cheat sheet, a better search, a contribution guide, the API reference and so on.
 
-## More tests <Badge text="Not started" type="error" vertical="middle" />
+## More tests <Badge text="Started" type="warning" vertical="middle" />
 
 The ZenTS repository contains already a couple of tests, but they doesn't cover all parts of the framework yet. They will be added over time, of course, new features also will need tests to be written.
 

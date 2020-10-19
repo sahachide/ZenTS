@@ -30,6 +30,7 @@ export const defaultConfig: ZenConfig = {
     cookie: {
       enable: true,
     },
+    redirectBodyType: 'none',
   },
   database: {
     enable: false,
@@ -37,6 +38,9 @@ export const defaultConfig: ZenConfig = {
   redis: {
     enable: false,
     log: true,
+  },
+  security: {
+    enable: false,
   },
   template: {
     extension: 'njk',

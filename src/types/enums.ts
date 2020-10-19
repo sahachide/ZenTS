@@ -2,6 +2,12 @@
 // ---- B
 // ---- C
 // ---- D
+
+export enum DB_TYPE {
+  ORM = 'orm',
+  REDIS = 'redis',
+}
+
 // ---- E
 
 export enum ERROR {
@@ -23,6 +29,7 @@ export enum ERROR {
 // ---- R
 
 export enum REFLECT_METADATA {
+  AUTH_PROVIDER = 'authProvider',
   CONTROLLER_KEY = 'controllerKey',
   DATABASE_CONNECTION = 'database:connection',
   DATABASE_EM = 'database:em',
@@ -30,8 +37,15 @@ export enum REFLECT_METADATA {
   DEPENDENCIES = 'dependencies',
   HTTP_METHOD = 'httpMethod',
   REDIS_CLIENT = 'redisClient',
+  SECURITY_PROVIDER = 'securityProvider',
+  SESSION = 'session',
   URL_PATH = 'urlPath',
   URL_PREFIX = 'urlPrefix',
+}
+
+export enum REQUEST_TYPE {
+  CONTROLLER = 'controller',
+  SECURITY = 'security',
 }
 
 export enum RESPONSE_BODY_TYPE {
@@ -49,6 +63,12 @@ export enum REPOSITORY_TYPE {
 }
 
 // ---- S
+
+export enum SECURITY_ACTION {
+  LOGIN = 'login',
+  LOGOUT = 'logout',
+}
+
 // ---- T
 // ---- U
 // ---- V

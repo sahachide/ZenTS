@@ -1,24 +1,22 @@
+import { join, resolve } from 'path'
+
 import { path as appDir } from 'app-root-path'
 import { config } from '../config/config'
-import { join } from 'path'
+import { log } from '../log/logger'
 import { promises } from 'fs'
 import { readDirRecursive } from './readDirRecursiveGenerator'
 
-/**
- * The fs helper class is a wrapper around various filesystem function (e.g. by using Node.js internal fs module) and
- * utilizes async / await syntax. All functions supplied by this class should be static, because this (abstract) class
- * will never be initialized.
- */
+const illegalRegEx = /[/?<>\\:*|"]/g
+// eslint-disable-next-line no-control-regex
+const controlRegEx = /[\x00-\x1f\x80-\x9f]/g
+const reservedRegEx = /^\.+$/
+const windowsReservedRegEx = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i
+const windowsTrailingRegEx = /[. ]+$/
 
 export abstract class fs {
   // @ts-ignore
   public static isTsNode = !!process[Symbol.for('ts-node.register.instance')]
 
-  /**
-   * Checks if the given path / file exists.
-   *
-   * @param pathToDirOrFile A absolute path to a file or folder
-   */
   public static async exists(pathToDirOrFile: string): Promise<boolean> {
     let success = true
 
@@ -30,19 +28,55 @@ export abstract class fs {
 
     return success
   }
-  /**
-   *  Recursive reads all content of the given directory.
-   *
-   * @param dir A absolute path to a folder
-   */
-  public static async readDirContentRecursive(dir: string = appDir): Promise<string[]> {
+
+  public static async readDir(dir: string, recursive: boolean = true): Promise<string[]> {
     const files = []
 
-    for await (const file of readDirRecursive(dir)) {
-      files.push(file)
+    if (recursive) {
+      for await (const file of readDirRecursive(dir)) {
+        files.push(file)
+      }
+    } else {
+      const dirContent = await promises.readdir(dir, {
+        withFileTypes: true,
+      })
+
+      for (const content of dirContent) {
+        if (content.isFile()) {
+          files.push(resolve(dir, content.name))
+        }
+      }
     }
 
     return files
+  }
+
+  public static async writeJson(filePath: string, json: Record<string, unknown>): Promise<boolean> {
+    let success = true
+
+    try {
+      await promises.writeFile(filePath, JSON.stringify(json))
+    } catch (e) {
+      success = false
+      log.error(e)
+    }
+
+    return success
+  }
+
+  public static async readJson<T>(filePath: string): Promise<T> {
+    let json = null
+
+    try {
+      const content = await promises.readFile(filePath, {
+        encoding: 'utf-8',
+      })
+      json = JSON.parse(content) as T
+    } catch (e) {
+      log.error(e)
+    }
+
+    return json
   }
 
   public static resolveZenPath(key: string): string {
@@ -60,9 +94,17 @@ export abstract class fs {
     return !this.isDev() ? `${filename}.js` : `${filename}.ts`
   }
 
-  /**
-   * Returns the absolute path to the project folder which started the ZenTS application.
-   */
+  public static sanitizeFilename(filename: string): string {
+    const sanitized = filename
+      .replace(illegalRegEx, '')
+      .replace(controlRegEx, '')
+      .replace(reservedRegEx, '')
+      .replace(windowsReservedRegEx, '')
+      .replace(windowsTrailingRegEx, '')
+
+    return sanitized.substring(0, 255)
+  }
+
   public static appDir(): string {
     return appDir
   }

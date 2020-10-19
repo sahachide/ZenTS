@@ -21,6 +21,8 @@ Before creating your first ZenTS application you must install the following depe
 
 It's highly recommend to install Node.js with a versions manager like [nvm](https://github.com/nvm-sh/nvm).
 
+Furthermore, ZenTS has a dependency to `node-gyp`, which has a few dependencies that needs to be installed before installing ZenTS. Please check the [official documentation](https://github.com/nodejs/node-gyp) for more details.
+
 ## Installing & Using ZenTS-CLI
 
 The ZenTS framework offers a CLI utility belt, which ease the pain of developing a TypeScript application. While completely optional, it's highly recommend to install ZenTS CLI. The rest of the documentation will use the CLI for its explanations.
