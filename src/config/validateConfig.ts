@@ -62,11 +62,36 @@ function validateSecurityConfig(config: ZenConfig): string[] | true {
   return !errors.length ? true : errors
 }
 
+function validateHTTPSConfig(config: ZenConfig): string[] | true {
+  const errors = []
+  const usePem =
+    typeof config.web?.https?.key !== 'undefined' && typeof config.web?.https?.cert !== 'undefined'
+  const usePfx =
+    typeof config.web?.https?.pfx !== 'undefined' &&
+    typeof config.web?.https?.passphrase !== 'undefined'
+
+  if (!usePem && !usePfx) {
+    errors.push(
+      'Either https.key and https.cert or https.pfx and https.passphrase has to be defined in config when using https server',
+    )
+  }
+
+  return !errors.length ? true : errors
+}
+
 export function validateConfig(config: ZenConfig): ConfigValidationResult {
   let errors: string[] = []
 
   if (config.security?.enable) {
     const result = validateSecurityConfig(config)
+
+    if (Array.isArray(result)) {
+      errors = [...errors, ...result]
+    }
+  }
+
+  if (config.web?.https?.enable) {
+    const result = validateHTTPSConfig(config)
 
     if (Array.isArray(result)) {
       errors = [...errors, ...result]

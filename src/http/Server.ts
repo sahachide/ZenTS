@@ -52,15 +52,7 @@ export class Server {
     const usePem =
       typeof config.web?.https?.key !== 'undefined' &&
       typeof config.web?.https?.cert !== 'undefined'
-    const usePfx =
-      typeof config.web?.https?.pfx !== 'undefined' &&
-      typeof config.web?.https?.passphrase !== 'undefined'
 
-    if (!usePem && !usePfx) {
-      throw new Error(
-        'Either https.key and https.cert or https.pfx and https.passphrase has to be defined in config when using https server',
-      )
-    }
     const options = usePem
       ? {
           key: config.web.https.key,
