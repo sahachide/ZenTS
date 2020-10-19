@@ -130,6 +130,12 @@ module.exports = {
     'vuepress-plugin-reading-time',
     'vuepress-plugin-element-tabs',
     [
+      'sitemap',
+      {
+        hostname: 'https://zents.dev',
+      },
+    ],
+    [
       'vuepress-plugin-code-copy',
       {
         color: '#7E57C2',

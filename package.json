@@ -125,6 +125,7 @@
     "vuepress-plugin-minimal-analytics": "^0.1.4",
     "vuepress-plugin-reading-progress": "^1.0.10",
     "vuepress-plugin-reading-time": "^0.1.1",
+    "vuepress-plugin-sitemap": "^2.3.1",
     "vuepress-theme-default-prefers-color-scheme": "^1.1.2",
     "yalc": "^1.0.0-pre.40"
   },
