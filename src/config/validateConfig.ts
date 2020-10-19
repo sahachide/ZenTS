@@ -16,7 +16,23 @@ function validateSecurityConfig(config: ZenConfig): string[] | true {
       'Security provider config is missing in "config.security". Please add at least one security provider...',
     )
   } else {
-    for (const providerConfig of config.security?.providers) {
+    const providersLen = config.security.providers.length
+
+    for (const providerConfig of config.security.providers) {
+      if (providersLen > 1) {
+        if (typeof providerConfig.name !== 'string') {
+          errors.push('A provider needs a name property when using multiple providers.')
+        }
+
+        if (typeof providerConfig.url?.login !== 'string') {
+          errors.push('A provider needs a url.login property when using multiple providers.')
+        }
+
+        if (typeof providerConfig.url?.logout !== 'string') {
+          errors.push('A provider needs a url.logout property when using multiple providers.')
+        }
+      }
+
       if (typeof providerConfig.entity !== 'string') {
         errors.push('Missing entity property in security provider config.')
       }
