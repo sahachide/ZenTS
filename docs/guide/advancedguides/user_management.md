@@ -21,7 +21,7 @@ The user management is highly configurable to tailer it to your needs. The key f
 - Multiple security providers, which allows different user (roles) to access locked resources (e.g. a "Admin" security provider and a "User" security provider).
 - Multiple store adapters to save session related data either in Redis, RDBMS or on the file system (for development/testing purpose).
 - Strong password generators to store your users password securely using bcrypt or argon2id algorithm.
-- Using [JSON Web Token](https://www.jsonwebtoken.io/), which are developed against [draft-ietf-oauth-json-web-token-08](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08) to save user related information on the client.
+- Using [JSON Web Token](https://jwt.io/), which are developed against [draft-ietf-oauth-json-web-token-08](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08) to save user related information on the client.
 
 ## A basic example
 
@@ -630,7 +630,7 @@ Will also return a cookie, when strategy is set to `cookie` or `hybrid`. Save th
 
 ## Configure session tokens
 
-ZenTS security system uses encrypted [JSON Web Token](https://www.jsonwebtoken.io/) which is either stored in a cookie or transmitted via HTTP header (depending on the chosen strategy). No matter how many security providers the application has, the framework will only issue one session token for a client and handle multiple logins to different providers internally.
+ZenTS security system uses encrypted [JSON Web Token](https://jwt.io/) which is either stored in a cookie or transmitted via HTTP header (depending on the chosen strategy). No matter how many security providers the application has, the framework will only issue one session token for a client and handle multiple logins to different providers internally.
 
 The JSON Web Token can be configured with the `security.token` configuration property (all properties have a default value):
 
@@ -651,7 +651,7 @@ The JSON Web Token can be configured with the `security.token` configuration pro
 }
 ```
 
-Currently ZenTS supports `HS256`, `HS384`, `HS512` as token encryption algorithm (others like `RS256` or `PS512` are currently unsupported, but will be added in a later release). The rest are standard JSON Web Token properties, please refer to the [official documentation](https://www.jsonwebtoken.io/) for more details.
+Currently ZenTS supports `HS256`, `HS384`, `HS512` as token encryption algorithm (others like `RS256` or `PS512` are currently unsupported, but will be added in a later release). The rest are standard JSON Web Token properties, please refer to the [official documentation](https://jwt.io/) for more details.
 
 ## Next steps
 
