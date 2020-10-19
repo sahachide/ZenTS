@@ -6,7 +6,7 @@ import { log } from '../log/logger'
 export class EntityLoader extends AbstractZenFileLoader {
   public async load(): Promise<Entities> {
     const entities = new Map() as Entities
-    const filePaths = await fs.readDirContentRecursive(fs.resolveZenPath('entity'))
+    const filePaths = await fs.readDir(fs.resolveZenPath('entity'), false)
 
     for (const filePath of filePaths) {
       const { key, module } = await this.loadModule(filePath)

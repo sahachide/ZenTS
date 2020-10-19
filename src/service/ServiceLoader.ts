@@ -10,9 +10,7 @@ export class ServiceLoader extends AbstractZenFileLoader {
       return services
     }
 
-    const filePaths = (
-      await fs.readDirContentRecursive(fs.resolveZenPath('service'))
-    ).filter((filePath: string) =>
+    const filePaths = (await fs.readDir(fs.resolveZenPath('service'))).filter((filePath: string) =>
       filePath.toLowerCase().endsWith(fs.resolveZenFileExtension('service')),
     )
 

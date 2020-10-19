@@ -10,7 +10,7 @@ export class ControllerLoader extends AbstractZenFileLoader {
   public async load(): Promise<Controllers> {
     const controllers = new Map() as Controllers
     const filePaths = (
-      await fs.readDirContentRecursive(fs.resolveZenPath('controller'))
+      await fs.readDir(fs.resolveZenPath('controller'))
     ).filter((filePath: string) =>
       filePath.toLowerCase().endsWith(fs.resolveZenFileExtension('controller')),
     )

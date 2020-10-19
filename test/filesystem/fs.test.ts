@@ -1,6 +1,6 @@
+import { fs } from '../../src/filesystem/FS'
 import { getFixtureDir } from '../helper/getFixtureDir'
 import { join } from 'path'
-import { fs } from '../../src/filesystem/FS'
 
 describe('FS', () => {
   it("checks that a file exists or doesn't extist", async () => {
@@ -13,7 +13,7 @@ describe('FS', () => {
 
   it('read the directory content recursively', async () => {
     const testDir = getFixtureDir('testapp')
-    const content = await fs.readDirContentRecursive(testDir)
+    const content = await fs.readDir(testDir)
     const normalizedContent = content.map((filePath) => filePath.replace(testDir, ''))
 
     expect(normalizedContent).toContain('/src/controller/ResponseController.ts')

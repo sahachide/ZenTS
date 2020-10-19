@@ -1,6 +1,7 @@
+import { join, resolve } from 'path'
+
 import { path as appDir } from 'app-root-path'
 import { config } from '../config/config'
-import { join } from 'path'
 import { log } from '../log/logger'
 import { promises } from 'fs'
 import { readDirRecursive } from './readDirRecursiveGenerator'
@@ -28,11 +29,23 @@ export abstract class fs {
     return success
   }
 
-  public static async readDirContentRecursive(dir: string = appDir): Promise<string[]> {
+  public static async readDir(dir: string, recursive: boolean = true): Promise<string[]> {
     const files = []
 
-    for await (const file of readDirRecursive(dir)) {
-      files.push(file)
+    if (recursive) {
+      for await (const file of readDirRecursive(dir)) {
+        files.push(file)
+      }
+    } else {
+      const dirContent = await promises.readdir(dir, {
+        withFileTypes: true,
+      })
+
+      for (const content of dirContent) {
+        if (content.isFile()) {
+          files.push(resolve(dir, content.name))
+        }
+      }
     }
 
     return files
