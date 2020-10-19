@@ -34,9 +34,27 @@ zen dev
 
 The above command will install the latest version of the CLI globally and creates a new ZenTS project in the `myproject` folder.
 
+## Features
+
+- Autoloading of project files, never manage a list of project dependencies by yourself again
+- Robust controller and service containers
+- Super fast routing system
+- Session and user management with redis, ORM or filesystem storage
+- Ships with TypeORM out-of-the-box
+- Includes a battle tested template engine (Nunjucks)
+- Easy accessible request and response context
+- Auto response workflows
+- [Many, many more](https://zents.dev)
+
 ## Documentation
 
 Head over to the [official website](https://zents.dev) and read the [documentation](https://zents.dev/guide/).
+
+## Whats new in v0.2.0
+
+- Session and user managment
+- Redis support
+- Improved docs and types
 
 ## License
 
