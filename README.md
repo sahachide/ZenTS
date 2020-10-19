@@ -1,12 +1,9 @@
 [![ZenTS Logo](./docs/.vuepress/public/zents_logo_small.png)](http://zents.dev)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/sahachide/ZenTS?style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/sahachide/ZenTS?style=flat-square)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sahachide/ZenTS?style=flat-square)
 ![GitHub issues](https://img.shields.io/github/issues-raw/sahachide/ZenTS?style=flat-square)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/sahachide/ZenTS?style=flat-square)
-![GitHub contributors](https://img.shields.io/github/contributors/sahachide/ZenTS?style=flat-square)
-![npm](https://img.shields.io/npm/dm/zents?style=flat-square)
 ![npm](https://img.shields.io/npm/v/zents?label=latest%20release&style=flat-square)
 ![node-current](https://img.shields.io/node/v/zents?style=flat-square)
 ![Website](https://img.shields.io/website?style=flat-square&url=https%3A%2F%2Fzents.dev)
