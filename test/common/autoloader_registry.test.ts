@@ -1,4 +1,4 @@
-import { Autoloader } from '../../src'
+import { AutoLoader } from '../../src'
 import { loadFixtureTestAppConfig } from '../helper/loadFixtureTestAppConfig'
 
 describe('AutoLoader and Registry', () => {
@@ -12,11 +12,11 @@ describe('AutoLoader and Registry', () => {
   })
 
   it('should let the AutoLoader create a Registry', async () => {
-    const autoLoader = new Autoloader()
+    const autoLoader = new AutoLoader()
     const registry = await autoLoader.createRegistry()
 
     expect(registry.getControllers().size).toBeGreaterThanOrEqual(3)
     expect(registry.getServices().size).toBeGreaterThanOrEqual(1)
-    expect(registry.getConnection()).toBeNull()
+    expect(registry.getConnection()).toBeUndefined()
   })
 })
