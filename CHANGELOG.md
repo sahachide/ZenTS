@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/sahachide/ZenTS/compare/v0.1.2...v0.2.0) (2020-10-19)
+
+
+### Features
+
+* add fs.readJson and fs.writeJson methods ([b4e02ec](https://github.com/sahachide/ZenTS/commit/b4e02ecc1782d816c88f0b1bf73e15bc65816a7a))
+* add fs.sanitizeFilename method ([f4a4eff](https://github.com/sahachide/ZenTS/commit/f4a4eff04ce3fed235c5cc86043cf6c3577a2b9f))
+* add redirect responses ([e4e4e0a](https://github.com/sahachide/ZenTS/commit/e4e4e0aadd82d0067b2f4803e6ba88741f3de8f6))
+* add redis support ([c9ab4aa](https://github.com/sahachide/ZenTS/commit/c9ab4aa5f31e9c827eaf8245c0c9111e952a7a94))
+* add user- and session management ([05c0677](https://github.com/sahachide/ZenTS/commit/05c0677216752b67f8342e3ee3328934dea91bde))
+* added context generics for easier type hinting of request params, query and body ([5c7a652](https://github.com/sahachide/ZenTS/commit/5c7a6524c816658c21850902487a477bbd3c9d52))
+* better request header handling ([f9b6952](https://github.com/sahachide/ZenTS/commit/f9b6952e8767a522ab52f4d9c19058ca8dfd2879))
+* change fs.fs.readDirContentRecursive to fs.readDir and allow non recursive search ([77ac53d](https://github.com/sahachide/ZenTS/commit/77ac53d6962b2f949bdf7cfbe170e86271e440ce))
+
 ### [0.1.3](https://github.com/sahachide/ZenTS/compare/v0.1.2...v0.1.3) (2020-09-23)
 
 - Missing build artifacts
