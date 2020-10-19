@@ -122,6 +122,41 @@ module.exports = {
           'https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700&family=Rubik:wght@700&Quicksand:wght@300;700&Source+Code+Pro:wght@400;700&display=swap',
       },
     ],
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css',
+      },
+    ],
+    [
+      'script',
+      {},
+      `                
+        window.addEventListener('load', function () {
+          var inputSelector = '.search-box > input';
+          var $el = document.querySelector(inputSelector);
+          
+          $el.disabled = true;
+          $el.placeholder = 'Loading...';
+
+          var script = document.createElement("script");
+          script.addEventListener("load", function() {
+            docsearch({
+              apiKey: '1c03de24a87faf1bfd8b7e760c63b3ab',
+              indexName: 'zents',
+              inputSelector: inputSelector,
+            });
+            $el.disabled = false;
+            $el.placeholder = 'Search...';
+          });
+
+          script.src = "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js";
+
+          document.body.appendChild(script);            
+        });
+      `,
+    ],
   ],
   plugins: [
     '@vuepress/back-to-top',
