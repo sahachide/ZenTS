@@ -14,18 +14,18 @@ meta:
 
 ## Introduction
 
-A modern web application need a way to identify users across multiple requests and ZenTS provides you with all the tools you need to do so. In this guide, you'll learn how to use Cookies, Sessions and so-called Security Providers to setup pages, which are only accessible for specific users. Since ZenTSs user management system makes (optional) use of Redis and other databases, you should read the [Redis guide](./redis.md) and the [database guide](./database.md) before continuing with this guide.
+A modern web application need a way to identify users across multiple requests and ZenTS provides you with all the tools you need to do so. In this guide, you'll learn how to use cookies, sessions and so-called security providers to handle URL resources, which are only accessible for specific users. Since ZenTSs user management system makes (optional) use of redis or other databases, you should read the [redis guide](./redis.md) and the [database guide](./database.md) before continuing.
 
 The user management is highly configurable to tailer it to your needs. The key features are:
 
 - Multiple security providers, which allows different user (roles) to access locked resources (e.g. a "Admin" security provider and a "User" security provider).
-- Multiple store adapters to save session related data either in Redis, RDBMS or on the file system (for development/testing purpose).
-- Strong password generators to store your users password securely using bcrypt or argon2id algorithm.
-- Using [JSON Web Token](https://jwt.io/), which are developed against [draft-ietf-oauth-json-web-token-08](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08) to save user related information on the client.
+- Multiple store adapters to save session related data either in redis, RDBMS or on the file system (for development/testing purpose).
+- Strong password generators to store your users password securely using _bcrypt_ or _argon2id_ algorithm.
+- Using [JSON Web Token](https://jwt.io/), which are developed against [draft-ietf-oauth-json-web-token-08](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08) to save user related information on the client side.
 
 ## A basic example
 
-Before we start with a basic example, please make sure that you've enabled and configured [Redis](./redis.md) probably. In addition, you need to setup a [database](./database.md) where your users are saved. In our example, we will force the user to send an authorization header with a bearer token to access a page behind a "firewall". First we need to make sure that we configure everything correctly. This is done by setting the `config.security` configuration properties.
+Before we start with a basic example, please make sure that you've enabled and configured [redis](./redis.md). In addition, you need to setup a [database](./database.md) where your users are saved. In our example, we will force the user to send cookie to access a page behind a "firewall". First we need to make sure that we configure everything correctly. This is done by setting the `config.security` configuration properties.
 
 Open your configuration file and add the following:
 
@@ -33,7 +33,7 @@ Open your configuration file and add the following:
 {
   "security": {
     "enable": true,
-    "secretKey": "ThisIsAExampleDontEverUseThisSecretKeyAndCreateYourOwn",
+    "secretKey": "DONTUSEME",
     "providers": [
       {
         "entity": "User",
@@ -52,9 +52,9 @@ Open your configuration file and add the following:
 The above config is the basic config for the security system, since [most configuration properties](./../../configuration.md) have default values.
 
 - _line 3_: Enable the security system.
-- _line 4_: The security system needs a strong secret key, which is used to encrypt the JSON Web Token. **This key should never been exposed to the public**. You can use [ZenTS-CLI](./../../cli.md) to generate a secret key by calling `zen security:secret-key` on your terminal.
-- _line 5_: Here we define our so-called security provider(s). A provider needs at least a entity, where it will fetch the credentials from the user (or any additional user related data). ZenTS supports multiple security providers. When using multiple security providers, you've to specify a `name` property for every provider to identify it later.
-- _line 6_: We enable a store (redis in that case) for our security provider. Session related data will be saved in the store, which means a store is always mandatory. ZenTS supports other stores (discussed later in this guide) then Redis, but given its nature as key-value store, redis is generally considered the best choice to save sessions.
+- _line 4_: The security system needs a strong secret key, which is used to encrypt the JSON Web Token. **This key should never been exposed to the public**. You can use [ZenTS-CLI](./../../cli.md) to generate a secret key by calling `zen security:secret-key` in a terminal.
+- _line 5_: Here we define our so-called security provider(s). A provider needs at least a entity, which is connected to a corresponding table containing user data. ZenTS supports multiple security providers. When using multiple security providers, you've to specify a `name` property for every provider.
+- _line 6_: We enable a store (redis in that case) for our security provider. Session related data will be saved in that store (a store is always mandatory). ZenTS supports other store types (discussed later in this guide) then redis, but given its nature as key-value store, redis is generally considered the best choice to save sessions.
 
 Before we can using our security provider, we need to create the `User` entity:
 
@@ -76,9 +76,9 @@ export class User {
 }
 ```
 
-This is a basic user class, with just an `id`, `username` and `password`. The `username` and `password` fields are required in order for the provider to localize the correct user record. You can overwrite the column names with the `table.identifierColumn` (default: `username`) and `table.passwordColumn` (default: `password`) properties inside the security provider config.
+This is a basic user class, with just an `id`, `username` and `password` column. The `username` and `password` fields are required in order for the provider to localize the correct user record. You can overwrite the column names with the `table.identifierColumn` (default: `username`) and `table.passwordColumn` (default: `password`) config properties.
 
-When creating a new user account make sure to save the password with the right encryption, which is either `argon2id` or `bcrypt` (can be configured by setting the `algorithm` property of a security provider configuration). The default encryption is `argon2id`. To illustrate this process, we create a new controller action which will create a new user account for us.
+When creating a new user account, make sure to save the password with the right encryption, which is either `argon2id` or `bcrypt` (can be configured by setting the `algorithm` property). The default encryption is `argon2id`. To illustrate this process, we create a new controller action which will create a new user account for us:
 
 ```typescript{22,24,26-27,29}
 import type { EntityManager } from 'typeorm'
@@ -118,13 +118,13 @@ export default class extends Controller {
 }
 ```
 
-If you followed this guide closely, you already understand most of the above code. The important magic here comes from the `@securityProvider()` decorator, which exposes a `generatePasswordHash(plainText: string)` method, that we can use to generate a hashed password (using `argon2id` or `bcrypt`) which can be securely stored in our database. In our example, the user input is transmitted via a [request body](./request.md#request-body), but it's actually up to your implementation how you create a user. Just make sure, that you create the password hash via the security provider `generatePasswordHash()` method (or implement your own solution which generates compatible `argon2id` or `bcrypt` hashes).
+If you followed this guide closely, you already understand most of the above code. The important magic here comes from the `@securityProvider()` decorator, which exposes a `generatePasswordHash(plainText: string)` method, that we can use to generate a hashed password with the correct algorithm. In our example, the user input is transmitted via a [request body](./request.md#request-body), but it's actually up to your implementation how you create a user. Just make sure that you create the password hash via the security provider `generatePasswordHash()` method (or implement your own solution which generates compatible `argon2id` or `bcrypt` hashes).
 
 :::tip
 Both algorithm, `argon2id` and `bcrypt`, have some optional configuration properties. They are described in the [configuration guide](./../../configuration.md).
 :::
 
-After you've created a user it's time to login. First we need to create a simple HTML login form.
+After you've created a user, it's time to login. First we need to create a simple HTML login form.
 
 ```html
 <form action="/login" method="post">
@@ -136,7 +136,7 @@ After you've created a user it's time to login. First we need to create a simple
 
 This simple form sends the `username` and `password` to a `/login` page. If you submit this form (with valid credentials), a cookie will be send to the user, which is used for further requests to secured routes.
 
-The login URL can be configured for each provider, in fact, when your application has more then one provider, it's mandatory to set the URLs for each provider. If the application has only one provider, and a custom URL isn't provided, the `/login` URL will be created. To set a custom URL, us the `url` property on a security provider config. Furthermore, if you want different form-field names then `username` and/or `password`, you have to configure them in the `fields` property.
+The login URL can be configured for each provider, in fact, when your application has more then one provider, it's mandatory to set URLs for each provider. If the application has only one provider, and a custom URL isn't provided, the `/login` URL will be created automatically. To set a custom URL, us the `url` property. Furthermore, if you want different form-field names then `username` and/or `password`, you have to configure them in the `fields` property.
 
 ```json
 {
@@ -159,7 +159,7 @@ The login URL can be configured for each provider, in fact, when your applicatio
 }
 ```
 
-The last step of our simple example is to create a route that is actually locked behind a firewall, so that only user with a valid login can access it. In order to do so, we use the `@auth()` decorator provided by the ZenTS framework:
+The last step of our example is to create a route that is actually locked behind a firewall, so that only user with a valid cookie can access it. In order to do so, we use the `@auth()` decorator provided by the ZenTS framework:
 
 ```typescript
 @auth()
@@ -171,17 +171,17 @@ public async secretArea() {
 }
 ```
 
-The `/super-secret` URL is now secured and can only be viewed with valid cookie, that can be obtained calling the calling the `/login` URL as described above.
+The `/super-secret` URL is now secured and can only be viewed with a valid cookie.
 
 ## Choosing the right auth strategy
 
-When a request is made to `@auth()` secured controller action, ZenTS will take care that the user has access to the resource. The framework will look at two locations for a session token, that has previously obtained by calling a login route (e.g. `/login`) with sufficient credentials.
+When a request is made to `@auth()` secured controller actions, ZenTS will take care that the user has access to the resource. The framework will look at two locations for a session token:
 
-- _Header_: The token has to be provided in a HTTP `Authorization` header token (`Authorization: Bearer TOKEN`).
-- _Cookie_: The token has to be provided in a cookie.
-- _Hybrid_: The token has to be provided either in a HTTP header or cookie.
+- _Header_: The token has to be send in a HTTP `Authorization` header token (`Authorization: Bearer TOKEN`).
+- _Cookie_: The token has to be send in a cookie.
+- _Hybrid_: The token has to be send either in a HTTP header or cookie.
 
-The header strategy is usually preferred when you want to write an API. Clients consuming the API have to provide the authorization header for every request they make. If you're writing a more traditional web application that has direct user interaction, you better choose the cookie strategy. The login routes will automatically create a cookie when a user is successfully authorized. The key of the cookie can be set using the (optional) `security.cookieKey` [configuration](./../../configuration.md) property. The hybrid strategy can be used if you wish to support both, http authorization header and cookies.
+The _header_ strategy is usually preferred when you want to write an API. Clients consuming the API have to send the authorization header for every request they make. If you're writing a more traditional web application, that has direct user interaction, you better choose the _cookie_ strategy. Requesting the login route will automatically create a cookie when a user is successfully authorized. The key of the cookie can be set using the (optional) `security.cookieKey` [configuration](./../../configuration.md) property. The hybrid strategy can be used if you wish to support both, http authorization header and cookies.
 
 Example using cookie strategy [configuration](./../../configuration.md):
 
@@ -211,12 +211,12 @@ Example using header strategy [configuration](./../../configuration.md):
 ```
 
 ::: warning
-Don't use this strategy if you intend to use auto redirect response, please use the auto json response type. Take a look at "[Auto redirect responses](#auto-redirect-responses)" later in this guide for more information.
+Don't use this strategy if you intend to use auto redirect response, please use the auto json response type. Take a look at "[Auto redirect responses](#auto-redirect-responses)" section for more details.
 :::
 
 ## Accessing a user session
 
-To access a user entity, which has been previously logged in, use the `@session()` decorator, which has to be set on a controller action argument:
+A user can be injected into a controller action using the `@session()` decorator:
 
 ```typescript{9-14}
 import type { EntityManager } from 'typeorm'
@@ -246,13 +246,13 @@ Lets take a look at this example step-by-step:
 
 - The `@session()` decorator injects a session into the controller action, which is bound to the `session` variable.
 - The `Session` TypeScript interface has one generic type argument, which is set to our `User` entity. This allows TypeScript to resolve the `user` property type correctly and will show corresponding autocomplete results in your IDE.
-- Since the `/example` route isn't behind a firewall, because we didn't use the `@auth()` decorator, every client can make a request to this URL. We use `session.isAuth()` here to make sure the client who did this request is properly authorized.
+- Since the `/example` route isn't behind a firewall (because we didn't use the `@auth()` decorator) every user can make a request to this URL. We use `session.isAuth()` here to make sure the user is authorized.
 
 :::tip
-When the URL is behind a firewall (`@auth()`), you can skip the call to `session.isAuth()`. ZenTS will make sure that only authorized users can access the route.
+When the URL is behind a firewall (`@auth()`), you can skip the call to `session.isAuth()`. ZenTS will make sure that only authorized users can access the resource.
 :::
 
-When your application has multiple security providers, you've to specify its name in the `@session()` and `@auth()` decorators:
+When your application has multiple security providers, you've to specify the name of the provider in the `@session()` and `@auth()` decorators:
 
 ```typescript
 import type { EntityManager } from 'typeorm'
@@ -285,17 +285,17 @@ export default class extends Controller {
 
 ## Managing session related data
 
-Usually a web application needs to save some additional user related data inside a session. For example, a e-commerce shop needs to remember which basket belongs to which customer. Of course, the application could just store this information inside the related database record, but this becomes fast unmaintainable and bloated. ZenTS has a concept of so-called **session stores**, which allows you to save extra data for every security provider. It's **mandatory** to configure a store for every security provider, because ZenTS will never write session data on the client side.
+Usually a web application needs to save some additional user related data inside a session. For example, a e-commerce shop needs to remember which basket belongs to which customer. Of course, the application could just store this information inside the related database record, but this becomes fast unmaintainable and bloated. ZenTS has a concept of so-called **session stores**, which allows you to save extra data for every security provider. It's **mandatory** to configure a store for every security provider.
 
-The builtin sessions stores are:
+The builtin session stores are:
 
-- **_redis_** (recommend): Stores session data in a [redis](./redis.md) key-value database. This is the preferred session store, because redis architecture scales very well under heavy load.
+- **_redis_** (recommend): Stores session data in a [redis](./redis.md) key-value database. This is the preferred session store, because redis architecture scales very well under heavy load and is easy extendible.
 - **_database_**: Stores session data in a database table using the [ORM](./database.md).
-- **_file_**: Saves session data in multiple json files. The file session store should **only be used for development or testing purpose**, because it isn't build with performance in mind and doesn't scale well in applications under heavy load.
+- **_file_**: Saves session data in multiple JSON files. The file session store should **only be used for development or testing purpose**, because it isn't build with performance in mind and doesn't scale well in applications under heavy load.
 
 ### Enable redis session store
 
-To enable the redis session store, set `store.type` to `redis` in a security provider config:
+To enable the redis session store, set `store.type` to `redis`:
 
 ```json{7}
 {
@@ -322,7 +322,7 @@ Make sure to [configure](./../../configuration.md) [redis](./redis.md) correctly
 
 ### Enable database session store
 
-To enable the database session store, set `store.type` to `database` in a security provider config:
+To enable the database session store, set `store.type` to `database`:
 
 ```json{7-8}
 {
@@ -340,7 +340,7 @@ To enable the database session store, set `store.type` to `database` in a securi
 }
 ```
 
-The `entity` is required and needs to point to an valid [entity](./database.md) that is implemented like this:
+The `entity` property is required and should point to an valid [entity](./database.md), that has at least the following implementation:
 
 ```typescript
 // src/entity/Session.ts
@@ -369,7 +369,7 @@ export class Session {
 The file session store should only be used for development or testing purpose. You can configure your session stores differently for every environment. Please take a look at the [configuration guide](./../../configuration.md) for more information.
 :::
 
-To enable the file session store, set `store.type` to `file` in a security provider config:
+To enable the file session store, set `store.type` to `file`:
 
 ```json{7-8}
 {
@@ -392,7 +392,7 @@ The folder, where session files are stored, must be an absolute path pointing to
 
 ### Using the session store
 
-After you've configured a session store you can begin to work with it in a [controller action](./controllers.md):
+After you've configured a session store, you can begin to work with it in a [controller action](./controllers.md):
 
 ```typescript
 @get('/example')
@@ -412,7 +412,7 @@ public async example(context: Context, @session() session: Session<User>) {
 }
 ```
 
-The above example is pretty straightforward. The session store can accept any JSON serialize-able value, like objects, arrays or strings. Furthermore its possible to access properties by its path. The session store will automatically be updated at the end of the request lifecycle, but you can save it manually by calling `await session.data.save()`.
+The above example is pretty straightforward. The session store can accept any JSON serialize-able value, like objects, arrays or strings. The session store will automatically be updated at the end of the request lifecycle, but you can save it manually by calling `await session.data.save()`.
 
 ## Using multiple security providers
 
@@ -449,9 +449,9 @@ ZenTS supports multiple security providers, for example a web application might 
 }
 ```
 
-When using multiple providers it's required to set a `name` for every provider, otherwise you can't reference the right session in your controller action. Furthermore you've to setup a `login` and `logout` URL for every security provider. These URLs are then used to login/logout, e.g. via a HTML form or REST client. Normally ZenTS provides default values for the `name` (default: `default`), `login` (default: `/login`) and `logout` (default: `/logout`), but they can't be used when configuring multiple providers, because user need to identify them self with a unique resources.
+When using multiple providers, it's required to set a `name` for every provider, otherwise you can't reference the right session in your controller action. Furthermore you've to setup a `login` and `logout` URL for every security provider. These URLs are then used to login/logout, e.g. via a HTML form or REST client. Normally ZenTS provides default values for the `name` (default: `default`), `login` (default: `/login`) and `logout` (default: `/logout`), but they can't be used when configuring multiple providers, because user need to identify them self with a unique resources.
 
-Furthermore a user can authenticate them self with multiple providers, allows for example an admin to be logged in as _admin_ and _user_ at the same time. ZenTS will store session information on the client side only in one token, no matter in how many providers the user has been logged in to. When using the cookie strategy, a new cookie is issued and the old one is destroyed, but when you've chosen the header strategy, clients have to supply the newly issued token and drop the old one by them self.
+Furthermore a user can authenticate them self with multiple providers, e.g. an admin that is also logged in with his own customer account. ZenTS will store session information on the client side only in one token, no matter how many logins the client has been authenticated to. When using the cookie strategy, a new cookie is issued and the old one is destroyed, but when you've chosen the header strategy, clients have to supply the newly issued token and drop the old one by them self.
 
 After you've enabled multiple session providers, you've to specify the `name` of a provider as an argument to `@session(name: string)` when injecting the session into a controller action:
 
@@ -479,7 +479,7 @@ public async secretArea(
 ```
 
 ::: tip
-If you just use one provider you can omit the `name` argument (in config, `@auth()`, `@session()`), but it's recommend to always specify a name for a provider, because that makes life easier when adding more providers later on.  
+If you just use one provider you can omit the `name` argument (in config, `@auth()`, `@session()`), but it's recommend to always specify a name for a provider, because that makes life easier when adding more providers later.  
 :::
 
 ## Expire sessions
@@ -500,15 +500,15 @@ Without configuration a session will expire after 7 days. You can change the exp
 }
 ```
 
-The above example will set the expire time for session to 30 days. The `expire` property will except data strings or a number in milliseconds. Please take a look at the [configuration guide](./../../configuration.md) for all data string options.
+The above example will set the expire time for session to 30 days. The `expire` property will except time strings or a number in milliseconds. Please take a look at the [configuration guide](./../../configuration.md) for more details about time strings.
 
 ::: danger
-Sessions are automatically deleted from the redis store when they expire. That is done by setting the TTL for each key in the redis store. That isn't currently done for the database and file stores. ZenTS will only make sure, that the session hasn't been expired yet when a request has been made, but it won't delete old sessions from the database (or filesystem). Currently you've to do this by hand, but sooner or later ZenTS will provide a CLI command to automatically clean expired sessions. The only exception from this behavior is, when the user calls `/logout`. The store data will then be deleted no matter which store the application is using.  
+Sessions are automatically deleted from the redis store when they expire. That is done by setting the TTL for each key in the redis store. That isn't possible for the database and file stores. ZenTS will only make sure that the session hasn't been expired yet, when a request has been made, but it won't delete old sessions from the database (or filesystem). Currently you've to do this by hand, but sooner or later ZenTS will provide a CLI command to automatically clean expired sessions. The only exception from this behavior is, when the user calls `/logout`. The store data will then be deleted no matter which store the application is using.  
 :::
 
 ## Manually destroy a session
 
-A session can be manually destroyed before it expire by calling the `destroy()` method:
+A session can be manually destroyed before it expires by calling the `destroy()` method:
 
 ```typescript
 @auth()
@@ -535,7 +535,7 @@ Both auto response types are discussed detailed in the following chapters.
 
 ### Auto redirect responses
 
-To use auto redirect responses, you can set the `provider.responseType` config property to `redirect` (this is also the default when `responseType` isn't set).
+To use auto redirect responses, set the `provider.responseType` config property to `redirect` (this is also the default when `responseType` isn't set).
 
 ```json{6}
 {
@@ -551,7 +551,7 @@ To use auto redirect responses, you can set the `provider.responseType` config p
 }
 ```
 
-Now you can configure the URLs for the 4 redirect types:
+Now you can configure the URLs for the 4 redirect action types:
 
 ```json{7-12}
 {
@@ -581,7 +581,7 @@ Now you can configure the URLs for the 4 redirect types:
 All of these URLs have a default value (`/`), it's recommend to set a value for every URL and create a corresponding controller action for each URL.
 
 ::: warning
-The auto redirect responses don't play nicely together with the `header` authorization strategy, because the client will never receive the token when getting redirected to the `login` URL. You should use the `json` response type in that case.
+The auto redirect responses doesn't play nicely together with the `header` authorization strategy, because the client will never receive the token when getting redirected after a login happens. You should use the `json` response type in that case.
 :::
 
 ### Auto JSON responses
@@ -598,7 +598,7 @@ These responses will be returned:
 }
 ```
 
-Will also return a cookie, when strategy is set to `cookie` or `hybrid`. Save the response token in the client somewhere when you're using the `header` strategy.
+Will also return a cookie, when strategy is set to `cookie` or `hybrid`. Save the response token on the client somewhere when you're using the `header` strategy.
 
 #### Logout
 
@@ -651,7 +651,7 @@ The JSON Web Token can be configured with the `security.token` configuration pro
 }
 ```
 
-Currently ZenTS supports `HS256`, `HS384`, `HS512` as token encryption algorithm (others like `RS256` or `PS512` are currently unsupported, but will be added in a later release). The rest are standard JSON Web Token properties, please refer to the [official documentation](https://jwt.io/) for more details.
+Currently ZenTS supports `HS256`, `HS384`, `HS512` as token encryption algorithm (others like `RS256` or `PS512` are currently unsupported, but will be added in a later release). The rest are standard JSON Web Token properties, please refer to the [official documentation](https://jwt.io/) for a detailed explanation.
 
 ## Next steps
 
