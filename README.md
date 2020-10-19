@@ -9,7 +9,7 @@
 ![Website](https://img.shields.io/website?style=flat-square&url=https%3A%2F%2Fzents.dev)
 ![NPM](https://img.shields.io/npm/l/zents?style=flat-square)
 
-[Website](https://zents.dev) | [Documentation](https://zents.dev/guide/) | [Roadmap](https://zents.dev/roadmap/) | [Changelog](https://github.com/sahachide/ZenTS/blob/master/CHANGELOG.md) | [Twitter](https://twitter.com/ZenTS_Framework) | [npm](https://www.npmjs.com/package/zents)
+[Website](https://zents.dev) | [Documentation](https://zents.dev/guide/) | [Roadmap](https://zents.dev/roadmap) | [Changelog](https://github.com/sahachide/ZenTS/blob/master/CHANGELOG.md) | [Twitter](https://twitter.com/ZenTS_Framework) | [npm](https://www.npmjs.com/package/zents)
 
 ZenTS is a fast and modern MVC framework for Node.js & TypeScript.
 
