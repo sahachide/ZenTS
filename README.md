@@ -33,9 +33,9 @@ The above command will install the latest version of the CLI globally and create
 
 ## Features
 
-- Autoloading of project files, never manage a list of project dependencies by yourself again
 - Robust controller and service containers
 - Super fast routing system
+- Autoloading capabilities, never manage a list of project dependencies by yourself again
 - Session and user management with redis, ORM or filesystem storage
 - Ships with TypeORM out-of-the-box
 - Includes a battle tested template engine (Nunjucks)
