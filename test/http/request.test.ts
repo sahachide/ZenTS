@@ -61,4 +61,73 @@ describe('Request', () => {
         },
       })
   })
+
+  it('recives all request headers', async () => {
+    const response = await supertest(app.nodeServer)
+      .get('/request-header/all')
+      .set('Accept', 'application/json')
+      .set('x-zen-test', 'foo')
+      .expect(200)
+
+    expect(response.body).toMatchSnapshot()
+  })
+
+  it('recives a custom request header correctly', async () => {
+    await supertest(app.nodeServer)
+      .get('/request-header/get')
+      .set('x-zen-test', 'foo')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .expect({
+        value: 'foo',
+      })
+  })
+
+  it('knows which header has been send', async () => {
+    await supertest(app.nodeServer)
+      .get('/request-header/has')
+      .set('x-zen-test', 'foo')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .expect({
+        exist: true,
+        doesntexist: false,
+      })
+  })
+
+  it('removes request header correctly', async () => {
+    await supertest(app.nodeServer)
+      .get('/request-header/remove')
+      .set('x-zen-test', 'foo')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .expect({
+        success: true,
+        typeofCurrentValue: 'undefined',
+        oldValue: 'foo',
+        has: false,
+      })
+  })
+
+  it('sets request header', async () => {
+    await supertest(app.nodeServer)
+      .get('/request-header/set')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .expect({
+        has: true,
+        value: 'bar',
+      })
+  })
+
+  it('returns accept header', async () => {
+    await supertest(app.nodeServer)
+      .get('/request-header/accept')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .expect({
+        accept: 'application/json',
+      })
+  })
 })

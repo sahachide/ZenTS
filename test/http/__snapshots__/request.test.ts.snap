@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Request recives all request headers 1`] = `
+Object {
+  "result": Object {
+    "accept": "application/json",
+    "accept-encoding": "gzip, deflate",
+    "connection": "close",
+    "x-zen-test": "foo",
+  },
+}
+`;
