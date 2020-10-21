@@ -18,6 +18,7 @@ import { BodyContextAction } from './InjectorAction/BodyContextAction'
 import type { Class } from 'type-fest'
 import type { Context } from '../http/Context'
 import type { ModuleContext } from './ModuleContext'
+import { QueryContextAction } from './InjectorAction/QueryContextAction'
 import type { Session } from '../security/Session'
 
 export class Injector {
@@ -51,6 +52,7 @@ export class Injector {
       new SecurityProviderAction(this),
       new SessionAction(this, context, loadedUser, injectedSessions),
       new BodyContextAction(this, context),
+      new QueryContextAction(this, context),
     ]
     let params: InjectorFunctionParameter[] = []
 
