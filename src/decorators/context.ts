@@ -16,3 +16,9 @@ export function params(target: Class, propertyKey: string, parameterIndex: numbe
 export function cookie(target: Class, propertyKey: string, parameterIndex: number): void {
   Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_COOKIE, parameterIndex, target, propertyKey)
 }
+
+export function request(target: Class, propertyKey: string, parameterIndex: number): void {
+  Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_REQUEST, parameterIndex, target, propertyKey)
+}
+
+export const req = request

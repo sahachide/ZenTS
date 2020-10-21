@@ -20,6 +20,7 @@ import type { Context } from '../http/Context'
 import { CookieContextAction } from './InjectorAction/CookieContextAction'
 import type { ModuleContext } from './ModuleContext'
 import { QueryContextAction } from './InjectorAction/QueryContextAction'
+import { RequestContextAction } from './InjectorAction/RequestContextAction'
 import type { Session } from '../security/Session'
 
 export class Injector {
@@ -55,6 +56,7 @@ export class Injector {
       new BodyContextAction(this, context),
       new QueryContextAction(this, context),
       new CookieContextAction(this, context),
+      new RequestContextAction(this, context),
     ]
     let params: InjectorFunctionParameter[] = []
 

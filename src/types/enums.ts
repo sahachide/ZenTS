@@ -34,6 +34,7 @@ export enum REFLECT_METADATA {
   CONTEXT_COOKIE = 'contextCookie',
   CONTEXT_QUERY = 'contextQuery',
   CONTEXT_PARAMS = 'contextParams',
+  CONTEXT_REQUEST = 'contextRequest',
   CONTROLLER_KEY = 'controllerKey',
   DATABASE_CONNECTION = 'database:connection',
   DATABASE_EM = 'database:em',
