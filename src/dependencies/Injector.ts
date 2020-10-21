@@ -14,6 +14,7 @@ import type {
   RequestConfigControllerUser,
 } from '../types/interfaces'
 
+import { BodyContextAction } from './InjectorAction/BodyContextAction'
 import type { Class } from 'type-fest'
 import type { Context } from '../http/Context'
 import type { ModuleContext } from './ModuleContext'
@@ -49,6 +50,7 @@ export class Injector {
       new RepositoryAction(this),
       new SecurityProviderAction(this),
       new SessionAction(this, context, loadedUser, injectedSessions),
+      new BodyContextAction(this, context),
     ]
     let params: InjectorFunctionParameter[] = []
 
@@ -59,7 +61,7 @@ export class Injector {
         if (result.length) {
           params = [...params, ...result.filter((val) => val !== null)]
         }
-      } else {
+      } else if (result) {
         params.push(result)
       }
     }
