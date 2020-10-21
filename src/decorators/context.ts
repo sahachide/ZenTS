@@ -12,3 +12,7 @@ export function query(target: Class, propertyKey: string, parameterIndex: number
 export function params(target: Class, propertyKey: string, parameterIndex: number): void {
   Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_PARAMS, parameterIndex, target, propertyKey)
 }
+
+export function cookie(target: Class, propertyKey: string, parameterIndex: number): void {
+  Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_COOKIE, parameterIndex, target, propertyKey)
+}
