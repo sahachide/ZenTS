@@ -8,3 +8,7 @@ export function body(target: Class, propertyKey: string, parameterIndex: number)
 export function query(target: Class, propertyKey: string, parameterIndex: number): void {
   Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_QUERY, parameterIndex, target, propertyKey)
 }
+
+export function params(target: Class, propertyKey: string, parameterIndex: number): void {
+  Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_PARAMS, parameterIndex, target, propertyKey)
+}

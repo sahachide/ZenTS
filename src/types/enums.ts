@@ -32,6 +32,7 @@ export enum REFLECT_METADATA {
   AUTH_PROVIDER = 'authProvider',
   CONTEXT_BODY = 'contextBody',
   CONTEXT_QUERY = 'contextQuery',
+  CONTEXT_PARAMS = 'contextParams',
   CONTROLLER_KEY = 'controllerKey',
   DATABASE_CONNECTION = 'database:connection',
   DATABASE_EM = 'database:em',
