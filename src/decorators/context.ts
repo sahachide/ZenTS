@@ -22,3 +22,9 @@ export function request(target: Class, propertyKey: string, parameterIndex: numb
 }
 
 export const req = request
+
+export function response(target: Class, propertyKey: string, parameterIndex: number): void {
+  Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_RESPONSE, parameterIndex, target, propertyKey)
+}
+
+export const res = response
