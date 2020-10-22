@@ -18,6 +18,7 @@ import { BodyContextAction } from './InjectorAction/BodyContextAction'
 import type { Class } from 'type-fest'
 import type { Context } from '../http/Context'
 import { CookieContextAction } from './InjectorAction/CookieContextAction'
+import { ErrorContextAction } from './InjectorAction/ErrorContextAction'
 import type { ModuleContext } from './ModuleContext'
 import { QueryContextAction } from './InjectorAction/QueryContextAction'
 import { RequestContextAction } from './InjectorAction/RequestContextAction'
@@ -59,6 +60,7 @@ export class Injector {
       new CookieContextAction(this, context),
       new RequestContextAction(this, context),
       new ResponseContextAction(this, context),
+      new ErrorContextAction(this, context),
     ]
     let params: InjectorFunctionParameter[] = []
 
