@@ -30,6 +30,7 @@ export enum ERROR {
 
 export enum REFLECT_METADATA {
   AUTH_PROVIDER = 'authProvider',
+  CONTEXT_ALL = 'contextAll',
   CONTEXT_BODY = 'contextBody',
   CONTEXT_COOKIE = 'contextCookie',
   CONTEXT_ERROR = 'contextError',

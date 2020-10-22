@@ -32,3 +32,7 @@ export const res = response
 export function error(target: Class, propertyKey: string, parameterIndex: number): void {
   Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_ERROR, parameterIndex, target, propertyKey)
 }
+
+export function context(target: Class, propertyKey: string, parameterIndex: number): void {
+  Reflect.defineMetadata(REFLECT_METADATA.CONTEXT_ALL, parameterIndex, target, propertyKey)
+}

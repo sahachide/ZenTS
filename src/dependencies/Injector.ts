@@ -14,6 +14,7 @@ import type {
   RequestConfigControllerUser,
 } from '../types/interfaces'
 
+import { AllContextAction } from './InjectorAction/AllContextAction'
 import { BodyContextAction } from './InjectorAction/BodyContextAction'
 import type { Class } from 'type-fest'
 import type { Context } from '../http/Context'
@@ -61,6 +62,7 @@ export class Injector {
       new RequestContextAction(this, context),
       new ResponseContextAction(this, context),
       new ErrorContextAction(this, context),
+      new AllContextAction(this, context),
     ]
     let params: InjectorFunctionParameter[] = []
 
