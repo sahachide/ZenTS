@@ -82,8 +82,8 @@ When creating a new user account, make sure to save the password with the right 
 
 ```typescript{22,24,26-27,29}
 import type { EntityManager } from 'typeorm'
-import type { Context, SecurityProvider } from 'zents'
-import { Controller, put, securityProvider, entityManager } from 'zents'
+import type { SecurityProvider } from 'zents'
+import { body, Controller, put, securityProvider, entityManager } from 'zents'
 
 import { User } from '../entity/User'
 
@@ -93,16 +93,13 @@ export default class extends Controller {
 
   @put('/user')
   public async createUser(
-    {
-      body,
-    }: Context<
-      unknown,
-      {
-        username: string
-        password: string
-      }
-    >,
-    @securityProvider() security: SecurityProvider,
+    @body
+    body: {
+      username: string
+      password: string
+    },
+    @securityProvider()
+    security: SecurityProvider,
   ) {
     let user = new User()
 
@@ -220,14 +217,14 @@ A user can be injected into a controller action using the `@session()` decorator
 
 ```typescript{9-14}
 import type { EntityManager } from 'typeorm'
-import type { Context, Session } from 'zents'
+import type { Session } from 'zents'
 import { auth, Controller, get, session } from 'zents'
 
 import { User } from '../entity/User'
 
 export default class extends Controller {
   @get('/example')
-  public async example(context: Context, @session() session: Session<User>) {
+  public async example(@session() session: Session<User>) {
     if (session.isAuth()) {
       log.info(session.user)
       log.info(session.user.username)
@@ -236,7 +233,7 @@ export default class extends Controller {
 
   @auth()
   @get('/member-area')
-  public async example(context: Context, @session() session: Session<User>) {
+  public async example(@session() session: Session<User>) {
     log.info(session.user)
   }
 }
@@ -256,7 +253,7 @@ When your application has multiple security providers, you've to specify the nam
 
 ```typescript
 import type { EntityManager } from 'typeorm'
-import type { Context, Session } from 'zents'
+import type { Session } from 'zents'
 import { auth, Controller, get, session } from 'zents'
 
 import { Admin } from '../entity/Admin'
@@ -265,7 +262,6 @@ import { User } from '../entity/User'
 export default class extends Controller {
   @get('/example')
   public async example(
-    context: Context,
     @session('admin') adminSession: Session<Admin>,
     @session('user') userSession: Session<User>,
   ) {
@@ -277,7 +273,7 @@ export default class extends Controller {
 
   @auth('admin')
   @get('/admin')
-  public async example(context: Context, @session() adminSession: Session<Admin>) {
+  public async example(@session() adminSession: Session<Admin>) {
     log.info(adminSession.user)
   }
 }
@@ -396,7 +392,7 @@ After you've configured a session store, you can begin to work with it in a [con
 
 ```typescript
 @get('/example')
-public async example(context: Context, @session() session: Session<User>) {
+public async example(@session() session: Session<User>) {
   session.data.set('foo', 'bar') // set a new key-value property
   session.data.get<string>('foo') // get a value by key, with optional type casting
   session.data.remove('foo') // remove a value by key
@@ -457,7 +453,6 @@ After you've enabled multiple session providers, you've to specify the `name` of
 
 ```typescript
 public async example(
-  context: Context,
   @session('admin') session: Session<Admin>
 ) {
   // ...
@@ -471,7 +466,6 @@ The same thing counts also for the `@auth()` annotation, which accepts the `name
 ```typescript
 @auth('admin')
 public async secretArea(
-  context: Context,
   @session('admin') session: Session<Admin>
 ) {
   // ...
@@ -513,7 +507,6 @@ A session can be manually destroyed before it expires by calling the `destroy()`
 ```typescript
 @auth()
 public async deleteMySelf(
-  context: Context,
   @session() session: Session<User>
 ) {
   await session.destroy()

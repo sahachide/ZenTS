@@ -228,40 +228,51 @@ A common use case for a controller action is to get some data from a user (e.g. 
 
 For that use case, a developer needs access to data a user has passed over the wire, let it be over via a URL parameter, inside a request body or via query parameters. Usually this is done by accessing some kind of `request` object and modifying a `response` object.
 
-The `request` and `response` object (and more!) in ZenTS are bundled inside an `Context` object, which is passed as first argument to every controller action with a route association.
+The `request` and `response` object (and more!) in ZenTS are bundled inside an `Context` object, which can be injected using the `@context` annotation.
 
 This example code shows how this works:
 
 ```typescript
-import {  Controller, get, log } from 'zents';
+import {  Controller, context, Context, get, log } from 'zents';
 
 export default extends Controller {
   @get('/product/:productId')
-  public async index({
-    req, // the ZenTS Request object
-    res, // the ZenTS Response object
-    params, // a shortcut to req.params; URL parameters
-    query, // a shortcut to req.query; URL query parameters
-    body, // a shortcut to req.body; parsed request body
-    cookie, // the ZenTS cookie helper class
-    error, // ZenTS error helper
-  }) {
-    // user opens http://localhost:8080/product/42
-    log.info(params.productId) // will log "42"
-
-    return await this.render('product', {
-      id: params.productId
-    });
+  public async index(@context context: Context) {
+    log.info(context.request)
+    log.info(context.response)
+    log.info(context.params) // logs { productId: 42 }
   }
 }
 
 ```
 
-This example makes use of the TypeScript/JavaScript deconstruction feature. Writing `{ req }` is the same as writing `context.req`. If you're not familiar with the deconstruction feature you can read more about it [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
+ZenTS exports a wide range of annotations related to the `request` and `response`, for example `@body` or `@params`:
 
-Because the `Context` and its children `response` and `request` play an important part in mastering ZenTSs controller and building awesome web applications, this documentation has two separated guides for these topics.
+```typescript
+import {  Controller, body, params, post, log } from 'zents';
 
-You should make yourself familiar with these by reading these guides:
+export default extends Controller {
+  @post('/product/:productId')
+  public async updateProduct(
+    @params params: {
+      productId: string
+    },
+    @body body: {
+      name: string
+      price: number
+    }
+  ) {
+    log.info(params.productId)
+    log.info(body.name)
+    log.info(body.price)
+  }
+}
+
+```
+
+Using annotations and dependency injection makes it super easy to define the correct type for a controller action and use only the data you really need instead of using a full blown context.
+
+These and other annotations are described further in these guides:
 
 - [Request guide](./request.md)
 - [Response guide](.response.md)

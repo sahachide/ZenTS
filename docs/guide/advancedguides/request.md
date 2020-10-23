@@ -18,14 +18,14 @@ This guide assumes you already familiar with controllers and controller actions.
 
 ## Introduction
 
-A complex (or simple) web-application interacts with the user frequently. When the user sends a contact form, makes a payment, downloads a file or even just opens a specific webpage, the server will receive the request and process in a controller action. As a developer, you need a simple and fast way to access the data (e.g. form data) send by the user. For this purpose, ZenTS passes a so-called **action context** as first argument to every controller action. The request object is part of the **action context** and is described in this guide.
+A complex (or simple) web-application interacts with the user frequently. When the user sends a contact form, makes a payment, downloads a file or even just opens a specific webpage, the server will receive the request and process in a controller action. As a developer, you need a simple and fast way to access the data (e.g. form data) send by the user. For this purpose, ZenTS exports request related annotations like `@request` or `@body`, which you can inject into a controller action.
 
-## Accessing the request context
+## Injecting the request context
 
-The request context is part of the **action context**, which is passed as first argument to every controller action:
+The request context can be injected into a controller action using the `@request` or `@req` annotation (and you might also want to use the `Request` interface exported by ZenTS):
 
 ```typescript
-public async index({ req }: Context) {
+public async index(@request req: Request) {
   // req is the request context
 
   return await this.render("index");
@@ -34,27 +34,38 @@ public async index({ req }: Context) {
 
 The request context contains various useful datasets which are explained in the following chapters.
 
+::: tip
+The request context can also be accessed by using the `@context` annotation (e.g. `context.request`).
+:::
+
 ## Route parameters
 
-A common way to fetch IDs (e.g. a product ID) from a user is adding it aa a route parameter. These parameters are defined via route annotation:
+A common way to fetch IDs (e.g. a product ID) from a user is adding it aa a route parameter. These parameters are defined via route annotation and can be injected into a controller action using the `@request` or `@params` annotation:
 
 ```typescript
 @get("/product/:productId")
-public productDetail({ req }: Context) {
+public productDetail(@params params: { productId: string }) {
+  log.info(params.productId);
+}
+
+// or
+
+@get("/product/:productId")
+public productDetail(@request req: Request) {
   log.info(req.params.productId);
 }
 ```
 
-You can access the defined route parameters in the `req.params.productId`. If the user call this controller action with `/product/42` the value will be `42`.
+The product ID is available in `req.params.productId` (or `params.productId`). If the user call this controller action with `/product/42`, the value will be `42`.
 
 A route annotation can also hold more then just one parameter:
 
 ```typescript
 @get("/compare/:productId1/:product2")
-public compareProducts({ req }: Context) {
+public compareProducts(@params params: { productId1: string, productId2: string }) {
   // suppose user calls this action with /compare/123/456
-  log.info(req.params.productId1); // logs "123"
-  log.info(req.params.productId2); // logs "456"
+  log.info(params.productId1); // logs "123"
+  log.info(params.productId2); // logs "456"
 }
 ```
 
@@ -62,42 +73,25 @@ public compareProducts({ req }: Context) {
 Head over to the [routing guide](./routing.md) to learn more about defining URLs in your application.
 :::
 
-Since routing parameters are accessed frequently, they are also first-class citizens of the **controller action context**. So instead of accessing parameters via `req.params`, you just can use `params` as deconstructed value from the context:
-
-```typescript
-@get("/product/:productId")
-public async productDetail({ req, params }: Context) {
-  log.info(params.productId === req.params.productId); // logs "true"
-}
-```
-
-ZenTS won't cast your routing parameters to a specific type. It is up to the application code to decide if a passed routing parameter is considered valid or not. All values in the `params` object will be from type `string`. :
-
-```typescript
-export interface IncomingParams {
-  [key: string]: string
-}
-```
-
 ## URL querystring
 
-The querystring (also known as [search](https://developer.mozilla.org/en-US/docs/Web/API/URL/search) part of the URL) is, like the routing parameters, part of the URL namely everything what comes after the `?` part of a URL. The framework parses the querystring for you and exposes the result as `req.query` under the **controller action context**.
+The querystring (also known as [search](https://developer.mozilla.org/en-US/docs/Web/API/URL/search) part of the URL) is, like the routing parameters, part of the URL (namely everything what comes after the `?` part of a URL). The framework parses the querystring for you and exposes the result as `request.query`.
 
 The querystring is parsed as plain object, for example if the user opens http://localhost:8080/catalog/?foo=bar:
 
 ```typescript
 @get("/catalog")
-public catalog({ req }: Context) {
+public catalog(@request req: Request) {
   log.info(req.query); // logs { foo: 'bar' }
   log.info(req.query.foo); // logs "bar"
 }
 ```
 
-Similar to the routing parameters the query object is also a first-class citizen of the action context, so you can access it directly like this:
+Similar to `@params`, there is also a `@query` for direct access to the URL querystring:
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query: { foo: string }) {
   log.info(query.foo); // logs "bar"
 }
 ```
@@ -108,7 +102,7 @@ Creating querystrings as nested objects is also possible by surrounding the name
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query) {
   // open: http://localhost:8080/catalog/?foo[bar]=baz
 
   log.info(query); // logs { foo: { bar: 'baz' } }
@@ -125,7 +119,7 @@ Objects can even be nested further:
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query) {
   // open: http://localhost:8080/catalog/?foo[bar][baz]=nested
 
   log.info(query); // logs { foo: { bar: { baz: 'nested' } } }
@@ -151,7 +145,7 @@ It's also possible to use the dot notation for constructing nested objects. You 
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query) {
   // open: http://localhost:8080/catalog/?foo.bar=baz
 
   log.info(query); // logs { foo: { bar: 'baz' } }
@@ -164,7 +158,7 @@ Arrays can be constructed from the querystring in a similar way like nested obje
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query) {
   // open: http://localhost:8080/catalog/?foo[]=bar&foo[]=baz
 
   log.info(query); // logs { foo: ['bar', 'baz'] }
@@ -176,7 +170,7 @@ Indexes can also be supplied:
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query) {
   // open: http://localhost:8080/catalog/?foo[1]=bar&foo[0]=baz
 
   log.info(query); // logs { foo: ['baz', 'bar'] }
@@ -201,7 +195,7 @@ The default delimiter (`&`) can be changed by setting the `web.querystring.delim
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query) {
   // open: http://localhost:8080/catalog/?a=b;c=d
 
   log.info(query); // logs { a: 'b', c: 'd' }
@@ -227,7 +221,7 @@ This is only supported when using a .js config file. Please refer to the [config
 
 ```typescript
 @get("/catalog")
-public catalog({ query }: Context) {
+public catalog(@query query) {
   // open: http://localhost:8080/catalog/?a=b;c=d,e=f
 
   log.info(query); // logs { a: 'b', c: 'd', e: 'f' }
@@ -236,11 +230,11 @@ public catalog({ query }: Context) {
 
 ### Accessing the raw search string
 
-The raw URL search string can also be accessed as a child property of the `request` context:
+The raw URL search string can also be accessed as a child property of the `@request` context:
 
 ```typescript
 @get("/catalog")
-public catalog({ req }: Context) {
+public catalog(@request req: Request) {
   // open http://localhost:8080/catalog/?foo=bar
   log.info(req.search); // logs ?foo=bar
 }
@@ -258,15 +252,19 @@ The body can be accessed in two ways:
 
 ```typescript
 @post("/product")
-public addProduct({ req, body }: Context) {
+public addProduct(@request req: Request) {
   log.info(req.body);
+}
 
-  // using the body shortcut from the Context. This is a reference to req.body.
+// or
+
+@post("/product")
+public addProduct(@body body) {
   log.info(body);
 }
 ```
 
-The `body` will be automatically converted to an object, no matter if the sends a multi-part form, a JSON or a urlencoded form.
+The `body` will be automatically converted to an object, no matter if the client sends a multi-part form, a JSON or a urlencoded form.
 
 ### Receiving form data
 
@@ -285,7 +283,11 @@ This is a pretty straight forward HTML form with some standard text-fields. The 
 
 ```typescript
 @post("/contact-form")
-public submitContactForm({ body }: Context) {
+public submitContactForm(@body body: {
+  name: string
+  email: string
+  message: string
+}) {
   log.info(body) /* logs {
     name: 'John Doe',
     email: 'john@example.com',
@@ -313,7 +315,11 @@ The controller action look like this:
 
 ```typescript
 @post("/product")
-public createProduct({ body }: Context) {
+public createProduct(@body body: {
+  name: string
+  description: string
+  price: number
+}) {
   log.info(body) /* logs {
     name: 'MyProduct',
     description: 'Lorem ipsum',
@@ -331,33 +337,33 @@ ZenTS use the great and fast [formidable package](https://www.npmjs.com/package/
 
 ## Working with the HTTP request header
 
-Sometimes you may need to access the HTTP headers send from a client. The headers are exposed as `req.header` inside the action context.
+Sometimes you may need to access the HTTP headers send from a client. The headers are exposed as `request.header` when using the `@request` or `@req` annotation.
 
 ### Get a header value
 
-Accessing a specific header field by calling `req.header.get(key: string)`:
+Accessing a specific header field by calling `request.header.get(key: string)`:
 
 ```typescript
-public index({ req }: Context) {
-  log.info(req.header.get('accept')); // logs for example: 'text/html,application/xhtml+xml,application/xml'
+public index(@request request) {
+  log.info(request.header.get('accept')); // logs for example: 'text/html,application/xhtml+xml,application/xml'
 }
 ```
 
 In addition, the `get()` method has a type generic, which you can use to cast the correct type for the header value (either `string` or `string[]`)
 
 ```typescript
-public index({ req }: Context) {
-  const example = req.header.get<string>('example')
+public index(@request request) {
+  const example = request.header.get<string>('example')
 
   log.info(typeof example) // logs "string"
 }
 ```
 
-To return all request headers, you can call `req.header.all()`, which returns an iterable iterator:
+To return all request headers, you can call `request.header.all()`, which returns an iterable iterator:
 
 ```typescript
-public index({ req }: Context) {
-  for(const [key, value] of req.header.all()) {
+public index(@request request) {
+  for(const [key, value] of request.header.all()) {
     log.info(`${key} = ${value}`)
   }
 }
@@ -366,8 +372,8 @@ public index({ req }: Context) {
 A way to check for the existing of a header key is the `has()` method:
 
 ```typescript
-public index({ req }: Context) {
-  if(req.header.has('does_not_exist')) {
+public index(@request request) {
+  if(request.header.has('does_not_exist')) {
     log.info("Header exists")
   } else {
     log.info("Header doesn't exists")
@@ -382,33 +388,31 @@ public index({ req }: Context) {
 It's also possible to set new header key / value pairs. This can be useful when you writing plugins or modifying the request header in a middleware:
 
 ```typescript
-public index({ req }: Context) {
-  req.header.set('foo', 'bar')
+public index(@request request) {
+  request.header.set('foo', 'bar')
 }
 ```
 
-There is even more to request headers, e.g. some shortcut methods like `getHost()`. You can read more about them in the [API reference](./../api/).
-
 ### Remove a header value
 
-Request header values can be removed by calling the `remove()` method on the `req.header` object:
+Request header values can be removed by calling the `remove()` method on the `request.header` object:
 
 ```typescript
-public index({ req }: Context) {
-  req.header.set('foo', 'bar')
-  log.info(req.header.get('foo')) // logs "bar"
-  req.header.remove('foo')
-  log.info(req.header.get('foo')) // logs undefined"
+public index(@request request) {
+  request.header.set('foo', 'bar')
+  log.info(request.header.get('foo')) // logs "bar"
+  request.header.remove('foo')
+  log.info(request.header.get('foo')) // logs undefined"
 }
 ```
 
 ## Accessing raw request object
 
-The raw request object supplied by [Node.js http module](https://nodejs.org/api/http.html) is exposed under the `req.nodeReq` property. Working with the raw request object can be useful if you want to do something with it that is currently not supported by ZenTS. Be aware that when you modifying some parts of the raw request object, e.g. the header, these modifications are not automatically applied to the corresponding ZenTS controller action context. In generally you should avoid modifying the `req.nodeReq` object directly and use it ZenTS counterparts when ever possible.
+The raw request object supplied by [Node.js http module](https://nodejs.org/api/http.html) is exposed under the `request.nodeReq` property. Working with the raw request object can be useful if you want to do something with it that is currently not supported by ZenTS. Be aware that when you modifying some parts of the raw request object, e.g. the header, these modifications are not automatically applied to the corresponding ZenTS controller action context. In generally you should avoid modifying the `request.nodeReq` object directly and use it ZenTS counterparts when ever possible.
 
 ## Next steps
 
-Congrats! You just mastered the request context of a controller action. Now you should be able to handle incoming data easily thanks to ZenTS request context. Always keep in mind that you can take a look at the API reference [documentation](./../api/) if you don't know how to access specific data.
+Congrats! You just mastered the request context and its children. Now you should be able to handle incoming data easily, thanks to ZenTS request context.
 
 Now it's time to learn more about returning a response and how to setup routes properly. The following guides will help you to archive these goals:
 

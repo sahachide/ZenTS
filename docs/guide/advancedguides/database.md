@@ -452,7 +452,7 @@ export default class extends Controller {
 The connection is now available under the `this.con` property:
 
 ```typescript
-import { Controller, Context, connection, get } from 'zents'
+import { Controller, context, Context, connection, get } from 'zents'
 import type { Connection } from 'typeorm'
 
 export default class extends Controller {
@@ -460,7 +460,7 @@ export default class extends Controller {
   private con: Connection
 
   @get('/')
-  public async index(context: Context) {
+  public async index(@context ctx: Context) {
     // do something with this.con
   }
 }
@@ -477,7 +477,7 @@ TypeORM's _EntityManager_ can be injected into a controller or service quiet sim
 An example of an injected _EntityManager_ looks like this:
 
 ```typescript
-import { Controller, Context, entityManager, get } from 'zents'
+import { Controller, context, Context, entityManager, get } from 'zents'
 import type { EntityManager } from 'typeorm'
 
 export default class extends Controller {
@@ -485,7 +485,7 @@ export default class extends Controller {
   private em: EntityManager
 
   @get('/')
-  public async index(context: Context) {
+  public async index(@context ctx: Context) {
     // do something with this.em
   }
 }
@@ -496,7 +496,7 @@ export default class extends Controller {
 Now that you're familiar with creating entities and injecting the EntityManager/connection from TypeORM into a controller, lets start by persisting a record to the database. First we need to import our `Product` entity we created earlier. Then we assign the values to the instance of our entity and last but not least, we will save it to the database by calling `save()` on the _EntityManager_ we injected earlier:
 
 ```typescript
-import { Controller, Context, entityManager, post, log } from 'zents'
+import { Controller, entityManager, post, log } from 'zents'
 import type { EntityManager } from 'typeorm'
 
 import { Product } from '../entity/Product'
@@ -506,7 +506,7 @@ export default class extends Controller {
   private em: EntityManager
 
   @post('/product')
-  public async createProduct(context: Context) {
+  public async createProduct() {
     let product = new Product()
 
     product.name = 'My Product'
@@ -534,7 +534,7 @@ If you're using the `connection` from TypeORM, the _EntityManager_ is accessible
 Since we are using `async / await` syntax here, errors from the database will crash the server (at worst). If you want to prevent that, you've to encapsule the `save()` call into a `try / catch` block:
 
 ```typescript
-public async createProduct(context: Context) {
+public async createProduct() {
   // ...
 
   try {
@@ -559,32 +559,25 @@ ZenTS offers you three ways to access a repository (or multiple repositories) in
 Repositories can be injected into a controller / service method by using the `@repository()` annotation, which requires one argument (the entity). This is the recommended way to use a repository, because it allows your application to be written in the [SOLID principle](https://en.wikipedia.org/wiki/Single-responsibility_principle):
 
 ```typescript
-import { Controller, Context, entityManager, get, log, repository } from 'zents'
+import { Controller, entityManager, get, log, repository } from 'zents'
 import type { Repository } from 'typeorm'
 
 import { Product } from '../entity/Product'
 
 export default class extends Controller {
   @get('/product/:productId')
-  public async detailProduct(
-    context: Context,
-    @repository(Product) productRepo: Repository<Product>,
-  ) {
+  public async detailProduct(@repository(Product) productRepo: Repository<Product>) {
     // use productRepo.find() etc. here
   }
 }
 ```
-
-::: warning
-Note that the first argument for each controller action will always be the `Context`, so make sure to declare your `@repository()` annotation(s) after the `Context`.
-:::
 
 #### Using the EntityManager / connection
 
 You can also use the _EntityManager_ or connection to grab a repository:
 
 ```typescript
-import { Controller, Context, con, entityManager, post, log } from 'zents'
+import { Controller, con, entityManager, post, log } from 'zents'
 import type { Connection, EntityManager } from 'typeorm'
 
 import { Product } from '../entity/Product'
@@ -597,7 +590,7 @@ export default class extends Controller {
   private con: Connection
 
   @get('/product/:productId')
-  public async detailProduct(context: Context) {
+  public async detailProduct() {
     const productRepo = this.em.getRepository(Product)
     // or
     // const productRepo = this.con.getRepository(Product)
@@ -614,7 +607,7 @@ Now you should know the basics of repositories, but there is more to them, which
 To fetch all records in a table, call `find()` without an argument:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const products = await productRepo.find()
 }
 ```
@@ -624,7 +617,7 @@ public async example(context: Context, @repository(Product) productRepo) {
 To query for specific records (`WHERE ... AND ...`), you can supply an object as first argument to the `find()` method:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const products = await productRepo.find({
     price: 4900
   })
@@ -636,7 +629,7 @@ public async example(context: Context, @repository(Product) productRepo) {
 To limit the result to one record use the `findOne()` repository method:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const product = await productRepo.findOne({
     name: 'My Product'
   })
@@ -648,7 +641,7 @@ public async example(context: Context, @repository(Product) productRepo) {
 To fetch one or multiple record(s) from a table by ID use the `findByIds()` repository method:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const products = await productRepo.findByIds([1, 2, 8])
 }
 ```
@@ -658,7 +651,7 @@ public async example(context: Context, @repository(Product) productRepo) {
 To receive a set of records and count the possible returned records (without pagination), use the `findAndCount()` repository method:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const [products, productsCount] = await productRepo.findAndCount(/* optional: {} */)
 }
 ```
@@ -672,7 +665,7 @@ All the above methods supports a wide range of option and conditions (e.g. `WHER
 In order to update a record in a table, you first need to fetch it from the database using a repository. After that, you just modify the instance member values and save it back using the same repository:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const product = await productRepo.findOne({
     name: 'My Product'
   })
@@ -688,7 +681,7 @@ public async example(context: Context, @repository(Product) productRepo) {
 Removing a record from a table is simple, just call the `remove()` method of a repository and the record will be deleted:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const product = await productRepo.findOne({
     name: 'My Product'
   })
@@ -798,7 +791,7 @@ This time we added the `products` property to our `Category` entity. Now all pro
 Saving a relationship is as easy as assigning the relationship value to the right member of an entity:
 
 ```typescript
-import { Controller, Context, con, entityManager, post, log } from 'zents'
+import { Controller, con, entityManager, post, log } from 'zents'
 import type { EntityManager } from 'typeorm'
 
 import { Product } from '../entity/Product'
@@ -809,7 +802,7 @@ export default class extends Controller {
   private em: EntityManager
 
   @post('/category')
-  public async createCategory(context: Context) {
+  public async createCategory() {
     const category = new Category()
     category.name = 'My Category'
     await this.em.save(category)
@@ -832,7 +825,7 @@ export default class extends Controller {
 To load related records (e.g. products) when you fetch a category, you've to specify the relationship via a `relations` property inside the `find()` options argument:
 
 ```typescript
-public async example(context: Context, @repository(Category) categoryRepo) {
+public async example(@repository(Category) categoryRepo) {
   const category = await categoryRepo.find({ relations: ['products'] })
 
   log.info(category.products) // will log an array of products associated with the category
@@ -840,7 +833,7 @@ public async example(context: Context, @repository(Category) categoryRepo) {
 
 // or
 
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const product = await product.findOne({
     name: 'My Product 1'
   }, { relations: ['category'] })
@@ -883,7 +876,7 @@ There are even more options (like cascades, primary relationship columns, nullab
 You can remove a existing relationship by setting its mapping value to `null` (if the column is nullable):
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example( @repository(Product) productRepo) {
   const product = await product.findOne({
     name: 'My Product 1'
   })
@@ -1014,7 +1007,7 @@ Now both side knows about the related records. Please note that the `@JoinTable`
 In order to save such a `many-to-many` relationship, we just use the usual `save()` method and assign (multiple) record(s) to the mapped relation property:
 
 ```typescript
-import { Controller, Context, con, entityManager, post, log } from 'zents'
+import { Controller, con, entityManager, post, log } from 'zents'
 import type { EntityManager } from 'typeorm'
 
 import { Product } from '../entity/Product'
@@ -1025,7 +1018,7 @@ export default class extends Controller {
   private em: EntityManager
 
   @post('/product')
-  public async createProduct(context: Context) {
+  public async createProduct() {
     const category1 = new Category()
     category1.name = 'My Category 1'
     await this.em.save(category1)
@@ -1046,7 +1039,7 @@ export default class extends Controller {
 Loading a `many-to-many` relationship is the same then loading other relationships:
 
 ```typescript
-public async example(context: Context, @repository(Product) productRepo) {
+public async example(@repository(Product) productRepo) {
   const products = await product.find({ relations: ['categories'] })
 }
 ```
