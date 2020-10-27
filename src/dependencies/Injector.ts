@@ -21,6 +21,7 @@ import type { Context } from '../http/Context'
 import { CookieContextAction } from './InjectorAction/CookieContextAction'
 import { ErrorContextAction } from './InjectorAction/ErrorContextAction'
 import type { ModuleContext } from './ModuleContext'
+import { ParamsContextAction } from './InjectorAction/ParamsContextAction'
 import { QueryContextAction } from './InjectorAction/QueryContextAction'
 import { RequestContextAction } from './InjectorAction/RequestContextAction'
 import { ResponseContextAction } from './InjectorAction/ResponseContextAction'
@@ -58,6 +59,7 @@ export class Injector {
       new SessionAction(this, context, loadedUser, injectedSessions),
       new BodyContextAction(this, context),
       new QueryContextAction(this, context),
+      new ParamsContextAction(this, context),
       new CookieContextAction(this, context),
       new RequestContextAction(this, context),
       new ResponseContextAction(this, context),
