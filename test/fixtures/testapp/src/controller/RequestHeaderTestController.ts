@@ -1,11 +1,11 @@
-import { Context, Controller, get, prefix } from '../../../../../src'
+import { Context, Controller, get, prefix, req, Request, request } from '../../../../../src'
 
 const customHeaderKey = 'x-zen-test'
 
 @prefix('/request-header')
 export default class extends Controller {
   @get('/all')
-  public allTest({ req }: Context) {
+  public allTest(@request req: Request) {
     const result: { [key: string]: string | string[] } = {}
 
     for (const [key, value] of req.header.all()) {
@@ -20,14 +20,14 @@ export default class extends Controller {
   }
 
   @get('/get')
-  public getTest({ request }: Context) {
+  public getTest(@req request: Request) {
     return {
       value: request.header.get<string>(customHeaderKey),
     }
   }
 
   @get('/has')
-  public hasTest({ request }: Context) {
+  public hasTest(@request request: Request) {
     return {
       exist: request.header.has(customHeaderKey),
       doesntexist: request.header.has('not-send'),
@@ -35,7 +35,7 @@ export default class extends Controller {
   }
 
   @get('/remove')
-  public removeTest({ request }: Context) {
+  public removeTest(@request request: Request) {
     if (!request.header.has(customHeaderKey)) {
       return {
         success: false,
@@ -55,7 +55,7 @@ export default class extends Controller {
   }
 
   @get('/set')
-  public setTest({ request }: Context) {
+  public setTest(@request request: Request) {
     request.header.set('foo', 'bar')
 
     return {
@@ -65,7 +65,7 @@ export default class extends Controller {
   }
 
   @get('/accept')
-  public acceptTest({ request }: Context) {
+  public acceptTest(@request request: Request) {
     return {
       accept: request.header.getAccept(),
     }

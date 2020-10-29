@@ -1,31 +1,37 @@
-import { Context, Controller, get, post, put } from '../../../../../src'
+import { Context, Controller, get, params, query, request, Request } from '../../../../../src'
 
 import type { QueryString } from '../../../../../src/types/interfaces'
 
 export default class extends Controller {
   @get('/request-test/:foo/:bar')
-  public paramsTest({ req }: Context) {
-    const foo = req.params.foo
-    const bar = req.params.bar
+  public paramsTest(@params params: { foo?: string; bar?: string; paramsSetter?: string }) {
+    const foo = params.foo
+    const bar = params.bar
 
-    req.params = {
+    params = {
       paramsSetter: 'test',
     }
 
     return {
       foo,
       bar,
-      paramsSetter: req.params.paramsSetter,
+      paramsSetter: params.paramsSetter,
     }
   }
 
   @get('/request-test-queryparams')
-  public querystringTest({ req }: Context) {
+  public querystringTest(
+    @query
+    query: {
+      [key: string]: string
+    },
+    @request req: Request,
+  ) {
     const parsed: {
       [key: string]: string | QueryString | string[] | QueryString[]
     } = {
-      foo: req.query.foo,
-      bar: req.query.bar,
+      foo: query.foo,
+      bar: query.bar,
       search: req.search,
       querystring: req.querystring,
       querystringSetter: null,
@@ -40,7 +46,7 @@ export default class extends Controller {
   }
 
   @get('/url-test')
-  public urlTest({ req }: Context) {
+  public urlTest(@request req: Request) {
     const requestData = {
       requestUrl: req.url,
       pathname: req.pathname,

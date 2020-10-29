@@ -113,7 +113,7 @@ export interface FileSessionStoreAdapterFileContent {
 // ---- G
 
 export interface GenericControllerInstance {
-  [key: string]: (context: Context, ...injected: unknown[]) => ControllerMethodReturnType
+  [key: string]: (...injected: unknown[]) => ControllerMethodReturnType
 }
 
 // ---- H

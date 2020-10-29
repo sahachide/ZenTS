@@ -48,10 +48,7 @@ export class ControllerRequestHandler {
       this.loadedUser,
       injectedSessions,
     )
-    const result = await this.controllerInstance[this.controllerMethod](
-      this.context,
-      ...injectedParameters,
-    )
+    const result = await this.controllerInstance[this.controllerMethod](...injectedParameters)
 
     if (!this.context.res.isSend) {
       this.handleResult(result)

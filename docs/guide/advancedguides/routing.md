@@ -39,17 +39,20 @@ Route parameters can be defined by prefixing the key with a `:`:
 
 ```typescript
 @get('/user/:userId')
-public userDetail({ params }: Context) {
+public userDetail(@params params: { userId: string }) {
   log.info(params.userId)
 }
 
 @get('/user/compare/:userId1/:userId2')
-public userCompare({ params }: Context) {
+public userCompare(@params params: {
+  userId1: string
+  userId2: string
+}) {
   // controller action implementation
 }
 ```
 
-Route parameters become available under the `params` property of the **_controller action context_**. If you didn't read about it yet, go back and read the [request guide](./request.md).
+Route parameters can be accessed using the `@params` annotation. If you didn't read about it yet, go back and read the [request guide](./request.md).
 
 Parameters can also be defined using wildcards: `@get('/user/*')`
 
@@ -57,7 +60,7 @@ It's possible to define more than one parameter within the same couple of slash.
 
 ```typescript
 @get('/map/:lat-:long')
-public worldMap({ params }: Context) {
+public worldMap(@params params) {
   log.info(params.lat)
   log.info(params.long)
 }
@@ -69,7 +72,7 @@ Last but not least, you can define the route parameters using a `RegEx`:
 
 ```typescript
 @get('/example/:file(^\\d+).png')
-public example({ params }: Context) {
+public example(@params params) {
   // controller action implementation...
 }
 ```
@@ -129,7 +132,7 @@ import { Controller, post } from 'zents'
 
 export default extends Controller {
   @post('/product')
-  public newProduct({ body }: Context) {
+  public newProduct(@body body) {
     // controller action implementation...
   }
 }
@@ -146,7 +149,7 @@ import { Controller, put } from 'zents'
 
 export default extends Controller {
   @put('/product/:productId')
-  public updateProduct({ params, body }: Context) {
+  public updateProduct(@params params, @body body) {
     // controller action implementation...
   }
 }
@@ -163,7 +166,7 @@ import { Controller, del } from 'zents'
 
 export default extends Controller {
   @del('/product/:productId')
-  public deleteProduct({ params }) {
+  public deleteProduct(@params params) {
     // controller action implementation...
   }
 }

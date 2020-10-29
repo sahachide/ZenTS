@@ -14,9 +14,17 @@ import type {
   RequestConfigControllerUser,
 } from '../types/interfaces'
 
+import { AllContextAction } from './InjectorAction/AllContextAction'
+import { BodyContextAction } from './InjectorAction/BodyContextAction'
 import type { Class } from 'type-fest'
 import type { Context } from '../http/Context'
+import { CookieContextAction } from './InjectorAction/CookieContextAction'
+import { ErrorContextAction } from './InjectorAction/ErrorContextAction'
 import type { ModuleContext } from './ModuleContext'
+import { ParamsContextAction } from './InjectorAction/ParamsContextAction'
+import { QueryContextAction } from './InjectorAction/QueryContextAction'
+import { RequestContextAction } from './InjectorAction/RequestContextAction'
+import { ResponseContextAction } from './InjectorAction/ResponseContextAction'
 import type { Session } from '../security/Session'
 
 export class Injector {
@@ -49,6 +57,14 @@ export class Injector {
       new RepositoryAction(this),
       new SecurityProviderAction(this),
       new SessionAction(this, context, loadedUser, injectedSessions),
+      new BodyContextAction(this, context),
+      new QueryContextAction(this, context),
+      new ParamsContextAction(this, context),
+      new CookieContextAction(this, context),
+      new RequestContextAction(this, context),
+      new ResponseContextAction(this, context),
+      new ErrorContextAction(this, context),
+      new AllContextAction(this, context),
     ]
     let params: InjectorFunctionParameter[] = []
 
@@ -59,7 +75,7 @@ export class Injector {
         if (result.length) {
           params = [...params, ...result.filter((val) => val !== null)]
         }
-      } else {
+      } else if (result) {
         params.push(result)
       }
     }

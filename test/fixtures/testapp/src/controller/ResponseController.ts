@@ -1,4 +1,4 @@
-import { Context, Controller, get, post, put } from '../../../../../src'
+import { body, Controller, get, post, put, req, Request } from '../../../../../src'
 
 export default class extends Controller {
   @get('/ping')
@@ -22,12 +22,12 @@ export default class extends Controller {
   }
 
   @post('/post-echo')
-  public postEcho({ req }: Context) {
-    return req.body
+  public postEcho(@body body: any) {
+    return body
   }
 
   @put('/put-echo')
-  public putEcho({ req }: Context) {
+  public putEcho(@req req: Request) {
     return req.body
   }
 }

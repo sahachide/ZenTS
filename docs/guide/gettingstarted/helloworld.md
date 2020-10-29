@@ -143,15 +143,15 @@ First we extend our `@get()` annotation with a `name` parameter:
 @get('/hello-world/:name')
 ```
 
-Now we need to access the parameter in our controller. Every controller action is automatically passed in a `Context` object, which holds all kind of useful data. One of them are the URL parameters which we declare in our routes:
+Now we need to access the parameter in our controller. In ZenTS this is done by using dependency injection. We use the `@context` annotation to inject a `Context` object into our controller action, which holds all kind of useful request data. One of them are the URL parameters which we declared in our routes:
 
 ```typescript
-import { Controller, Context, get, log } from 'zents'
+import { Controller, context, Context, get, log } from 'zents'
 
 export default class extends Controller {
   @get('/hello-world/:name')
-  public async helloWorld({ req }: Context) {
-    log.info(req.params.name)
+  public async helloWorld(@context context: Context<{ name: string }>) {
+    log.info(context.params.name)
 
     return await this.render('helloworld')
   }
@@ -169,7 +169,7 @@ The next step is to pass the `name` parameter into our `helloworld.njk` template
 ```typescript
 export default class extends Controller {
   @get('/hello-world/:name')
-  public async helloWorld({ req }: Context) {
+  public async helloWorld(@context context: Context<{ name: string }>) {
     return await this.render('helloworld', {
       name: req.params.name,
     })
