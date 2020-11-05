@@ -47,7 +47,7 @@ export interface CookieOptions {
   strategy?: 'merge' | 'single'
   domain?: string
   encode?: (value: string) => string
-  expires?: Date
+  expire?: number | string
   httpOnly?: boolean
   maxAge?: number
   path?: string
