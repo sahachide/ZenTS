@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="text-xs reading-time -mt-5">
+    <div class="reading-time">
       {{ $page.readingTime.text }} ({{ $page.readingTime.words }} words)
     </div>
-    <div class="flex justify-center mt-16 mb-24">
+    <div class="illustration-container">
       <img class="illustration-image" :src="illustration" />
     </div>
     <h2><a href="#" class="header-anchor">#</a> Table of contents</h2>
@@ -31,11 +31,20 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.illustration-image {
-  max-height: 400px;
+.illustration-container {
+  margin-bottom: 6rem;
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+
+  .illustration-image {
+    max-height: 400px;
+  }
 }
 
 .reading-time {
   color: #767676;
+  margin-top: -22px
+  font-size: 0.75em;
 }
 </style>

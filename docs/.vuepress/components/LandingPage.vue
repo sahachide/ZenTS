@@ -1,264 +1,611 @@
 <template>
-  <div class="landing-page font-nunito">
-    <div class="custom-block danger beta-warning">
-      <div class="container mx-auto py-4">
-        ZenTS is still <strong><em>under heavy development</em></strong> and
-        <strong><em>not</em></strong> ready for production use yet (breaking changes can be
-        introduces at any time). Please report any issues on
-        <a href="https://github.com/sahachide/ZenTS/issues" target="_blank">GitHub</a>.
+  <div class="landing-page">
+    <fixed-header :threshold="125">
+      <header>
+        <div class="header-area header-transparent">
+          <div class="main-header">
+            <div class="header-bottom header-sticky sticky-bar">
+              <div class="container-fluid">
+                <div class="row align-items-center">
+                  <div class="col-sm-2">
+                    <div class="logo">
+                      <a href="/">
+                        <img src="/zents_logo_white.png" alt="ZenTS" class="zents-logo" />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-sm-10 d-none d-lg-block">
+                    <div class="menu-wrapper d-flex align-items-center justify-content-end">
+                      <div class="main-menu">
+                        <nav>
+                          <ul id="navigation">
+                            <li><a href="/">Home</a></li>
+                            <li>
+                              <a href="/guide/gettingstarted/installation">Getting started</a>
+                            </li>
+                            <li><a href="/guide">Documentation</a></li>
+                            <li><a href="/guide">Guides</a></li>
+                          </ul>
+                        </nav>
+                      </div>
+                      <div class="header-right-btn d-none d-lg-block ml-65" style="margin-top: 6px">
+                        <a
+                          href="https://github.com/sahachide/ZenTS/"
+                          target="_blank"
+                          class="border-btn"
+                        >
+                          <vp-icon name="github" class="github-icon" />
+                          GitHub
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    </fixed-header>
+
+    <main>
+      <section class="slider-area">
+        <div class="slider-active">
+          <div class="single-slider slider-height">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-11 col-md-12">
+                  <div class="hero__caption text-center">
+                    <h1>Node.js & TypeScript MVC-Framework For Building Rich Web Applications</h1>
+                    <p>ZenTS is a open source, modern and fast TypeScript framework</p>
+                    <a href="guide/gettingstarted/installation" class="btn hero-btn">
+                      Get Started Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="project-screen">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="screen-img">
+                <img src="/landingpage/screen.png" alt="ZenTS Screenshot" class="w-100" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <section class="hero-container">
-      <div class="container mx-auto pt-12">
-        <LandingPage-Header />
-        <LandingPage-Hero />
-      </div>
-      <div class="flex justify-center mt-12">
-        <a href="#getting-started" class="scroll-down"><span></span></a>
-      </div>
-    </section>
-    <div class="wave">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path
-          fill="#7e57c2"
-          fill-opacity="1"
-          d="M0,160L80,149.3C160,139,320,117,480,133.3C640,149,800,203,960,208C1120,213,1280,171,1360,149.3L1440,128L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-        ></path>
-      </svg>
-    </div>
-    <div id="getting-started" class="container mx-auto -mt-12">
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-56">
-        <div>
-          <LandingPage-ContentText
-            title="Get ready in 30 seconds"
-            headline="Quick start"
-            sub-headline="with ZenTS CLI"
-          >
-            Create your first <strong>ZenTS</strong> web application in a few seconds with
-            <strong>ZenTS CLI</strong>. The CLI comes with all preinstalled dependencies for your
-            application, with a ready to use <strong>TypeScript</strong> compiler and a
-            <strong>hot-realoading enabled development server</strong> right at your fingertips.
-            Check out the Quick Start guide and learn how to develop <em>fast</em>,
-            <em>maintainable</em> and simply awesome web applications with <strong>ZenTS</strong>.
-          </LandingPage-ContentText>
-          <a class="button mt-8" href="/guide/gettingstarted/installation">
-            Installation &amp; Setup
-          </a>
-        </div>
-        <div class="flex content-center">
-          <LandingPage-Terminal />
+      <section class="about-area2 pb-bottom">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-xl-5 col-lg-6 col-md-12">
+              <div class="about-caption mb-50">
+                <div class="about-icon">
+                  <vp-icon name="rocket" color="#ffffff" />
+                </div>
+                <div class="section-tittle mb-25">
+                  <h2>Quick start</h2>
+                </div>
+                <p class="mb-20">
+                  Create your first ZenTS web application in a few seconds with ZenTS CLI. The CLI
+                  comes with all preinstalled dependencies for your application, with a ready to use
+                  TypeScript compiler and a hot-realoading enabled development server right at your
+                  fingertips. Check out the Quick Start guide and learn how to develop fast,
+                  maintainable and simply awesome web applications with ZenTS.
+                </p>
+                <a href="/guide/gettingstarted/installation" class="all-btn"
+                  >Installation &amp; Setup</a
+                >
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-9 col-sm-9">
+              <LandingPage-Terminal />
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-56">
-        <div class="lg:flex hidden content-center">
-          <img :src="$withBase('/landingpage/typescript.svg')" />
-        </div>
-        <div>
-          <LandingPage-ContentText
-            title="Typed JavaScript at any scale"
-            headline="TypeScript"
-            sub-headline="at its best"
-          >
-            <strong>TypeScript</strong> extends &quot;vanilla&quot; JavaScript with types and allows
-            you to use the <em>latest ECMAScript features</em>. Writing your application with
-            TypeScript means that you can define the shape of an object, which allows TypeScript to
-            validate that your code is working correctly. With <strong>ZenTS</strong>, you can
-            levarage the straingth of TypeScript and write <em>more elegant source code</em>. And
-            the best news is, if you've used JavaScript before, TypeScript will be
-            <em>easy to learn</em>. Check out the official TypeScript website for more information.
-          </LandingPage-ContentText>
-          <a class="button mt-8" href="https://www.typescriptlang.org/" target="_blank">
-            TypeScript Website
-          </a>
-        </div>
-      </section>
-
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-56">
-        <div>
-          <LandingPage-ContentText
-            title="Effective Web Application Development"
-            headline="MVC Architecture"
-            sub-headline="a great architecture to write maintainable code "
-          >
-            <strong>ZenTS</strong> is a framework which follows the
-            <em>model-view-controller (MVC) pattern</em>. It comes with <em>all the tools</em> you
-            need to write code, that can be <em>maintained</em> by many developers at the same time.
-            Following the MVC pattern, you've a solid ground to build <em>awesome projects</em> your
-            users will love. <strong>ZenTS</strong> has an easy to learn controller mechanism with a
-            battle tested and lightning fast router and comes with a rock solid ORM out of the box.
-            To present your web application appropriatly, <strong>ZenTS</strong> ships with a rich
-            and powerful template engine.
-          </LandingPage-ContentText>
-          <a class="button mt-8" href="/guide/">
-            ZenTS Documentation
-          </a>
-        </div>
-        <div class="lg:flex hidden content-center">
-          <img :src="$withBase('/landingpage/mvc.svg')" />
-        </div>
-      </section>
-
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-56">
-        <div class="lg:flex hidden content-center">
-          <img :src="$withBase('/landingpage/progressive.svg')" />
-        </div>
-        <div>
-          <LandingPage-ContentText
-            title="Progressive framework and a rich ecosystem"
-            headline="ZenTS, Node.js and TypeScript "
-            sub-headline="a perfect ménage à trois"
-          >
-            A <strong>ZenTS</strong> web application runs inside the
-            <strong>Node.js</strong> JavaScript runtime. With <strong>ZenTS</strong> and TypeScript,
-            you can take advantage of the <em>latest JavaScript features</em>, it also brings new
-            design patterns and solutions to the Node.js. <strong>Node.js</strong> has a huge
-            ecosystem, that is suitable to build all kind of
-            <em>enterpriese-grade applications</em>. With <strong>ZenTS</strong> and its easy to
-            learn and use API, you can make use of all these advantages and build web applications
-            <em>quickly</em>.
-          </LandingPage-ContentText>
-        </div>
-      </section>
-
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-56">
-        <div>
-          <LandingPage-ContentText
-            title="Made with 💜 from developers for developers"
-            headline="Open Source"
-            sub-headline="now and until the end of the universe"
-          >
-            <strong>ZenTS</strong> is released under the <strong>MIT licence</strong> and the source
-            code can be found on Github. Feel free to contribute if you want to help to improve
-            <strong>ZenTS</strong> and make it an even better framework. <strong>ZenTS</strong> is
-            created by Sascha Habbes (sahachide) and contributors.<br /><br />
-            <strong
-              ><em
-                >Thank you for using ZenTS and keep building awesome web applications.</em
-              ></strong
+      <section class="our-services">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-8">
+              <div class="section-tittle text-center mb-80">
+                <h2>Finally focus on building awesome web applications</h2>
+                <p>
+                  ZenTS is your swiss army knife for building rich, interactive and maintainable web
+                  applications.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              v-for="feature in features"
+              :key="feature.title"
+              class="col-lg-4 col-md-6 col-sm-6"
             >
-          </LandingPage-ContentText>
-          <a class="button mt-8" href="#">
-            View source on Github
-          </a>
-        </div>
-        <div class="lg:flex hidden content-center">
-          <img :src="$withBase('/landingpage/open_source.svg')" />
+              <div class="single-services mb-30">
+                <div class="services-ion">
+                  <vp-icon :name="feature.icon" :color="feature.iconColor" />
+                </div>
+                <div class="services-cap">
+                  <h5>
+                    <a :href="feature.link">{{ feature.title }}</a>
+                  </h5>
+                  <p>
+                    {{ feature.text }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-    </div>
-    <footer class="flex justify-center items-center">
-      ZenTS is licensed under MIT License. Landing page hero illustration designed by
-      <a href="https://www.freepik.com/" target="_blank">upklyak / Freepik</a>. Dark/Light Theme
-      Switcher Icon by made by
-      <a href="https://www.flaticon.com/authors/freepik">Freepik</a>&nbsp;from
-      <a href="https://www.flaticon.com/">www.flaticon.com</a>. Illustrations are created by
-      <a href="https://undraw.co/" target="_blank">Katerina Limpitsouni</a>.
+
+      <section class="live-preview section-padding40">
+        <div class="section-tittle mb-25">
+          <h2>Live preview</h2>
+        </div>
+        <p class="mb-20">Take a look at how your application maybe will look like.</p>
+        <div class="d-flex justify-content-center">
+          <div class="sandbox-container">
+            <iframe
+              src="https://codesandbox.io/embed/zents-example-app-o33qb?expanddevtools=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcontroller%2FIndexController.ts&theme=dark"
+              style="width: 100%; height: 500px; border: 0; border-radius: 4px; overflow: hidden"
+              title="ZenTS Example App"
+              allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-area2 section-padding40 section-bg2" :style="sectionBackgroundStyle">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-xl-5 col-lg-6 col-md-12">
+              <div class="about-caption mb-50">
+                <div class="about-icon">
+                  <vp-icon name="typescript" color="#ffffff" />
+                </div>
+                <div class="section-tittle mb-25">
+                  <h2>TypeScript at its best</h2>
+                </div>
+                <p class="mb-20">
+                  <strong>TypeScript</strong> extends &quot;vanilla&quot; JavaScript with types and
+                  allows you to use the <em>latest ECMAScript features</em>. Writing your
+                  application with TypeScript means that you can define the shape of an object,
+                  which allows TypeScript to validate that your code is working correctly. With
+                  <strong>ZenTS</strong>, you can levarage the straingth of TypeScript and write
+                  <em>more elegant source code</em>. And the best news is, if you've used JavaScript
+                  before, TypeScript will be <em>easy to learn</em>. Check out the official
+                  TypeScript website for more information.
+                </p>
+                <a href="https://www.typescriptlang.org/" target="_blank" class="all-btn"
+                  >TypeScript Website</a
+                >
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-9 col-sm-9">
+              <div class="about-img">
+                <img :src="$withBase('/landingpage/typescript.svg')" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-area2 pb-bottom">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-xl-6 col-lg-5 col-md-9">
+              <div class="about-img">
+                <img :src="$withBase('/landingpage/mvc.svg')" />
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-6 col-md-12">
+              <div class="about-caption mb-50">
+                <div class="about-icon">
+                  <vp-icon name="cube" color="#ffffff" />
+                </div>
+                <div class="section-tittle mb-25">
+                  <h2>Effective Web Application Development</h2>
+                </div>
+                <p class="mb-20">
+                  <strong>ZenTS</strong> is a framework which follows the
+                  <em>model-view-controller (MVC) pattern</em>. It comes with
+                  <em>all the tools</em> you need to write code, that can be <em>maintained</em> by
+                  many developers at the same time. Following the MVC pattern, you've a solid ground
+                  to build <em>awesome projects</em> your users will love.
+                  <strong>ZenTS</strong> has an easy to learn controller mechanism with a battle
+                  tested and lightning fast router and comes with a rock solid ORM out of the box.
+                  To present your web application appropriatly, <strong>ZenTS</strong> ships with a
+                  rich and powerful template engine.
+                </p>
+                <a href="/guide/" class="all-btn">Documentation</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-area2 section-padding40 section-bg2">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-xl-5 col-lg-6 col-md-12">
+              <div class="about-caption mb-50">
+                <div class="about-icon">
+                  <vp-icon name="leaf" color="#ffffff" />
+                </div>
+                <div class="section-tittle mb-25">
+                  <h2>Progressive framework and a rich ecosystem</h2>
+                </div>
+                <p class="mb-20">
+                  A <strong>ZenTS</strong> web application runs inside the
+                  <strong>Node.js</strong> JavaScript runtime. With <strong>ZenTS</strong> and
+                  TypeScript, you can take advantage of the <em>latest JavaScript features</em>, it
+                  also brings new design patterns and solutions to the Node.js.
+                  <strong>Node.js</strong> has a huge ecosystem, that is suitable to build all kind
+                  of <em>enterpriese-grade applications</em>. With <strong>ZenTS</strong> and its
+                  easy to learn and use API, you can make use of all these advantages and build web
+                  applications <em>quickly</em>.
+                </p>
+                <a href="https://www.npmjs.com/package/zents" target="_blank" class="all-btn"
+                  >View ZenTS on npm</a
+                >
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-9 col-sm-9">
+              <div class="about-img">
+                <img :src="$withBase('/landingpage/progressive.svg')" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wantToWork-area">
+        <div class="container">
+          <div class="wants-wrapper w-padding2 section-bg2" :style="bottomBackgroundStyle">
+            <div class="row align-items-center justify-content-center">
+              <div class="col-xl-7 col-lg-9 col-md-8">
+                <div class="wantToWork-caption text-center">
+                  <h2>Open source made with 💛</h2>
+                  <p>
+                    <strong>ZenTS</strong> is released under the <strong>MIT licence</strong> and
+                    the source code can be found on GitHub.
+                  </p>
+                  <a
+                    href="https://github.com/sahachide/ZenTS/"
+                    target="_blank"
+                    class="btn3 wantToWork-btn"
+                    >GitHub repository</a
+                  >
+                  <a
+                    href="https://www.npmjs.com/package/zents"
+                    target="_blank"
+                    class="btn3 wantToWork-btn"
+                    >NPM package</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-wrappper section-bg" :style="footerBackgroundStyle">
+        <div class="footer-area footer-padding">
+          <div class="container">
+            <div class="row justify-content-between">
+              <div class="col-xl-4 col-lg-5 col-md-4 col-sm-6">
+                <div class="single-footer-caption mb-50">
+                  <div class="single-footer-caption mb-30">
+                    <div class="footer-logo mb-25">
+                      <a href="/"
+                        ><img src="/zents_logo_white.png" alt="ZenTS" class="zents-logo"
+                      /></a>
+                    </div>
+                    <div class="footer-tittle">
+                      <div class="footer-pera">
+                        <p>
+                          Node.js &amp; TypeScript MVC-Framework For Building Rich Web Applications
+                        </p>
+                      </div>
+                    </div>
+                    <div class="footer-social d-flex">
+                      <a
+                        href="https://github.com/sahachide/ZenTS"
+                        target="_blank"
+                        class="social-icon"
+                        ><vp-icon name="github"
+                      /></a>
+                      <a
+                        href="https://www.npmjs.com/package/zents"
+                        target="_blank"
+                        class="social-icon"
+                        ><vp-icon name="npm"
+                      /></a>
+                      <a
+                        href="https://twitter.com/ZenTS_Framework"
+                        target="_blank"
+                        class="social-icon"
+                        ><vp-icon name="twitter"
+                      /></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5">
+                <div class="single-footer-caption mb-50">
+                  <div class="footer-tittle">
+                    <h4>Guides</h4>
+                    <ul>
+                      <li><a href="/guide/gettingstarted/installation">Getting started</a></li>
+                      <li><a href="/guide/gettingstarted/controllers">Controllers</a></li>
+                      <li><a href="/guide/gettingstarted/services">Service Container</a></li>
+                      <li>
+                        <a href="/guide/gettingstarted/dependency_injection">
+                          Dependency Injection
+                        </a>
+                      </li>
+                      <li><a href="/guide/gettingstarted/routing">Routing</a></li>
+                      <li><a href="/guide/gettingstarted/database">Database / ORM</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                <div class="single-footer-caption mb-50">
+                  <div class="footer-tittle">
+                    <h4>&nbsp;</h4>
+                    <ul>
+                      <li><a href="/guide/gettingstarted/redis">Redis</a></li>
+                      <li>
+                        <a href="/guide/gettingstarted/user_management">
+                          User &amp; Session Management
+                        </a>
+                      </li>
+                      <li><a href="/guide/gettingstarted/templates">Template Engine</a></li>
+                      <li><a href="/guide/gettingstarted/configuration">Configuration</a></li>
+                      <li><a href="/guide/gettingstarted/cli">CLI</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                <div class="single-footer-caption mb-50">
+                  <div class="footer-tittle">
+                    <h4>&nbsp;</h4>
+                    <ul>
+                      <li>
+                        <a href="https://www.npmjs.com/package/zents" target="_blank">
+                          <img
+                            src="https://img.shields.io/npm/v/zents?style=flat-square&amp;label=Latest%20release%20(ZenTS)"
+                            alt="Latest release (CLI)"
+                          />
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.npmjs.com/package/zents-cli" target="_blank">
+                          <img
+                            src="https://img.shields.io/npm/v/zents-cli?style=flat-square&amp;label=Latest%20release%20(CLI)"
+                            alt="Latest release (CLI)"
+                          />
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/sahachide/ZenTS/issues" target="_blank">
+                          <img
+                            src="https://img.shields.io/github/issues-raw/sahachide/ZenTS?style=flat-square&amp;label=GitHub%20issues"
+                            alt="GitHub issues"
+                          />
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/sahachide/ZenTS/pulls" target="_blank">
+                          <img
+                            src="https://img.shields.io/github/issues-pr/sahachide/ZenTS?style=flat-square&amp;label=GitHub%20pull%20requests"
+                            alt="GitHub pull requests"
+                          />
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/sahachide/ZenTS" target="_blank">
+                          <img
+                            src="https://img.shields.io/github/languages/code-size/sahachide/ZenTS?style=flat-square&amp;label=Repository%20code%20size"
+                            alt="GitHub code size in bytes"
+                          />
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://github.com/sahachide/ZenTS/blob/master/LICENSE"
+                          target="_blank"
+                        >
+                          <img
+                            src="https://img.shields.io/npm/l/zents?style=flat-square&amp;label=License"
+                            alt="NPM"
+                          />
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
   </div>
 </template>
 
 <script>
+import FixedHeader from 'vue-fixed-header'
+
 export default {
+  components: {
+    FixedHeader,
+  },
   mounted() {
-    let theme = 'dark'
-
-    if (typeof this.$site.themeConfig.defaultTheme !== 'string') {
-      theme =
-        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light'
-    } else {
-      theme = this.$site.themeConfig.defaultTheme
+    document.getElementsByTagName('html')[0].setAttribute('theme', 'light')
+  },
+  computed: {
+    sectionBackgroundStyle() {
+      return {
+        'background-image': `url(${this.$withBase('/landingpage/section-bg3.png')})`,
+      }
+    },
+    bottomBackgroundStyle() {
+      return {
+        'background-image': `url(${this.$withBase('/landingpage/section_bg02.png')})`,
+      }
+    },
+    footerBackgroundStyle() {
+      return {
+        'background-image': `url(${this.$withBase('/landingpage/footer-bg.png')})`,
+      }
+    },
+  },
+  data() {
+    return {
+      features: [
+        {
+          title: 'Controller & Routing',
+          text:
+            'Super fast and easy to maintain routing system with simple to use controller architecture.',
+          icon: 'controller_routing',
+          iconColor: '#1785fc',
+          link: '/guide/advancedguides/controllers',
+        },
+        {
+          title: 'Dependency Injection',
+          text:
+            'Over are the times of over complicated object initialization. All tools ready at your fingertips to build SOLID applications.',
+          icon: 'dependency_injection',
+          iconColor: '#ff4500',
+          link: '/guide/advancedguides/dependency_injection',
+        },
+        {
+          title: 'Service Container',
+          text: 'Flexible service container system that helps you to write reusable code.',
+          icon: 'services',
+          iconColor: '#bb0c0c',
+          link: '/guide/advancedguides/services',
+        },
+        {
+          title: 'Autoloading',
+          text:
+            'Never handle a list of project files somewhere, because ZenTS will load all your project files automatically.',
+          icon: 'autoloading',
+          iconColor: '#ff8851',
+          link: '/guide',
+        },
+        {
+          title: 'ORM & Redis',
+          text:
+            'Supports MySQL, PostgreSQL, MariaDB, SQLite, MS SQL Server, MongoDB and Redis out-of-the-box.',
+          icon: 'orm',
+          iconColor: '#ffbf00',
+          link: '/guide/advancedguides/database',
+        },
+        {
+          title: 'Template Engine',
+          text: 'An (optional) battle tested template engine for rendering server side HTML.',
+          icon: 'template',
+          iconColor: '#00e868',
+          link: '/guide/advancedguides/templates',
+        },
+      ],
     }
-
-    const cssClass = `theme-${theme}`
-
-    if (!document.body.className.includes(cssClass)) {
-      document.body.className += ` ${cssClass}`
-    }
-    document.getElementsByTagName('html')[0].setAttribute('theme', theme)
   },
 }
 </script>
 
 <style lang="stylus" scoped>
 .landing-page {
-  .hero-container {
-    position: relative;
-    width: 100%;
-    background: rgb(247, 169, 168);
-    background: linear-gradient(180deg, rgba(105, 112, 232, 1) 0%, rgba(126, 87, 194, 1) 100%);
+  .vue-fixed-header--isFixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    z-index: 999;
 
-    .wave {
-      z-index: -1;
-      position: absolute;
-      bottom: -200px;
-      left: 0;
-      width: 100%;
-      height: 200px;
+    .header-sticky.sticky-bar {
+      background: #404dff;
+    }
+    .header-sticky.sticky-bar.sticky .main-menu ul li a {
+      padding: 20px 20px !important;
+    }
+    @media only screen and (min-width: 768px) and (max-width: 991px) {
+      .header-sticky.sticky-bar.sticky {
+        padding: 15px 0px;
+      }
+    }
+    @media only screen and (min-width: 576px) and (max-width: 767px) {
+      .header-sticky.sticky-bar.sticky {
+        padding: 15px 0px;
+      }
+    }
+    @media (max-width: 575px) {
+      .header-sticky.sticky-bar.sticky {
+        padding: 15px 0px;
+      }
+    }
+
+  }
+
+ .zents-logo {
+   height: 40px;
+  }
+
+  .live-preview  {
+    text-align: center;
+    background-color: #0f0f0f
+
+    h2,
+    p {
+      color: #f2f2f2 !important
+    }
+
+    h2 {
+      border-bottom: 0px;
+    }
+
+    .sandbox-container {
+      width: 80%
     }
   }
 
-  .scroll-down {
-    position: relative;
-
-    span {
-      animation: scrollDown 1.5s infinite;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 30px;
-      height: 50px;
-      margin-left: -15px;
-      border: 2px solid #fff;
-      border-radius: 50px;
-      box-sizing: border-box;
-    }
-
-    span::before {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      content: '';
-      width: 6px;
-      height: 6px;
-      margin-left: -3px;
-      background-color: #fff;
-      border-radius: 100%;
-      box-sizing: border-box;
-    }
-
-    span::after {
-      position: absolute;
-      bottom: -18px;
-      left: 50%;
-      width: 18px;
-      height: 18px;
-      content: '';
-      margin-left: -9px;
-      border-left: 1px solid #fff;
-      border-bottom: 1px solid #fff;
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg);
-      box-sizing: border-box;
-    }
-  }
-}
-
-@keyframes scrollDown {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0;
+ .github-icon {
+   float: left;
+   margin-top: 2px;
+   margin-right: 4px;
   }
 
-  50% {
-    opacity: 1;
+  .about-icon,
+  .services-ion,
+  .social-icon {
+    display: flex;
+    justify-content: center;
+
+    svg {
+      width: 40px;
+      height: 40px;
+      display: block;
+      margin: auto
+    }
   }
 
-  100% {
-    transform: translate(0, 40px);
-    opacity: 0;
+  .social-icon svg {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

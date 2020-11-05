@@ -3,6 +3,7 @@ module.exports = {
   description:
     'ZenTS is a Node.js & TypeScript MVC-Framework for building rich web applications, released as free and open-source software under the MIT License. It is designed for building web applications with modern tools and design patterns.',
   head: [
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }],
     ['meta', { name: 'theme-color', content: '#512DA8' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
@@ -119,7 +120,7 @@ module.exports = {
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700&family=Rubik:wght@700&Quicksand:wght@300;700&Source+Code+Pro:wght@400;700&display=swap',
+          'https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800&family=Raleway:wght@400;500;600;700;800;900&display=swap',
       },
     ],
     [
@@ -136,24 +137,26 @@ module.exports = {
         window.addEventListener('load', function () {
           var inputSelector = '.search-box > input';
           var $el = document.querySelector(inputSelector);
-          
-          $el.disabled = true;
-          $el.placeholder = 'Loading...';
 
-          var script = document.createElement("script");
-          script.addEventListener("load", function() {
-            docsearch({
-              apiKey: '1c03de24a87faf1bfd8b7e760c63b3ab',
-              indexName: 'zents',
-              inputSelector: inputSelector,
+          if($el) {          
+            $el.disabled = true;
+            $el.placeholder = 'Loading...';
+  
+            var script = document.createElement("script");
+            script.addEventListener("load", function() {
+              docsearch({
+                apiKey: '1c03de24a87faf1bfd8b7e760c63b3ab',
+                indexName: 'zents',
+                inputSelector: inputSelector,
+              });
+              $el.disabled = false;
+              $el.placeholder = 'Search...';
             });
-            $el.disabled = false;
-            $el.placeholder = 'Search...';
-          });
-
-          script.src = "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js";
-
-          document.body.appendChild(script);            
+  
+            script.src = "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js";
+  
+            document.body.appendChild(script);            
+          }
         });
       `,
     ],
@@ -161,13 +164,12 @@ module.exports = {
   plugins: [
     '@vuepress/back-to-top',
     'reading-progress',
-    '@kawarimidoll/tailwind',
     'vuepress-plugin-reading-time',
     'vuepress-plugin-element-tabs',
     [
-      'sitemap',
+      '@goy/svg-icons',
       {
-        hostname: 'https://zents.dev',
+        svgsDir: './.vuepress/public/icons/',
       },
     ],
     [

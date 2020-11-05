@@ -81,7 +81,7 @@
     "typeorm": "~0.2.25"
   },
   "devDependencies": {
-    "@kawarimidoll/vuepress-plugin-tailwind": "^0.1.12",
+    "@goy/vuepress-plugin-svg-icons": "^4.2.1",
     "@silvanite/vuepress-plugin-markdown-classes": "^1.0.2",
     "@types/app-root-path": "^1.2.4",
     "@types/bcrypt": "^3.0.0",
@@ -119,13 +119,13 @@
     "typedoc-plugin-external-module-name": "^4.0.3",
     "typedoc-plugin-markdown": "^3.0.10",
     "typescript": "^4.0.3",
+    "vue-fixed-header": "^3.2.15",
     "vuepress": "^1.7.1",
     "vuepress-plugin-code-copy": "^1.0.6",
     "vuepress-plugin-element-tabs": "^0.2.8",
     "vuepress-plugin-minimal-analytics": "^0.1.4",
     "vuepress-plugin-reading-progress": "^1.0.10",
     "vuepress-plugin-reading-time": "^0.1.1",
-    "vuepress-plugin-sitemap": "^2.3.1",
     "vuepress-theme-default-prefers-color-scheme": "^1.1.2",
     "yalc": "^1.0.0-pre.40"
   },
