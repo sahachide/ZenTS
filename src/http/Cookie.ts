@@ -4,6 +4,8 @@ import { parse, serialize } from 'cookie'
 import type { CookieOptions } from '../types/interfaces'
 import type { IncomingHttpHeaders } from 'http'
 import { config } from '../config/config'
+import dayjs from 'dayjs'
+import ms from 'ms'
 
 export class Cookie {
   protected data = new Map<
@@ -60,8 +62,20 @@ export class Cookie {
         continue
       }
 
+      const options: CookieOptions & {
+        expires?: Date
+      } = cookie.options
+
+      if (typeof cookie.options.expire === 'number') {
+        options.expires = dayjs().add(cookie.options.expire, 'millisecond').toDate()
+        delete cookie.options.expire
+      } else if (typeof cookie.options.expire === 'string') {
+        options.expires = dayjs().add(ms(cookie.options.expire), 'millisecond').toDate()
+        delete cookie.options.expire
+      }
+
       try {
-        cookies.push(serialize(key, JSON.stringify(cookie.value), cookie.options))
+        cookies.push(serialize(key, JSON.stringify(cookie.value), options))
       } catch (e) {
         // silent
       }
