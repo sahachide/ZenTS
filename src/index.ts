@@ -1,17 +1,14 @@
 import 'reflect-metadata'
 
-export * from './config/'
-export * from './controller/'
-export * from './core/'
-export * from './database/'
+export { config } from './config/'
+export { Controller } from './controller/'
+export { zen, ZenApp } from './core/'
+export { createConnection, createRedisClient } from './database/'
 export * from './decorators/'
-export * from './dependencies/'
-export * from './filesystem/'
-export * from './http/'
-export * from './log/'
-export * from './service/'
-export * from './security/'
-export * from './template/'
+export { fs } from './filesystem/'
+export { Request, Response, ResponseError, ResponseHeader, Server } from './http/'
+export { log } from './log/'
+export { SecurityProviderOptions, SecurityProvider } from './security/'
 export {
   Context,
   TemplateFilter,

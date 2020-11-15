@@ -1,4 +1,4 @@
-import { AutoLoader } from '../../src'
+import { AutoLoader } from '../../src/core/AutoLoader'
 import { loadFixtureTestAppConfig } from '../helper/loadFixtureTestAppConfig'
 
 describe('AutoLoader and Registry', () => {

@@ -1,8 +1,8 @@
-import { AbstractZenFileLoader } from '../../src'
-import { getFixtureDir } from '../helper/getFixtureDir'
-import { join } from 'path'
+import { AbstractZenFileLoader } from '../../src/filesystem/AbstractZenFileLoader'
 import DefaultController from '../fixtures/zenfiles/DefaultController'
 import { NamedExportController } from '../fixtures/zenfiles/NamedExportController'
+import { getFixtureDir } from '../helper/getFixtureDir'
+import { join } from 'path'
 
 const MockLoader = class extends AbstractZenFileLoader {
   public async mockModuleLoad<T>(filePath: string) {
