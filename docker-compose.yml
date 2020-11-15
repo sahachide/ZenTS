@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgresql:
+    container_name: postgresql
+    build:
+      context: docker/services/postgresql
+      dockerfile: Dockerfile
+    ports:
+      - 54321:5432
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test

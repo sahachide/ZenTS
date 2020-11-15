@@ -37,7 +37,6 @@
     "build": "tsc",
     "watch": "tsc-watch --onSuccess \"npm run dev:update\"",
     "lint": "eslint . -f codeframe",
-    "test": "jest --config jest.config.json",
     "release": "standard-version",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
@@ -45,7 +44,9 @@
     "docs:deploy": "sh deploy-docs.sh",
     "dev:update": "yalc publish --push --changed",
     "dev:clean": "yalc installations clean zents",
-    "dev:dependency-update": "npm-check -u"
+    "dev:dependency-update": "npm-check -u",
+    "test": "jest --config jest.config.json",
+    "test:docker": "docker-compose up -d --build"
   },
   "files": [
     "lib/**/*",
