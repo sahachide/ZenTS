@@ -6,3 +6,5 @@ npm-debug.log
 test/
 .vscode/
 .env
+docker-compose.yml
+docker/

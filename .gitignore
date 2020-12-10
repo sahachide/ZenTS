@@ -6,3 +6,4 @@ lib/
 .vscode/
 .env
 docs/.vuepress/dist/
+docker/db/
