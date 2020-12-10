@@ -116,9 +116,5 @@
   pre {
     font-size: 10px;
   }
-
-  .window {
-    width: 70%;
-  }
 }
 </style>

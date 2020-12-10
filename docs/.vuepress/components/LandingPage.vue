@@ -57,7 +57,9 @@
                 <div class="col-xl-8 col-lg-11 col-md-12">
                   <div class="hero__caption text-center">
                     <h1>Node.js & TypeScript MVC-Framework For Building Rich Web Applications</h1>
-                    <p>ZenTS is a open source, modern and fast TypeScript framework</p>
+                    <p class="hero-text">
+                      ZenTS is a open source, modern and fast TypeScript framework
+                    </p>
                     <a href="guide/gettingstarted/installation" class="btn hero-btn">
                       Get Started Now
                     </a>
@@ -102,7 +104,7 @@
                 >
               </div>
             </div>
-            <div class="col-xl-6 col-lg-6 col-md-9 col-sm-9">
+            <div class="col-xl-6 col-lg-6 col-md-12">
               <LandingPage-Terminal />
             </div>
           </div>
@@ -562,7 +564,7 @@ export default {
   }
 
  .zents-logo {
-   height: 40px;
+   height: 50px;
   }
 
   .live-preview  {
@@ -606,6 +608,15 @@ export default {
   .social-icon svg {
     width: 20px;
     height: 20px;
+  }
+
+    @media (max-width: 767px) {
+    .hero-text {
+      display: none;
+    }
+    .live-preview {
+      display: none
+    }
   }
 }
 </style>
