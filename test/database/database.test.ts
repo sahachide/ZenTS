@@ -21,4 +21,22 @@ describe('Database', () => {
 
     expect(response.body).toMatchSnapshot()
   })
+
+  it('can access records via EntityManager', async () => {
+    const response = await supertest(app.nodeServer)
+      .get('/database-test/persons2')
+      .expect(200)
+      .expect('Content-Type', /json/)
+
+    expect(response.body).toMatchSnapshot()
+  })
+
+  it('can access records via connection', async () => {
+    const response = await supertest(app.nodeServer)
+      .get('/database-test/persons3')
+      .expect(200)
+      .expect('Content-Type', /json/)
+
+    expect(response.body).toMatchSnapshot()
+  })
 })
