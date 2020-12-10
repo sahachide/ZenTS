@@ -8,6 +8,15 @@ export async function mockZenApp(basePath: string): Promise<ZenApp> {
     web: {
       port: Math.floor(Math.random() * 30000) + 5000,
     },
+    database: {
+      enable: true,
+      type: 'postgres',
+      host: 'localhost',
+      port: 54321,
+      username: 'test',
+      password: 'test',
+      database: 'test',
+    },
     paths: {
       base: {
         src: join(process.cwd(), basePath, 'src'),
