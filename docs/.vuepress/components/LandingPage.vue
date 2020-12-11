@@ -156,7 +156,7 @@
         <div class="d-flex justify-content-center">
           <div class="sandbox-container">
             <iframe
-              src="https://codesandbox.io/embed/zents-example-app-o33qb?expanddevtools=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcontroller%2FIndexController.ts&theme=dark"
+              src="https://codesandbox.io/embed/zents-example-app-9rk7m?fontsize=14&hidenavigation=1&theme=dark"
               style="width: 100%; height: 500px; border: 0; border-radius: 4px; overflow: hidden"
               title="ZenTS Example App"
               allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
