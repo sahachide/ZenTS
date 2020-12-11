@@ -16,10 +16,6 @@ meta:
 
 ZenTS is still under heavy development and not ready for production use yet (breaking changes can be introduces at any time). The Roadmap describes the missing modules, features and tools need to be finished before a stable release (v1.0.0) is going to happen.
 
-## User & Session Management
-
-If you're writing a e-commerce shop, a social network or a blog system, you often need some way to remember users in your application. Currently ZenTS doesn't support any user or session management, but it's planned to a full-fledged user system management, with protected routes, easy to use user handling API and different session storages including custom session data for each user.
-
 ## REST API support
 
 With the current controller implementation you can already create REST APIs quite easily. But that isn't enough yet, ZenTS will feature a 1st level support for building REST JSON APIs super fast, with automatic bindings to entities and protected endpoints.
