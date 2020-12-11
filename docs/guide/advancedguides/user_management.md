@@ -218,7 +218,7 @@ A user can be injected into a controller action using the `@session()` decorator
 ```typescript{9-14}
 import type { EntityManager } from 'typeorm'
 import type { Session } from 'zents'
-import { auth, Controller, get, session } from 'zents'
+import { auth, Controller, get, session, log } from 'zents'
 
 import { User } from '../entity/User'
 
@@ -233,7 +233,7 @@ export default class extends Controller {
 
   @auth()
   @get('/member-area')
-  public async example(@session() session: Session<User>) {
+  public async memberArea(@session() session: Session<User>) {
     log.info(session.user)
   }
 }
