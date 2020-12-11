@@ -13,8 +13,6 @@
 
 ZenTS is a fast and modern MVC framework for Node.js & TypeScript.
 
-> **Warning**: ZenTS is still **_under heavy development_** and **_not_** ready for production use yet (breaking changes can be introduces at any time). Please report any issues on [GitHub](https://github.com/sahachide/ZenTS/issues).
-
 ## Quick Start
 
 ZenTS is a [Node.js](https://nodejs.org) framework and available through the
@@ -47,11 +45,11 @@ The above command will install the latest version of the CLI globally and create
 
 Head over to the [official website](https://zents.dev) and read the [documentation](https://zents.dev/guide/).
 
-## Whats new in v0.2.0
+## Breaking changes in v0.3.0
 
-- Session and user managment
-- Redis support
-- Improved docs and types
+Version 0.3.0 introduced all new context decorators like `@body`, `@params` and `@context`. Previously to v0.3.0 every controller action was passed a `context` argument, this is not the case anymore. The dependency injection system cares now about which context interfaces are necessary for a controller action. Thus, you've to use the new decorators for accessing things like the request body. The easiest way to upgrade to v0.3.0 is to use the `@context` decorator, which is the same, then the `context` argument used in v0.2.0.
+
+Check out the [controller documentation](https://zents.dev/guide/advancedguides/controllers) for more information.
 
 ## License
 
