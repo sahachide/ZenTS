@@ -2,22 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [0.2.1](https://github.com/sahachide/ZenTS/compare/v0.2.0...v0.2.1) (2020-12-11)
-
-
-### Features
-
-* limit exported members to only useful properties ([a2d065b](https://github.com/sahachide/ZenTS/commit/a2d065b22aadadc9cac8e41331812a45de82fc37))
-* **cookie:** allow expire to be given as ms (number) or string (time string) ([3984632](https://github.com/sahachide/ZenTS/commit/3984632cc58b470f21638649d71d00a1047ef970))
-* add [@body](https://github.com/body) context annotation ([7701b76](https://github.com/sahachide/ZenTS/commit/7701b76b8f0417087b7b15e9b5eeed5baa199df5))
-* add [@context](https://github.com/context) annotation ([ed7697b](https://github.com/sahachide/ZenTS/commit/ed7697bdbe0d0523e01bbd8d28f805e0b353586c))
-* add [@cookie](https://github.com/cookie) context annotation ([3d5381f](https://github.com/sahachide/ZenTS/commit/3d5381f8e44d17747ecbf288e26ccfaa3e857d9a))
-* add [@error](https://github.com/error) context annotation ([e140d65](https://github.com/sahachide/ZenTS/commit/e140d655e06102e38f14e534003379a003201403))
-* add [@params](https://github.com/params) context annotation ([34f3a5e](https://github.com/sahachide/ZenTS/commit/34f3a5e7c2d7244335f5b4ca34657b72834a20b7))
-* add [@query](https://github.com/query) context annotation ([1234ee8](https://github.com/sahachide/ZenTS/commit/1234ee86390922f24819fa383349edc2cf800b53))
-* add [@request](https://github.com/request) and [@req](https://github.com/req) context annotation ([944b3d1](https://github.com/sahachide/ZenTS/commit/944b3d106328cc91dc6c0f4f9a7be326550296a2))
-* add [@response](https://github.com/response) and [@res](https://github.com/res) context annotation ([c7a29ea](https://github.com/sahachide/ZenTS/commit/c7a29ead7b7fce761480cab7d7ec4e27ae4ad685))
-
 ## [0.2.0](https://github.com/sahachide/ZenTS/compare/v0.1.2...v0.2.0) (2020-10-19)
 
 
