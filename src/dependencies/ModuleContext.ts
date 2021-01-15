@@ -1,6 +1,7 @@
 import type { Connection } from 'typeorm'
 import { DB_TYPE } from '../types'
 import type { DatabaseContainer } from '../database/DatabaseContainer'
+import type { EmailFactory } from '../email/EmailFactory'
 import type { Redis } from 'ioredis'
 import type { SecurityProvider } from '../security/SecurityProvider'
 import type { SecurityProviders } from '../types/types'
@@ -9,6 +10,7 @@ import type { SessionFactory } from '../security/SessionFactory'
 export class ModuleContext {
   constructor(
     protected readonly databaseContainer: DatabaseContainer,
+    protected readonly emailFactory: EmailFactory,
     protected readonly sessionFactory: SessionFactory,
     protected readonly securityProviders: SecurityProviders,
   ) {}
@@ -26,5 +28,8 @@ export class ModuleContext {
   }
   public getSessionFactory(): SessionFactory {
     return this.sessionFactory
+  }
+  public getEmailFactory(): EmailFactory {
+    return this.emailFactory
   }
 }

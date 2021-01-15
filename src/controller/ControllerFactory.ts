@@ -3,6 +3,7 @@ import { Environment, Loader } from '../template/'
 
 import { AbstractFactory } from '../core/AbstractFactory'
 import type { DatabaseContainer } from '../database/DatabaseContainer'
+import type { EmailFactory } from '../email/EmailFactory'
 import type { SessionFactory } from '../security/SessionFactory'
 
 export class ControllerFactory extends AbstractFactory {
@@ -10,6 +11,7 @@ export class ControllerFactory extends AbstractFactory {
 
   constructor(
     protected readonly controllers: Controllers,
+    emailFactory: EmailFactory,
     sessionFactory: SessionFactory,
     securityProviders: SecurityProviders,
     databaseContainer: DatabaseContainer,
@@ -21,6 +23,7 @@ export class ControllerFactory extends AbstractFactory {
     this.templateEnvironment = new Environment(templateLoader, templateData)
     this.injector = this.buildInjector({
       databaseContainer,
+      emailFactory,
       securityProviders,
       sessionFactory,
     })

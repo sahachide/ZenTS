@@ -1,6 +1,6 @@
-import {
+import type {
   Controllers,
-  DB_TYPE,
+  EmailTemplates,
   Entities,
   RegistryFactories,
   SecurityProviders,
@@ -10,7 +10,9 @@ import {
 
 import type { Connection } from 'typeorm'
 import { ControllerFactory } from '../controller/ControllerFactory'
+import { DB_TYPE } from '../types'
 import { DatabaseContainer } from '../database/DatabaseContainer'
+import { EmailFactory } from '../email'
 import type { Redis } from 'ioredis'
 import { RequestFactory } from '../http/RequestFactory'
 import { RouterFactory } from '../router/RouterFactory'
@@ -24,24 +26,34 @@ export class Registry {
     protected readonly controllers: Controllers,
     protected readonly services: Services,
     templateData: TemplateEngineLoaderResult,
+    emailTemplates: EmailTemplates,
     protected readonly databaseContainer: DatabaseContainer,
     protected readonly entities: Entities,
     protected readonly securityProviders: SecurityProviders,
   ) {
     const sessionFactory = new SessionFactory(securityProviders, databaseContainer)
+    const emailFactory = new EmailFactory(emailTemplates)
 
     this.factories = {
       router: new RouterFactory(),
       controller: new ControllerFactory(
         controllers,
+        emailFactory,
         sessionFactory,
         securityProviders,
         databaseContainer,
         templateData,
       ),
       request: new RequestFactory(this),
-      service: new ServiceFactory(services, sessionFactory, securityProviders, databaseContainer),
+      service: new ServiceFactory(
+        services,
+        emailFactory,
+        sessionFactory,
+        securityProviders,
+        databaseContainer,
+      ),
       session: sessionFactory,
+      email: emailFactory,
     }
   }
 

@@ -18,6 +18,7 @@ export const defaultConfig: ZenConfig = {
     template: './template/',
     service: './service/',
     entity: './entity/',
+    email: './email/',
     public: join(appDir, 'public'),
   },
   web: {
@@ -49,6 +50,9 @@ export const defaultConfig: ZenConfig = {
     throwOnUndefined: false,
     trimBlocks: false,
     lstripBlocks: false,
+  },
+  email: {
+    engine: 'mjml',
   },
   log: {
     level: 'info',

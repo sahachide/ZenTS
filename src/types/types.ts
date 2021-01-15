@@ -40,6 +40,8 @@ export type DatabaseObjectType<T> = T extends DB_TYPE.ORM ? Connection : Redis
 
 export type Entities = Map<string, Class>
 
+export type EmailTemplates = Map<string, string>
+
 export type ErrorResponseData = JsonObject | JsonArray
 
 // ---- F
