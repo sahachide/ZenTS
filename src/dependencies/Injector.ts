@@ -19,6 +19,7 @@ import { BodyContextAction } from './InjectorAction/BodyContextAction'
 import type { Class } from 'type-fest'
 import type { Context } from '../http/Context'
 import { CookieContextAction } from './InjectorAction/CookieContextAction'
+import { EmailAction } from './InjectorAction/EmailAction'
 import { ErrorContextAction } from './InjectorAction/ErrorContextAction'
 import type { ModuleContext } from './ModuleContext'
 import { ParamsContextAction } from './InjectorAction/ParamsContextAction'
@@ -63,6 +64,7 @@ export class Injector {
       new CookieContextAction(this, context),
       new RequestContextAction(this, context),
       new ResponseContextAction(this, context),
+      new EmailAction(this),
       new ErrorContextAction(this, context),
       new AllContextAction(this, context),
     ]

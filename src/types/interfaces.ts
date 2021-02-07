@@ -5,6 +5,7 @@ import type {
   HTTPMethod,
   HeaderValue,
   LogLevel,
+  MailOptions,
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
@@ -14,6 +15,7 @@ import type { ConnectionOptions } from 'typeorm'
 import type { Context as ContextClass } from '../http/Context'
 import type { ControllerFactory } from '../controller/ControllerFactory'
 import type { EmailFactory } from '../email/EmailFactory'
+import type { HtmlToTextOptions } from 'html-to-text'
 import type { RedisOptions } from 'ioredis'
 import type { Request } from '../http/Request'
 import type { RequestFactory } from '../http/RequestFactory'
@@ -168,6 +170,15 @@ export interface LoadModuleResult<T> {
 }
 
 // ---- M
+
+export interface MailResponse {
+  messageId?: string
+  envelope: Record<string, unknown>
+  accepted: string[]
+  rejected: string[]
+  pending: string[]
+  response: string
+}
 
 export interface ModuleDependency {
   propertyKey: string
@@ -470,12 +481,11 @@ export interface ZenConfig {
       | 'hex'
   }
   email?: {
-    defaults?: {
-      to?: string
-      cc?: string
-      bcc?: string
-      from?: string
-      topic?: string
+    enable?: boolean
+    engine?: 'mjml' | 'nunjucks' | 'plain'
+    mailOptions?: Partial<MailOptions>
+    htmlToText?: HtmlToTextOptions & {
+      enable?: boolean
     }
     host?: string
     port?: number
@@ -500,7 +510,6 @@ export interface ZenConfig {
     maxMessages?: number
     rateDelta?: number
     rateLimit?: number
-    engine?: 'mjml' | 'nunjucks' | 'plain'
     mjml?: {
       fonts?: {
         [key: string]: string

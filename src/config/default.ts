@@ -52,7 +52,11 @@ export const defaultConfig: ZenConfig = {
     lstripBlocks: false,
   },
   email: {
+    enable: false,
     engine: 'mjml',
+    htmlToText: {
+      enable: true,
+    },
   },
   log: {
     level: 'info',

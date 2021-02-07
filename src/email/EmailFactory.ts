@@ -1,50 +1,36 @@
-import type { EmailTemplates } from '../types/types'
-import type { Transport } from 'nodemailer'
+import type { EmailTemplates, MailOptions } from '../types/types'
+
+import type { MailResponse } from '../types/interfaces'
+import type { Transporter } from 'nodemailer'
 import { config } from '../config/config'
 import { createTransport } from 'nodemailer'
+import { htmlToText } from 'html-to-text'
 import { log } from '../log/logger'
 import mjml2html from 'mjml'
 import { renderString } from 'nunjucks'
 
 export class EmailFactory {
-  protected transporter: Transport | null
+  protected transporter: Transporter
 
   constructor(protected emailTemplates: EmailTemplates) {
-    if (typeof config.email?.host === 'string') {
-      this.transporter = (createTransport(config.email) as unknown) as Transport
+    if (config.email?.enable) {
+      this.transporter = createTransport(config.email)
     } else {
       this.transporter = null
     }
   }
-  public send({
-    to = config.email.defaults.to,
-    cc = config.email.defaults.cc,
-    bcc = config.email.defaults.bcc,
-    from = config.email.defaults.from,
-    topic = config.email.defaults.topic,
-    template,
-    payload = {},
-    engine = config.email.engine,
-  }: {
-    to: string
-    from?: string
-    cc?: string
-    bcc?: string
-    topic: string
-    template: string
-    payload?: Record<string, unknown>
-    engine?: string
-  }): void {
-    if (this.transporter === null) {
-      log.warn(
-        'Trying to send an E-Mail without proper email configuration. Please configure at least a email host',
-      )
 
-      return
-    } else if (!this.emailTemplates.has(template)) {
-      throw new Error(`Email template "${template}" not found!`)
+  public async send(options: MailOptions): Promise<MailResponse> {
+    if (this.transporter === null) {
+      throw new Error(
+        'Trying to send an E-Mail without proper email configuration. Please enable email in your ZenTS configuration before sending emails',
+      )
+    } else if (!this.emailTemplates.has(options.template)) {
+      throw new Error(`Email template "${options.template}" not found!`)
     }
 
+    const engine = options.engine ?? config.email.engine
+    const { template, payload } = options
     let content = this.emailTemplates.get(template)
 
     if (engine !== 'plain') {
@@ -62,5 +48,22 @@ export class EmailFactory {
 
       content = result.html
     }
+
+    const data: MailOptions =
+      typeof config.email.mailOptions === 'undefined'
+        ? options
+        : Object.assign({}, config.email.mailOptions, options)
+
+    if (engine !== 'plain') {
+      data.html = content
+
+      if (config.email?.htmlToText?.enable) {
+        data.text = htmlToText(content, config.email?.htmlToText)
+      }
+    } else if (!data.keepText) {
+      data.text = content
+    }
+
+    return (await this.transporter.sendMail(data)) as MailResponse
   }
 }
