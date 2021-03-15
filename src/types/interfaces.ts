@@ -107,6 +107,17 @@ export interface ErrorResponsePayload {
 
 // ---- F
 
+export interface File {
+  size: number
+  path: string
+  name: string
+  type: string
+  lastModifiedDate?: Date
+  hash?: string
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  toJSON(): Object
+}
+
 export interface FileSessionStoreAdapterFileContent {
   sessionId: string
   createdAt: string
@@ -192,16 +203,7 @@ export interface ModuleDependency {
 export interface ParsedBody {
   fields: JsonObject
   files: {
-    [key: string]: {
-      size: number
-      path: string
-      name: string
-      type: string
-      lastModifiedDate?: Date
-      hash?: string
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      toJSON(): Object
-    }
+    [key: string]: File | File[]
   }
 }
 
