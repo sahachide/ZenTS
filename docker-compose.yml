@@ -12,3 +12,12 @@ services:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
       POSTGRES_DB: test
+
+  mailcatcher:
+    container_name: mailcatcher
+    build:
+      context: docker/services/mailcatcher
+      dockerfile: Dockerfile
+    ports:
+      - 1080:1080
+      - 1025:1025

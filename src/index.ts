@@ -11,8 +11,10 @@ export { log } from './log/'
 export { SecurityProviderOptions, SecurityProvider } from './security/'
 export {
   Context,
+  Email,
   TemplateFilter,
   QueryString,
+  MailOptions,
   InjectedConnection,
   InjectedEntityManager,
   InjectedRepository,

@@ -14,8 +14,11 @@ import type {
 import type { IncomingMessage, ServerResponse } from 'http'
 
 import type { DB_TYPE } from './enums'
+import type { EmailFactory } from '../email/EmailFactory'
+import type { HtmlToTextOptions } from 'html-to-text'
 import type { Redis } from 'ioredis'
 import type { SecurityProvider } from '../security/SecurityProvider'
+import type { SendMailOptions } from 'nodemailer'
 import type { Stream } from 'stream'
 import type { TemplateResponse } from '../template/TemplateResponse'
 import type findMyWay from 'find-my-way'
@@ -39,6 +42,10 @@ export type DatabaseObjectType<T> = T extends DB_TYPE.ORM ? Connection : Redis
 // ---- E
 
 export type Entities = Map<string, Class>
+
+export type Email = EmailFactory
+
+export type EmailTemplates = Map<string, string>
 
 export type ErrorResponseData = JsonObject | JsonArray
 
@@ -101,6 +108,16 @@ export type LoaderTemplates = Map<string, LoaderTemplateItem>
 export type LogLevel = 'fatal' | 'error' | 'warn' | 'log' | 'info' | 'success' | 'debug' | 'trace'
 
 // ---- M
+
+export type MailOptions = Partial<SendMailOptions> &
+  Partial<HtmlToTextOptions> & {
+    template: string
+    payload?: Record<string, unknown>
+    engine?: string
+    keepHtml?: boolean
+    keepText?: boolean
+  }
+
 // ---- N
 
 export type NunjucksFilterCallback = (err: any, result: any) => void

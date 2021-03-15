@@ -5,6 +5,7 @@ import type {
   HTTPMethod,
   HeaderValue,
   LogLevel,
+  MailOptions,
   TemplateFileExtension,
   TemplateFiltersMap,
 } from './types'
@@ -13,6 +14,8 @@ import type { REPOSITORY_TYPE, REQUEST_TYPE, SECURITY_ACTION } from './enums'
 import type { ConnectionOptions } from 'typeorm'
 import type { Context as ContextClass } from '../http/Context'
 import type { ControllerFactory } from '../controller/ControllerFactory'
+import type { EmailFactory } from '../email/EmailFactory'
+import type { HtmlToTextOptions } from 'html-to-text'
 import type { RedisOptions } from 'ioredis'
 import type { Request } from '../http/Request'
 import type { RequestFactory } from '../http/RequestFactory'
@@ -21,6 +24,7 @@ import type { SecurityProvider } from '../security/SecurityProvider'
 import type { ServiceFactory } from '../service/ServiceFactory'
 import type { Session as SessionClass } from '../security/Session'
 import type { SessionFactory } from '../security'
+import type { ConnectionOptions as TLSConnectionOptions } from 'tls'
 
 // ---- A
 // ---- B
@@ -167,6 +171,15 @@ export interface LoadModuleResult<T> {
 
 // ---- M
 
+export interface MailResponse {
+  messageId?: string
+  envelope: Record<string, unknown>
+  accepted: string[]
+  rejected: string[]
+  pending: string[]
+  response: string
+}
+
 export interface ModuleDependency {
   propertyKey: string
   dependency: Class
@@ -229,6 +242,7 @@ export interface RegistryFactories {
   request: RequestFactory
   service: ServiceFactory
   session: SessionFactory
+  email: EmailFactory
 }
 
 export interface RequestConfigController {
@@ -383,6 +397,7 @@ export interface ZenConfig {
     template?: string
     service?: string
     entity?: string
+    email?: string
     public?: string | boolean
   }
   web?: {
@@ -464,6 +479,56 @@ export interface ZenConfig {
       | 'latin1'
       | 'binary'
       | 'hex'
+  }
+  email?: {
+    enable?: boolean
+    engine?: 'mjml' | 'nunjucks' | 'plain'
+    mailOptions?: Partial<MailOptions>
+    htmlToText?: HtmlToTextOptions & {
+      enable?: boolean
+    }
+    host?: string
+    port?: number
+    auth?: any
+    secure?: boolean
+    ignoreTLS?: boolean
+    requireTLS?: boolean
+    opportunisticTLS?: boolean
+    name?: string
+    localAddress?: string
+    connectionTimeout?: number
+    greetingTimeout?: number
+    socketTimeout?: number
+    transactionLog?: boolean
+    debug?: boolean
+    authMethod?: string
+    tls?: TLSConnectionOptions
+    url?: string
+    service?: string
+    pool?: boolean
+    maxConnections?: number
+    maxMessages?: number
+    rateDelta?: number
+    rateLimit?: number
+    mjml?: {
+      fonts?: {
+        [key: string]: string
+      }
+      keepComments?: boolean
+      minify?: boolean
+      minifyOptions?: {
+        collapseWhitespace?: boolean
+        minifyCSS?: boolean
+        removeEmptyAttributes?: boolean
+      }
+      validationLevel?: 'strict' | 'soft' | 'skip'
+      filePath?: string
+      mjmlConfigPath?: string
+      useMjmlConfigOptions?: boolean
+      juicePreserveTags?: { [index: string]: { start: string; end: string } }
+      juiceOptions?: any
+      preprocessors?: Array<(xml: string) => string>
+    }
   }
   log?: {
     level?: LogLevel

@@ -1,5 +1,6 @@
 import type {
   Controllers,
+  EmailTemplates,
   Entities,
   SecurityProviders,
   Services,
@@ -8,6 +9,7 @@ import type {
 
 import { ControllerLoader } from '../controller/ControllerLoader'
 import { DatabaseContainer } from '../database/DatabaseContainer'
+import { EmailTemplateLoader } from '../email/EmailTemplateLoader'
 import { EntityLoader } from '../database/EntityLoader'
 import { Registry } from './Registry'
 import { SecurityProviderLoader } from '../security/SecurityProviderLoader'
@@ -22,6 +24,7 @@ export class AutoLoader {
       controllers,
       services,
       templateData,
+      emailTemplates,
       entities,
       connection,
       redisClient,
@@ -29,6 +32,7 @@ export class AutoLoader {
       this.loadControllers(),
       this.loadServices(),
       this.loadTemplateData(),
+      this.loadEmailTemplates(),
       this.loadEntities(),
       createConnection(),
       createRedisClient(),
@@ -41,12 +45,22 @@ export class AutoLoader {
       controllers,
       services,
       templateData,
+      emailTemplates,
       databaseContainer,
       entities,
       securityProviders,
     )
 
     return registry
+  }
+
+  protected loadSecurityProviders(
+    entities: Entities,
+    databaseContainer: DatabaseContainer,
+  ): SecurityProviders {
+    const securityProviderLoader = new SecurityProviderLoader()
+
+    return securityProviderLoader.load(entities, databaseContainer)
   }
 
   protected async loadControllers(): Promise<Controllers> {
@@ -73,12 +87,9 @@ export class AutoLoader {
     return await entityLoader.load()
   }
 
-  protected loadSecurityProviders(
-    entities: Entities,
-    databaseContainer: DatabaseContainer,
-  ): SecurityProviders {
-    const securityProviderLoader = new SecurityProviderLoader()
+  protected async loadEmailTemplates(): Promise<EmailTemplates> {
+    const emailTemplateLoader = new EmailTemplateLoader()
 
-    return securityProviderLoader.load(entities, databaseContainer)
+    return await emailTemplateLoader.load()
   }
 }

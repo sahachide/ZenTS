@@ -1,4 +1,5 @@
 import type { DatabaseContainer } from '../database/DatabaseContainer'
+import type { EmailFactory } from '../email/EmailFactory'
 import { Injector } from '../dependencies/Injector'
 import { ModuleContext } from '../dependencies/ModuleContext'
 import type { SecurityProviders } from '../types/types'
@@ -13,14 +14,21 @@ export abstract class AbstractFactory {
 
   protected buildInjector({
     databaseContainer,
+    emailFactory,
     securityProviders,
     sessionFactory,
   }: {
     databaseContainer: DatabaseContainer
+    emailFactory: EmailFactory
     securityProviders: SecurityProviders
     sessionFactory: SessionFactory
   }): Injector {
-    const context = new ModuleContext(databaseContainer, sessionFactory, securityProviders)
+    const context = new ModuleContext(
+      databaseContainer,
+      emailFactory,
+      sessionFactory,
+      securityProviders,
+    )
     const injector = new Injector(context)
 
     return injector

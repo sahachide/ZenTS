@@ -43,6 +43,7 @@ export enum REFLECT_METADATA {
   DATABASE_EM = 'database:em',
   DATABASE_REPOSITORY = 'database:repository',
   DEPENDENCIES = 'dependencies',
+  EMAIL = 'email',
   HTTP_METHOD = 'httpMethod',
   REDIS_CLIENT = 'redisClient',
   SECURITY_PROVIDER = 'securityProvider',
