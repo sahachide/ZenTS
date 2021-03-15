@@ -17,6 +17,15 @@ export async function mockZenApp(basePath: string): Promise<ZenApp> {
       password: 'test',
       database: 'test',
     },
+    email: {
+      enable: true,
+      engine: 'mjml',
+      host: 'localhost',
+      port: 1025,
+      mailOptions: {
+        from: 'test@zents.dev',
+      },
+    },
     paths: {
       base: {
         src: join(process.cwd(), basePath, 'src'),

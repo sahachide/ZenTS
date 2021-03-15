@@ -1,0 +1,7 @@
+<mjml version="3.3.3">
+  <mj-body background-color="#F4F4F4">
+    <mj-section padding="20px 0">
+      <mj-column> Hello world </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

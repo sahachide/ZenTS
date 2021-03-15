@@ -22,7 +22,7 @@ describe('ControllerFactory', () => {
   })
 
   it('should build controller', () => {
-    const controllerFactory = new ControllerFactory(controllers, null, null, null, {
+    const controllerFactory = new ControllerFactory(controllers, null, null, null, null, {
       files: [],
       filters: new Map(),
     })
@@ -38,7 +38,7 @@ describe('ControllerFactory', () => {
   })
 
   it('should inject dependencies', () => {
-    const controllerFactory = new ControllerFactory(controllers, null, null, null, {
+    const controllerFactory = new ControllerFactory(controllers, null, null, null, null, {
       files: [],
       filters: new Map(),
     })
