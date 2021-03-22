@@ -38,6 +38,7 @@ The above command will install the latest version of the CLI globally and create
 - Ships with TypeORM out-of-the-box
 - Includes a battle tested template engine (Nunjucks)
 - Easy accessible request and response context
+- Email handling with responsive render engine
 - Auto response workflows
 - [Many, many more](https://zents.dev)
 
