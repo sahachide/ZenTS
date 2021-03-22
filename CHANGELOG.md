@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/sahachide/ZenTS/compare/v0.3.0...v0.4.0) (2021-03-22)
+
+
+### Features
+
+* add email support with MJML and nunjucks engine (or just plain text) ([35544a3](https://github.com/sahachide/ZenTS/commit/35544a30c5fdda2f8943d42433c5b9015ec6d4f3))
+* add email support with MJML and nunjucks engine (or just plain text) ([cb59d67](https://github.com/sahachide/ZenTS/commit/cb59d67180a4b5165ed4372c47f8fd9d9c8d87ba))
+
 ## [0.3.0](https://github.com/sahachide/ZenTS/compare/v0.2.0...v0.3.0) (2020-12-11)
 
 
