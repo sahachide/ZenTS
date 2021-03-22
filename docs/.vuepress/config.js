@@ -262,6 +262,7 @@ module.exports = {
             '/guide/advancedguides/static_files',
             '/guide/advancedguides/services',
             '/guide/advancedguides/dependency_injection',
+            '/guide/advancedguides/emails',
           ],
         },
         '/configuration',

@@ -577,6 +577,34 @@ The build in template engine, [Nunjucks](https://mozilla.github.io/nunjucks/), s
 - `template.tags` (object)
   Overwrites the syntax for template tags. See the [official documentation](https://mozilla.github.io/nunjucks/api.html#customizing-syntax) for more information.
 
+### EMail related options
+
+The email system uses various packages that can be configured inside your application. Please refer to the [nodemailer](https://nodemailer.com) documentation for all configuration parameter like `host` and `port`. Furthermore the following ZenTS related properties are supported.
+
+- `email.enable` (boolean, default: `false`):
+  Set this value to `true` to enable email support.
+
+- `email.engine` (string, default: `mjml`):
+  The engine to use when rendering email templates. Either `mjml`, `nunjucks` or `plain`.
+
+- `email.mailOptions` (object):
+  The default options that will be used when sending mails through [nodemailer](https://nodemailer.com/message/). Supports all SendMail options from [nodemailer](https://nodemailer.com/message/) and [html-to-text](https://github.com/html-to-text/node-html-to-text). Furthermore the following ZenTS related options are supported:
+
+- `email.mailOptions.template` (string):
+  The default template used when rendering emails (`mjml` or `nunjucks` engine only).
+
+- `email.mailOptions.keepText` (boolean):
+  Don't overwrite text content with html-to-text module.
+
+- `email.htmlToText` (object):
+  All options from [html-to-text](https://github.com/html-to-text/node-html-to-text) are supported.
+
+- `email.htmlToText` (boolean, default: `true`):
+  Enable or disable text content generator.
+
+- `email.mjml` (object):
+  Please see the [MJML](https://documentation.mjml.io/#inside-node-js) documentation for all supported config values.
+
 ### Log related options
 
 - `log.level` (string, default: `info`):

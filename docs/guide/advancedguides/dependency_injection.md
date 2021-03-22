@@ -159,6 +159,4 @@ Of course, no technology comes without a flaw, so does dependency injection. Pro
 
 Congrats :tada: :tada: :tada:
 
-You've just learned what is dependency injection and how to use it in a ZenTS web application. Now you should be familiar with all aspects on how to develop awesome applications with ZenTS. You can dig even deeper into it by reading the [API reference](./../../api/) or learn more about the [CLI](./../../cli.md).
-
-Nevertheless, thank you for reading this guide and using ZenTS. And of course, happy coding :purple_heart:
+You've just learned what is dependency injection and how to use it in a ZenTS web application. Want to dig deeper? Check out the [sending emails guide](./emails.md) and learn how to send responsive emails with ZenTS.

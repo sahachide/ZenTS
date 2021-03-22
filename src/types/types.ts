@@ -114,7 +114,6 @@ export type MailOptions = Partial<SendMailOptions> &
     template: string
     payload?: Record<string, unknown>
     engine?: string
-    keepHtml?: boolean
     keepText?: boolean
   }
 
