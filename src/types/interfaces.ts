@@ -8,6 +8,7 @@ import type {
   MailOptions,
   TemplateFileExtension,
   TemplateFiltersMap,
+  ValidationSchema,
 } from './types'
 import type { REPOSITORY_TYPE, REQUEST_TYPE, SECURITY_ACTION } from './enums'
 
@@ -74,6 +75,7 @@ export interface Route {
   path: string
   controllerMethod?: string
   authProvider?: string
+  validationSchema?: ValidationSchema
 }
 
 export interface CommonJSZenModule<T> {

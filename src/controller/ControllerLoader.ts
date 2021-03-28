@@ -1,7 +1,8 @@
-import type { Controllers, HTTPMethod, Route } from '../types/'
+import type { Controllers, HTTPMethod, Route, ValidationSchema } from '../types/'
 
 import { AbstractZenFileLoader } from '../filesystem/AbstractZenFileLoader'
 import type { Class } from 'type-fest'
+import Joi from 'joi'
 import { REFLECT_METADATA } from '../types/enums'
 import { fs } from '../filesystem/FS'
 import { log } from '../log/logger'
@@ -60,37 +61,49 @@ export class ControllerLoader extends AbstractZenFileLoader {
         method,
       ) as HTTPMethod
 
-      if (httpMethod) {
-        const route: Route = {
-          method: httpMethod.toUpperCase() as HTTPMethod,
-          path: '',
-          controllerMethod: method,
-        }
-
-        let urlPath = Reflect.getMetadata(
-          REFLECT_METADATA.URL_PATH,
-          classModule.prototype,
-          method,
-        ) as string
-
-        if (prefix.length && !urlPath.startsWith('/')) {
-          urlPath = `/${urlPath}`
-        }
-
-        route.path = `${prefix}${urlPath}`
-
-        const authProvider = Reflect.getMetadata(
-          REFLECT_METADATA.AUTH_PROVIDER,
-          classModule.prototype,
-          method,
-        ) as string
-
-        if (typeof authProvider === 'string') {
-          route.authProvider = authProvider
-        }
-
-        routes.push(route)
+      if (typeof httpMethod !== 'string') {
+        continue
       }
+
+      const route: Route = {
+        method: httpMethod.toUpperCase() as HTTPMethod,
+        path: '',
+        controllerMethod: method,
+      }
+
+      let urlPath = Reflect.getMetadata(
+        REFLECT_METADATA.URL_PATH,
+        classModule.prototype,
+        method,
+      ) as string
+
+      if (prefix.length && !urlPath.startsWith('/')) {
+        urlPath = `/${urlPath}`
+      }
+
+      route.path = `${prefix}${urlPath}`
+
+      const authProvider = Reflect.getMetadata(
+        REFLECT_METADATA.AUTH_PROVIDER,
+        classModule.prototype,
+        method,
+      ) as string
+
+      if (typeof authProvider === 'string') {
+        route.authProvider = authProvider
+      }
+
+      const validationSchema = Reflect.getMetadata(
+        REFLECT_METADATA.VALIDATION_SCHEMA,
+        classModule.prototype,
+        method,
+      ) as ValidationSchema
+
+      if (Joi.isSchema(validationSchema)) {
+        route.validationSchema = validationSchema
+      }
+
+      routes.push(route)
     }
 
     return routes

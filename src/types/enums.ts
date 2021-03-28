@@ -50,6 +50,7 @@ export enum REFLECT_METADATA {
   SESSION = 'session',
   URL_PATH = 'urlPath',
   URL_PREFIX = 'urlPrefix',
+  VALIDATION_SCHEMA = 'validationSchema',
 }
 
 export enum REQUEST_TYPE {

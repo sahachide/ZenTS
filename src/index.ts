@@ -6,7 +6,7 @@ export { zen, ZenApp } from './core/'
 export { createConnection, createRedisClient } from './database/'
 export * from './decorators/'
 export { fs } from './filesystem/'
-export { Request, Response, ResponseError, ResponseHeader, Server } from './http/'
+export { Request, Response, ResponseError, ResponseHeader, Server, validate } from './http/'
 export { log } from './log/'
 export { SecurityProviderOptions, SecurityProvider } from './security/'
 export {

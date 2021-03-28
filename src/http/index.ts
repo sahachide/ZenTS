@@ -8,5 +8,6 @@ export * from './RequestHeader'
 export * from './RequestFactory'
 export * from './BodyParser'
 export * from './requesthandlers'
+export * from './validate'
 
 // export * from './Context' -> use Context interface instead

@@ -28,6 +28,9 @@ export class IncomingRequest {
           sessionId: authentication.sessionId,
         }
       }
+
+      await this.validate(context, route)
+
       const handler = factory.build(context, requestConfig, route)
 
       await handler.run()
@@ -48,6 +51,18 @@ export class IncomingRequest {
     await context.build(req, res, params)
 
     return context
+  }
+
+  protected async validate(context: Context, route: Route): Promise<void> {
+    if (typeof route.validationSchema === 'undefined') {
+      return
+    }
+
+    const test = route.validationSchema.validate(context.req.body)
+    // console.log(context.req.body)
+
+    // console.log(test)
+    // console.log(test.error.details)
   }
 
   protected async authenticate(
