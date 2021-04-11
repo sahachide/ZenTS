@@ -82,8 +82,7 @@ When creating a new user account, make sure to save the password with the right 
 
 ```typescript{22,24,26-27,29}
 import type { EntityManager } from 'typeorm'
-import type { SecurityProvider } from 'zents'
-import { body, Controller, put, securityProvider, entityManager } from 'zents'
+import { body, Controller, put, securityProvider, SecurityProvider, entityManager } from 'zents'
 
 import { User } from '../entity/User'
 
