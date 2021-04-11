@@ -72,7 +72,7 @@ export class User {
   username: string
 
   @Column()
-  password: number
+  password: string
 }
 ```
 
