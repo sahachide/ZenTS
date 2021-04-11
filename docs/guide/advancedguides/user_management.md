@@ -208,7 +208,7 @@ Example using header strategy [configuration](./../../configuration.md):
 ```
 
 ::: warning
-Don't use this strategy if you intend to use auto redirect response, please use the auto json response type. Take a look at "[Auto redirect responses](#auto-redirect-responses)" section for more details.
+Don't use the "header" strategy if you intend to use auto redirect response, please use the auto json response type. Take a look at "[Auto redirect responses](#auto-redirect-responses)" section for more details.
 :::
 
 ## Accessing a user session
