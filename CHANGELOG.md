@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/sahachide/ZenTS/compare/v0.4.0...v0.5.0) (2021-04-24)
+
+
+### Features
+
+* add request body validator ([570ec7b](https://github.com/sahachide/ZenTS/commit/570ec7b13f853225fdf7b2d3ac6b5df0833dbe4f))
+* request body validation ([690a1ce](https://github.com/sahachide/ZenTS/commit/690a1cedff19197997fac6ca1f67e87032ae392f))
+
 ## [0.4.0](https://github.com/sahachide/ZenTS/compare/v0.3.0...v0.4.0) (2021-03-22)
 
 
