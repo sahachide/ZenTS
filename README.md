@@ -40,17 +40,12 @@ The above command will install the latest version of the CLI globally and create
 - Easy accessible request and response context
 - Email handling with responsive render engine
 - Auto response workflows
+- Validation
 - [Many, many more](https://zents.dev)
 
 ## Documentation
 
 Head over to the [official website](https://zents.dev) and read the [documentation](https://zents.dev/guide/).
-
-## Breaking changes in v0.3.0
-
-Version 0.3.0 introduced all new context decorators like `@body`, `@params` and `@context`. Previously to v0.3.0 every controller action was passed a `context` argument, this is not the case anymore. The dependency injection system cares now about which context interfaces are necessary for a controller action. Thus, you've to use the new decorators for accessing things like the request body. The easiest way to upgrade to v0.3.0 is to use the `@context` decorator, which is the same, then the `context` argument used in v0.2.0.
-
-Check out the [controller documentation](https://zents.dev/guide/advancedguides/controllers) for more information.
 
 ## License
 
