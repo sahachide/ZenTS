@@ -8,6 +8,7 @@ import type {
   MailOptions,
   TemplateFileExtension,
   TemplateFiltersMap,
+  ValidationSchema,
 } from './types'
 import type { REPOSITORY_TYPE, REQUEST_TYPE, SECURITY_ACTION } from './enums'
 
@@ -68,14 +69,6 @@ export interface ControllerDeclaration {
   module: Class
   routes: Route[]
 }
-
-export interface Route {
-  method: HTTPMethod
-  path: string
-  controllerMethod?: string
-  authProvider?: string
-}
-
 export interface CommonJSZenModule<T> {
   [key: string]: Class<T>
 }
@@ -247,6 +240,11 @@ export interface RegistryFactories {
   email: EmailFactory
 }
 
+export interface RequestValidationError {
+  message: string
+  path: (string | number)[]
+}
+
 export interface RequestConfigController {
   type: REQUEST_TYPE.CONTROLLER
   controllerKey: string
@@ -265,6 +263,14 @@ export interface RequestConfigSecurity {
   type: REQUEST_TYPE.SECURITY
   action: SECURITY_ACTION
   provider: SecurityProvider
+}
+
+export interface Route {
+  method: HTTPMethod
+  path: string
+  controllerMethod?: string
+  authProvider?: string
+  validationSchema?: ValidationSchema
 }
 
 // ---- S

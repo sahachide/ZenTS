@@ -560,7 +560,7 @@ Repositories can be injected into a controller / service method by using the `@r
 
 ```typescript
 import { Controller, entityManager, get, log, repository } from 'zents'
-import type { Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 
 import { Product } from '../entity/Product'
 
@@ -747,7 +747,7 @@ export class Product {
   })
   name: string
 
-  @ManyToOne((type) => Category, (category) => product.category)
+  @ManyToOne((type) => Category, (category) => category.products)
   category: Category
 }
 ```
@@ -755,7 +755,7 @@ export class Product {
 The above source code can be described like this:
 
 - _line 2_: Import the `Category` entity we just created.
-- _line 14-15_: Use the `@ManyToOne` annotation to create a relationship between many products and one category. The first argument have to return an entity (`Category`) and the second one has to be the property where the ORM will map the data of the foreign record (e.g. `product.category` will hold the category data when querying the product(s)).
+- _line 14-15_: Use the `@ManyToOne` annotation to create a relationship between many products and one category. The first argument have to return an entity (`Category`).
 
 ::: tip
 By default TypeORM assumes the foreign key column is in the schema `entityId` (e.g the category value will be stored in a `categoryId` column). If you wish to use a different join column, TypeORM exposes a `@JoinColumn` annotation, with which you can define the column name (e.g. `@JoinColumn({ name: 'category_id' })`). Read more about the `@JoinColumn` annotation in the [official documentation](https://github.com/typeorm/typeorm/blob/master/docs/relations.md#joincolumn-options).

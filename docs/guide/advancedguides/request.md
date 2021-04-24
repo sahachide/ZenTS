@@ -331,6 +331,37 @@ public createProduct(@body body: {
 
 As you see, handling body data is pretty easy in ZenTS.
 
+### Validating request body
+
+Sometimes you want to make sure that the data that is passed to your controller is correct in form and types. For that purpose, ZenTS exposes a `@validation()` annotation. With it, you can write fine-grained validation schemas for the request body of a controller:
+
+```typescript
+@post("/product")
+@validation(
+  validate.object({
+    name: validate.string().required().alphanum().min(5).max(50),
+    description: validate.string().max(255),
+    price: validate.integer().positive().required().limit(9999)
+  }),
+)
+public createProduct(@body body: {
+  name: string
+  description: string
+  price: number
+}) {}
+```
+
+Let's take a look what is happening here:
+
+- We added a `@validation()` annotation to our `@post` route. The validation is build with the help of the `validate` method. The `@validation()` and `validate` method are both exposed by the `zents` package.
+- With the `validate` method, we got a lot of useful functions that can describe how the request body should look like. In the above example the request is only accepted when `name` is a string between 5-50 characters long and only contains alphanumeric characters. Furthermore if the `name` property is missing in the request, it will be aborted because it's marked as required. `description` on the other hand is optional and can be maximal 255 characters long. `price` is required and has to be a positive integer with a maximum of `9999`.
+
+You don't have to worry about doing the validation by yourself in the controller. ZenTS will check the request body automatically and return a `422` http status code containing a detailed error information about which fields are wrong.
+
+::: tip
+For more information on how to structure the validation take a look at [joi](https://joi.dev/). All methods listen there can be used also with ZenTS `validate()` method, including changing the error messages and setting default values. Please make yourself familiar with [joi](https://joi.dev/), because it's a really powerful validation libary and with ZenTS, you can just use it out-of-the-box.
+:::
+
 ### And more...
 
 ZenTS use the great and fast [formidable package](https://www.npmjs.com/package/formidable) for parsing the request body. The package contains a lot of options and is well [documented](https://www.npmjs.com/package/formidable). All options are also supported by ZenTS (see [configuration guide](./../../configuration.md)).

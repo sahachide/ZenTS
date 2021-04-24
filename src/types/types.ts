@@ -1,3 +1,4 @@
+import type { ArraySchema, BooleanSchema, ObjectSchema } from 'joi'
 import type { Class, JsonArray, JsonObject, JsonValue, Promisable } from 'type-fest'
 import type { Connection, EntityManager, Repository } from 'typeorm'
 import type {
@@ -47,7 +48,7 @@ export type Email = EmailFactory
 
 export type EmailTemplates = Map<string, string>
 
-export type ErrorResponseData = JsonObject | JsonArray
+export type ErrorResponseData = Record<string, unknown> | JsonArray
 
 // ---- F
 // ---- G
@@ -173,6 +174,9 @@ export type TemplateFiltersMap = Map<string, TemplateFiltersMapItem>
 
 // ---- U
 // ---- V
+
+export type ValidationSchema = ObjectSchema | ArraySchema | BooleanSchema
+
 // ---- W
 // ---- X
 // ---- Y

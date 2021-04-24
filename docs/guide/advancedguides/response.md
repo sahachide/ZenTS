@@ -229,7 +229,7 @@ In complex web-application things go wrong. For example, in a REST-API your cont
 An example is always more helpful then thousand words, so lets take a look at the following code of a controller action that returns a product as _JSON_.
 
 ```typescript
-import {  Controller, get, log } from 'zents';
+import {  Controller, get, error, ResponseError, log } from 'zents';
 
 const products = [
   {
@@ -244,7 +244,7 @@ const products = [
 
 export default extends Controller {
   @get('/product/:productId')
-  public async product(@params params, @error error) {
+  public async product(@params params: { id: string }, @error error: ResponseError) {
     const product = products.find((product) => product.id === params.id)
 
     if(!product) {

@@ -72,7 +72,7 @@ export class User {
   username: string
 
   @Column()
-  password: number
+  password: string
 }
 ```
 
@@ -82,8 +82,7 @@ When creating a new user account, make sure to save the password with the right 
 
 ```typescript{22,24,26-27,29}
 import type { EntityManager } from 'typeorm'
-import type { SecurityProvider } from 'zents'
-import { body, Controller, put, securityProvider, entityManager } from 'zents'
+import { body, Controller, put, securityProvider, SecurityProvider, entityManager } from 'zents'
 
 import { User } from '../entity/User'
 
@@ -208,7 +207,7 @@ Example using header strategy [configuration](./../../configuration.md):
 ```
 
 ::: warning
-Don't use this strategy if you intend to use auto redirect response, please use the auto json response type. Take a look at "[Auto redirect responses](#auto-redirect-responses)" section for more details.
+Don't use the "header" strategy if you intend to use auto redirect response, please use the auto json response type. Take a look at "[Auto redirect responses](#auto-redirect-responses)" section for more details.
 :::
 
 ## Accessing a user session

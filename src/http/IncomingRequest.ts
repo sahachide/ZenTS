@@ -17,7 +17,7 @@ export class IncomingRequest {
     requestConfig: RequestConfig,
     securityProviders: SecurityProviders,
   ): Promise<void> {
-    const context = await this.buildContext(req, res, params)
+    const context = await this.buildContext(req, res, params, route)
     const authentication = await this.authenticate(route.authProvider, context, securityProviders)
 
     if (authentication.isAuth) {
@@ -28,9 +28,16 @@ export class IncomingRequest {
           sessionId: authentication.sessionId,
         }
       }
-      const handler = factory.build(context, requestConfig, route)
 
-      await handler.run()
+      if (context.isValid) {
+        const handler = factory.build(context, requestConfig, route)
+
+        await handler.run()
+      } else {
+        context.error.badData('Bad Data', {
+          errors: context.validationErrors,
+        })
+      }
     } else if (authentication.securityProvider) {
       await authentication.securityProvider.forbidden(context)
     } else {
@@ -42,10 +49,11 @@ export class IncomingRequest {
     req: IncomingMessage,
     res: ServerResponse,
     params: IncomingParams,
+    route: Route,
   ): Promise<Context> {
     const context = new Context()
 
-    await context.build(req, res, params)
+    await context.build(req, res, params, route)
 
     return context
   }

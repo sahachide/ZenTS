@@ -1,4 +1,16 @@
-import { Context, Controller, get, params, query, request, Request } from '../../../../../src'
+import {
+  Context,
+  Controller,
+  get,
+  params,
+  post,
+  query,
+  request,
+  Request,
+  validate,
+  validation,
+  body,
+} from '../../../../../src'
 
 import type { QueryString } from '../../../../../src/types/interfaces'
 
@@ -70,5 +82,19 @@ export default class extends Controller {
       request: requestData,
       setterTests,
     }
+  }
+
+  @post('/request-test-validate')
+  @validation(
+    validate.object({
+      foo: validate.string().required().alphanum().min(3).max(30),
+      bar: validate.string().required().alphanum().min(3).max(30),
+    }),
+  )
+  public validationTest(
+    @body
+    { foo, bar }: { foo: string; bar: string },
+  ) {
+    return { foo, bar }
   }
 }
