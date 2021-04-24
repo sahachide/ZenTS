@@ -48,7 +48,7 @@ export type Email = EmailFactory
 
 export type EmailTemplates = Map<string, string>
 
-export type ErrorResponseData = JsonObject | JsonArray
+export type ErrorResponseData = Record<string, unknown> | JsonArray
 
 // ---- F
 // ---- G

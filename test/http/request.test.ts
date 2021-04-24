@@ -130,4 +130,32 @@ describe('Request', () => {
         accept: 'application/json',
       })
   })
+
+  it('validates a POST request body', async () => {
+    const body = {
+      foo: 'bar',
+      bar: 'baz',
+    }
+
+    await supertest(app.nodeServer)
+      .post('/request-test-validate')
+      .send(body)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .expect('Content-Type', /json/)
+      .expect(body)
+  })
+
+  it('validates a POST request body (fail)', async () => {
+    const body = {
+      foo: 'bar',
+    }
+
+    await supertest(app.nodeServer)
+      .post('/request-test-validate')
+      .send(body)
+      .set('Accept', 'application/json')
+      .expect(422)
+      .expect('Content-Type', /json/)
+  })
 })

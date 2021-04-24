@@ -1,5 +1,11 @@
 import type { IncomingMessage, ServerResponse } from 'http'
-import type { IncomingParams, ParsedBody, QueryString } from '../types/interfaces'
+import type {
+  IncomingParams,
+  ParsedBody,
+  QueryString,
+  RequestValidationError,
+  Route,
+} from '../types/interfaces'
 
 import { BodyParser } from './BodyParser'
 import { Cookie } from './Cookie'
@@ -17,12 +23,15 @@ export class Context {
     res: Response
     error: ResponseError
   }
+  private requestBodyValidationErrors: RequestValidationError[] = []
   private isBuild: boolean = false
+  private isReqBodyValid: boolean = true
 
   public async build(
     request: IncomingMessage,
     response: ServerResponse,
     params: IncomingParams,
+    route: Route,
   ): Promise<void> {
     if (this.isBuild) {
       return
@@ -37,6 +46,22 @@ export class Context {
       const bodyParser = new BodyParser()
 
       body = await bodyParser.parse(request)
+    }
+
+    if (typeof route.validationSchema !== 'undefined') {
+      const validationResult = route.validationSchema.validate(body.fields)
+
+      if (validationResult.error) {
+        this.isReqBodyValid = false
+        this.requestBodyValidationErrors = validationResult.error.details.map((error) => {
+          return {
+            message: error.message,
+            path: error.path,
+          }
+        })
+      } else {
+        body.fields = validationResult.value as JsonObject
+      }
     }
 
     const cookie = config.web?.cookie?.enable ? new Cookie(request.headers) : null
@@ -87,5 +112,13 @@ export class Context {
 
   get error(): ResponseError {
     return this.container.error
+  }
+
+  get isValid(): boolean {
+    return this.isReqBodyValid
+  }
+
+  get validationErrors(): RequestValidationError[] {
+    return this.requestBodyValidationErrors
   }
 }

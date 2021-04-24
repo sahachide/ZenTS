@@ -17,7 +17,7 @@ export class IncomingRequest {
     requestConfig: RequestConfig,
     securityProviders: SecurityProviders,
   ): Promise<void> {
-    const context = await this.buildContext(req, res, params)
+    const context = await this.buildContext(req, res, params, route)
     const authentication = await this.authenticate(route.authProvider, context, securityProviders)
 
     if (authentication.isAuth) {
@@ -29,11 +29,15 @@ export class IncomingRequest {
         }
       }
 
-      await this.validate(context, route)
+      if (context.isValid) {
+        const handler = factory.build(context, requestConfig, route)
 
-      const handler = factory.build(context, requestConfig, route)
-
-      await handler.run()
+        await handler.run()
+      } else {
+        context.error.badData('Bad Data', {
+          errors: context.validationErrors,
+        })
+      }
     } else if (authentication.securityProvider) {
       await authentication.securityProvider.forbidden(context)
     } else {
@@ -45,24 +49,13 @@ export class IncomingRequest {
     req: IncomingMessage,
     res: ServerResponse,
     params: IncomingParams,
+    route: Route,
   ): Promise<Context> {
     const context = new Context()
 
-    await context.build(req, res, params)
+    await context.build(req, res, params, route)
 
     return context
-  }
-
-  protected async validate(context: Context, route: Route): Promise<void> {
-    if (typeof route.validationSchema === 'undefined') {
-      return
-    }
-
-    const test = route.validationSchema.validate(context.req.body)
-    // console.log(context.req.body)
-
-    // console.log(test)
-    // console.log(test.error.details)
   }
 
   protected async authenticate(
