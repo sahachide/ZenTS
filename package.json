@@ -51,8 +51,7 @@
   "files": [
     "lib/**/*",
     "LICENSE",
-    "README.md",
-    "ATTRIBUTION.md"
+    "README.md"
   ],
   "dependencies": {
     "@types/formidable": "^1.0.32",
