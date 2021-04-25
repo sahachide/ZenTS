@@ -331,7 +331,7 @@ public createProduct(@body body: {
 
 As you see, handling body data is pretty easy in ZenTS.
 
-### Validating request body
+### Validating request body
 
 Sometimes you want to make sure that the data that is passed to your controller is correct in form and types. For that purpose, ZenTS exposes a `@validation()` annotation. With it, you can write fine-grained validation schemas for the request body of a controller:
 
