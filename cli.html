@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Command-line interface (CLI) | ZenTS - Node.js &amp; TypeScript MVC-Framework for building rich web applications</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="apple-touch-icon" size="57x57" href="/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" size="60x60" href="/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" size="72x72" href="/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" size="76x76" href="/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" size="114x114" href="/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" size="120x120" href="/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" size="144x144" href="/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" size="152x152" href="/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" size="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" size="192x192" href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" size="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" size="96x96" href="/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" size="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800&amp;family=Raleway:wght@400;500;600;700;800;900&amp;display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+    <script>                
+        window.addEventListener('load', function () {
+          var inputSelector = '.search-box > input';
+          var $el = document.querySelector(inputSelector);
+
+          if($el) {          
+            $el.disabled = true;
+            $el.placeholder = 'Loading...';
+  
+            var script = document.createElement("script");
+            script.addEventListener("load", function() {
+              docsearch({
+                apiKey: '1c03de24a87faf1bfd8b7e760c63b3ab',
+                indexName: 'zents',
+                inputSelector: inputSelector,
+              });
+              $el.disabled = false;
+              $el.placeholder = 'Search...';
+            });
+  
+            script.src = "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js";
+  
+            document.body.appendChild(script);            
+          }
+        });
+      </script>
+    <meta name="description" content="ZenTS is a Node.js & TypeScript MVC-Framework for building rich web applications, released as free and open-source software under the MIT License. It is designed for building web applications with modern tools and design patterns.">
+    <meta name="keywords" content="ZenTS guide tutorial documentation CLI framework mvc TypeScript">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#512DA8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.5f5f71b9.css" as="style"><link rel="preload" href="/assets/js/app.ff0d6eb6.js" as="script"><link rel="preload" href="/assets/js/2.1831a849.js" as="script"><link rel="preload" href="/assets/js/12.7d400f46.js" as="script"><link rel="preload" href="/assets/js/4.be0fa7c4.js" as="script"><link rel="prefetch" href="/assets/js/10.f60de0dc.js"><link rel="prefetch" href="/assets/js/11.f70646e3.js"><link rel="prefetch" href="/assets/js/13.75ca8dc6.js"><link rel="prefetch" href="/assets/js/14.53bbd6c1.js"><link rel="prefetch" href="/assets/js/15.485b7772.js"><link rel="prefetch" href="/assets/js/16.d701e551.js"><link rel="prefetch" href="/assets/js/17.e2a1a4bc.js"><link rel="prefetch" href="/assets/js/18.279c874a.js"><link rel="prefetch" href="/assets/js/19.bd5220e3.js"><link rel="prefetch" href="/assets/js/20.9bbbcf25.js"><link rel="prefetch" href="/assets/js/21.8bbbd12a.js"><link rel="prefetch" href="/assets/js/22.46e6349d.js"><link rel="prefetch" href="/assets/js/23.403bfdcc.js"><link rel="prefetch" href="/assets/js/24.1c0b9c00.js"><link rel="prefetch" href="/assets/js/25.1d5dbc6b.js"><link rel="prefetch" href="/assets/js/26.dcb85366.js"><link rel="prefetch" href="/assets/js/27.86601334.js"><link rel="prefetch" href="/assets/js/28.ac72a169.js"><link rel="prefetch" href="/assets/js/29.04ae9240.js"><link rel="prefetch" href="/assets/js/3.656260b0.js"><link rel="prefetch" href="/assets/js/30.24ce4d2b.js"><link rel="prefetch" href="/assets/js/5.61ba91d2.js"><link rel="prefetch" href="/assets/js/6.1b9fb03d.js"><link rel="prefetch" href="/assets/js/7.379d2cb5.js"><link rel="prefetch" href="/assets/js/8.630c86f7.js"><link rel="prefetch" href="/assets/js/9.3cbbae49.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.5f5f71b9.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/zents_logo_icon.png" alt="ZenTS - Node.js &amp; TypeScript MVC-Framework for building rich web applications" class="logo"> <span class="site-name can-hide">ZenTS - Node.js &amp; TypeScript MVC-Framework for building rich web applications</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/configuration.html" class="nav-link">
+  Configuration
+</a></div><div class="nav-item"><a href="/api/" class="nav-link">
+  API Reference
+</a></div><div class="nav-item"><a href="/cli.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  CLI
+</a></div><div class="nav-item"><a href="/roadmap.html" class="nav-link">
+  Roadmap
+</a></div> <a href="https://github.com/sahachide/ZenTS" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/configuration.html" class="nav-link">
+  Configuration
+</a></div><div class="nav-item"><a href="/api/" class="nav-link">
+  API Reference
+</a></div><div class="nav-item"><a href="/cli.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  CLI
+</a></div><div class="nav-item"><a href="/roadmap.html" class="nav-link">
+  Roadmap
+</a></div> <a href="https://github.com/sahachide/ZenTS" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Getting started</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/guide/gettingstarted/installation.html" class="sidebar-link">Installation &amp; Setup</a></li><li><a href="/guide/gettingstarted/helloworld.html" class="sidebar-link">Hello World Example</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Advanced Guides</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/guide/advancedguides/controllers.html" class="sidebar-link">Controllers</a></li><li><a href="/guide/advancedguides/request.html" class="sidebar-link">Request Context</a></li><li><a href="/guide/advancedguides/response.html" class="sidebar-link">Response Context</a></li><li><a href="/guide/advancedguides/routing.html" class="sidebar-link">Routing</a></li><li><a href="/guide/advancedguides/database.html" class="sidebar-link">Database / ORM</a></li><li><a href="/guide/advancedguides/redis.html" class="sidebar-link">Redis</a></li><li><a href="/guide/advancedguides/user_management.html" class="sidebar-link">User and Session Management</a></li><li><a href="/guide/advancedguides/templates.html" class="sidebar-link">Views &amp; Templates</a></li><li><a href="/guide/advancedguides/static_files.html" class="sidebar-link">Static files</a></li><li><a href="/guide/advancedguides/services.html" class="sidebar-link">Services</a></li><li><a href="/guide/advancedguides/dependency_injection.html" class="sidebar-link">Dependency Injection</a></li><li><a href="/guide/advancedguides/emails.html" class="sidebar-link">Sending emails</a></li></ul></section></li><li><a href="/configuration.html" class="sidebar-link">Configuration</a></li><li><a href="/cli.html" aria-current="page" class="active sidebar-link">Command-line interface (CLI)</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/cli.html#introduction" class="sidebar-link">Introduction</a></li><li class="sidebar-sub-header"><a href="/cli.html#installation" class="sidebar-link">Installation</a></li><li class="sidebar-sub-header"><a href="/cli.html#help-command-and-help" class="sidebar-link">Help command and --help</a></li><li class="sidebar-sub-header"><a href="/cli.html#list-of-commands" class="sidebar-link">List of commands</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/cli.html#create-command" class="sidebar-link">create command</a></li><li class="sidebar-sub-header"><a href="/cli.html#dev-command" class="sidebar-link">dev command</a></li><li class="sidebar-sub-header"><a href="/cli.html#build-command" class="sidebar-link">build command</a></li><li class="sidebar-sub-header"><a href="/cli.html#add-controller-command" class="sidebar-link">add:controller command</a></li><li class="sidebar-sub-header"><a href="/cli.html#add-service-command" class="sidebar-link">add:service command</a></li><li class="sidebar-sub-header"><a href="/cli.html#add-entity-command" class="sidebar-link">add:entity command</a></li></ul></li><li class="sidebar-sub-header"><a href="/cli.html#using-the-cli-programmatically" class="sidebar-link">Using the CLI programmatically</a></li><li class="sidebar-sub-header"><a href="/cli.html#extending-the-cli-with-plugins" class="sidebar-link">Extending the CLI with plugins</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/cli.html#installing-a-plugin" class="sidebar-link">Installing a plugin</a></li><li class="sidebar-sub-header"><a href="/cli.html#uninstall-a-plugin" class="sidebar-link">Uninstall a plugin</a></li><li class="sidebar-sub-header"><a href="/cli.html#update-all-plugins" class="sidebar-link">Update all plugins</a></li><li class="sidebar-sub-header"><a href="/cli.html#list-all-installed-plugins" class="sidebar-link">List all installed plugins</a></li><li class="sidebar-sub-header"><a href="/cli.html#link-a-plugin" class="sidebar-link">Link a plugin</a></li><li class="sidebar-sub-header"><a href="/cli.html#writing-own-plugins" class="sidebar-link">Writing own plugins</a></li></ul></li></ul></li><li><a href="/roadmap.html" class="sidebar-link">Roadmap</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="frontmatter-title"><a href="#frontmatter-title" class="header-anchor">#</a> Command-line interface (CLI)</h1> <div data-v-3d11b470><div class="reading-time" data-v-3d11b470>
+    8 min read (1475 words)
+  </div> <div class="illustration-container" data-v-3d11b470><img src="/guide/cli.svg" class="illustration-image" data-v-3d11b470></div> <h2 data-v-3d11b470><a href="#" class="header-anchor" data-v-3d11b470>#</a> Table of contents</h2> <div data-v-3d11b470><p data-v-3d11b470></p><div class="table-of-contents" data-v-3d11b470><ul data-v-3d11b470><li data-v-3d11b470><a href="#introduction" data-v-3d11b470>Introduction</a></li><li data-v-3d11b470><a href="#installation" data-v-3d11b470>Installation</a></li><li data-v-3d11b470><a href="#help-command-and-help" data-v-3d11b470>Help command and --help</a></li><li data-v-3d11b470><a href="#list-of-commands" data-v-3d11b470>List of commands</a><ul data-v-3d11b470><li data-v-3d11b470><a href="#create-command" data-v-3d11b470>create command</a></li><li data-v-3d11b470><a href="#dev-command" data-v-3d11b470>dev command</a></li><li data-v-3d11b470><a href="#build-command" data-v-3d11b470>build command</a></li><li data-v-3d11b470><a href="#add-controller-command" data-v-3d11b470>add:controller command</a></li><li data-v-3d11b470><a href="#add-service-command" data-v-3d11b470>add:service command</a></li><li data-v-3d11b470><a href="#add-entity-command" data-v-3d11b470>add:entity command</a></li></ul></li><li data-v-3d11b470><a href="#using-the-cli-programmatically" data-v-3d11b470>Using the CLI programmatically</a></li><li data-v-3d11b470><a href="#extending-the-cli-with-plugins" data-v-3d11b470>Extending the CLI with plugins</a><ul data-v-3d11b470><li data-v-3d11b470><a href="#installing-a-plugin" data-v-3d11b470>Installing a plugin</a></li><li data-v-3d11b470><a href="#uninstall-a-plugin" data-v-3d11b470>Uninstall a plugin</a></li><li data-v-3d11b470><a href="#update-all-plugins" data-v-3d11b470>Update all plugins</a></li><li data-v-3d11b470><a href="#list-all-installed-plugins" data-v-3d11b470>List all installed plugins</a></li><li data-v-3d11b470><a href="#link-a-plugin" data-v-3d11b470>Link a plugin</a></li><li data-v-3d11b470><a href="#writing-own-plugins" data-v-3d11b470>Writing own plugins</a></li></ul></li></ul></div></div></div><p></p> <h2 id="introduction"><a href="#introduction" class="header-anchor">#</a> Introduction</h2> <p>The ZenTS CLI is a command-line interface tool that helps you to initialize, develop, build and maintain your application. It comes with a development server and a ready to use TypeScript compiler. Furthermore it has serval generators, which helps you to scaffolding your ZenTS projects and assist you while you develop a application. This guide will introduce you to the useful commands ZenTS CLI offers. While totally optional, installing and working with the CLI is highly recommend when you use ZenTS.</p> <h2 id="installation"><a href="#installation" class="header-anchor">#</a> Installation</h2> <p>ZenTS CLI can be found in the npm registry and should be installed globally:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token function">npm</span> <span class="token function">install</span> zents-cli -g
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>The above command will install ZenTS CLI globally using <em>npm</em>. This guide will continue using <em>npm</em> as package manager, but feel free to use other packaging managers and refer to their documentation on how to install packages globally.</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>An alternative way to use ZenTS CLI is the <code>npx</code> command. Please take a look on the <a href="https://github.com/npm/npx" target="_blank" rel="noopener noreferrer">documentation<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> on how to use the <code>npx</code> command, but in a nutshell, you just perpend <code>npx</code> to every command listen in this guide and you're good to go.</p></div> <p>After the installation we can check if everything is working correctly using the <code>zen</code> command:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen --version
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>If correctly installed, this command will show the installed version of the CLI.</p> <h2 id="help-command-and-help"><a href="#help-command-and-help" class="header-anchor">#</a> Help command and --help</h2> <p>The CLI has a general <code>help</code> command, which shows you an overview of the installed commands, the current version and so on.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen <span class="token builtin class-name">help</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>Furthermore every command has a <code>--help</code> flag, which shows a corresponding help text. For example:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen create --help
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>Will display the help of the <code>create</code> command. Make use of the <code>--help</code> flag if you get stuck or want to figure out more about a specific command.</p> <h2 id="list-of-commands"><a href="#list-of-commands" class="header-anchor">#</a> List of commands</h2> <p>The following chapter contains all available CLI commands. Most of them have to be executed in a existing ZenTS project directory.</p> <h3 id="create-command"><a href="#create-command" class="header-anchor">#</a> create command</h3> <p>The <code>create</code> command is used to bootstrap a new ZenTS project with the recommend folder structure.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen create myproject
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>The above command will create a new ZenTS project in a <code>myproject</code> folder relative to the directory you called the command.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>$ zen create --help
+
+create a new ZenTS project inside PROJECTNAME directory.
+
+USAGE
+  $ zen create PROJECTNAME
+
+OPTIONS
+  -c, --clean  clean <span class="token function">install</span> directory before running installation
+  -h, --help   show CLI <span class="token builtin class-name">help</span>
+
+ALIASES
+  $ zen create-project
+
+EXAMPLE
+  $ zen create myproject
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><h3 id="dev-command"><a href="#dev-command" class="header-anchor">#</a> dev command</h3> <p>Start a development server with hot reloading and automatically build of TypeScript files. The command has to be executed inside a ZenTS project folder.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen dev
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>$ zen dev --help
+
+run a ZenTS project with a dev server, tsc-watch and browser-sync.
+
+USAGE
+  $ zen dev
+
+OPTIONS
+  -h, --help                   show CLI <span class="token builtin class-name">help</span>
+  --<span class="token punctuation">[</span>no-<span class="token punctuation">]</span>server                enable/Disable the web-server. Enabled by default, <span class="token builtin class-name">set</span> --no-server flag to disable.
+  --<span class="token punctuation">[</span>no-<span class="token punctuation">]</span>sync                  enable/Disable the browser-sync with the web-server. Enabled by default, <span class="token builtin class-name">set</span> --no-sync flag to disable.
+  --sync-port<span class="token operator">=</span>sync-port        the port browser-sync will use <span class="token punctuation">(</span>if none is provided will determine a <span class="token function">open</span> port between <span class="token number">8000</span> and <span class="token number">8999</span> automatically<span class="token punctuation">)</span>
+  --sync-ui-port<span class="token operator">=</span>sync-ui-port  the port browser-sync ui will use <span class="token punctuation">(</span>if none is provided will determine a <span class="token function">open</span> port between <span class="token number">9000</span> and <span class="token number">9999</span> automatically<span class="token punctuation">)</span>
+  --<span class="token punctuation">[</span>no-<span class="token punctuation">]</span>tsc                   enable/Disable the TypeScript <span class="token function">watch</span> compiler. Enabled by default, <span class="token builtin class-name">set</span> --no-tsc flag to disable.
+
+EXAMPLE
+  $ zen dev
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><h3 id="build-command"><a href="#build-command" class="header-anchor">#</a> build command</h3> <p>Builds a ZenTS project. Using the command has the advantage, that template files are copied over to the dist directory. The <code>tsconfig.json</code> (or similar) is respected by the <code>build</code> command. The command has to be executed inside a ZenTS project folder.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen build
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen build --help
+
+build a ZenTS application. This <span class="token builtin class-name">command</span> will compile the TypeScript files and copy the projects templates to the dist folder.
+
+USAGE
+  $ zen build
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h3 id="add-controller-command"><a href="#add-controller-command" class="header-anchor">#</a> add:controller command</h3> <p>Creates a new boilerplate controller for a project. The command has to be executed inside a ZenTS project folder.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen add:controller Foo
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>The above command will create a <code>src/controller/FooController.ts</code> file.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen add:controller --help
+
+create a new ZenTS controller class.
+
+USAGE
+  $ zen add:controller NAME
+
+ARGUMENTS
+  NAME  name of the controller, e.g. <span class="token string">&quot;Product&quot;</span><span class="token builtin class-name">.</span> The <span class="token string">&quot;Controller&quot;</span> appendix should be omitted.
+
+OPTIONS
+  -f, --force  force creation, eventually overwriting existing <span class="token function">file</span>
+
+EXAMPLES
+  $ zen add:controller Product
+  $ zen add:controller User
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><h3 id="add-service-command"><a href="#add-service-command" class="header-anchor">#</a> add:service command</h3> <p>Creates a new boilerplate service for a project. The command has to be executed inside a ZenTS project folder.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen add:service Foo
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>The above command will create a <code>src/service/FooService.ts</code> file.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen add:service --help
+
+create a new ZenTS <span class="token function">service</span> class.
+
+USAGE
+  $ zen add:service NAME
+
+ARGUMENTS
+  NAME  name of the service, e.g. <span class="token string">&quot;Util&quot;</span><span class="token builtin class-name">.</span> The <span class="token string">&quot;Service&quot;</span> appendix should be omitted.
+
+OPTIONS
+  -f, --force  force creation, eventually overwriting existing <span class="token function">file</span>
+
+EXAMPLE
+  $ zen add:service Util
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><h3 id="add-entity-command"><a href="#add-entity-command" class="header-anchor">#</a> add:entity command</h3> <p>Creates a new boilerplate entity for a project. The command has to be executed inside a ZenTS project folder.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen add:entity Foo
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>The above command will create a <code>src/entity/Foo.ts</code> file.</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen add:entity --help
+
+create a new ZenTS/TypeORM entity class.
+
+USAGE
+  $ zen add:entity NAME
+
+ARGUMENTS
+  NAME  name of the entity, e.g. <span class="token string">&quot;Product&quot;</span>
+
+OPTIONS
+  -f, --force  force creation, eventually overwriting existing <span class="token function">file</span>
+
+EXAMPLES
+  $ zen add:entity Product
+  $ zen add:entity User
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><h2 id="using-the-cli-programmatically"><a href="#using-the-cli-programmatically" class="header-anchor">#</a> Using the CLI programmatically</h2> <p>The CLI commands can be used programmatically calling their corresponding <code>run()</code> methods. For example if you want to use the <code>dev</code> command programmatically you have to import the zents-cli package, which exports a <code>Dev</code> command object:</p> <div class="language-typescript line-numbers-mode"><pre class="language-typescript"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> Dev <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'zents-cli'</span>
+
+Dev<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'--sync'</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>The <em>add</em> generator commands are exported as <strong>AddCOMMAND</strong>, e.g. <code>AddController</code> or <code>AddService</code>. The <code>run()</code> method accepts one argument, an array of flags and/or positional arguments for the given command.</p> <h2 id="extending-the-cli-with-plugins"><a href="#extending-the-cli-with-plugins" class="header-anchor">#</a> Extending the CLI with plugins</h2> <p>ZenTS's CLI can be extended with plugins. A plugin can introduce one or multiple new commands for the CLI or even overwrite a given command (by exposing the same command name as the existing ones).</p> <h3 id="installing-a-plugin"><a href="#installing-a-plugin" class="header-anchor">#</a> Installing a plugin</h3> <p>New plugins can be installed using the following command:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:install PLUGIN
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:install --help
+
+installs a plugin into the CLI
+
+USAGE
+  $ zen plugins:install PLUGIN<span class="token punctuation">..</span>.
+
+ARGUMENTS
+  PLUGIN  plugin to <span class="token function">install</span>
+
+OPTIONS
+  -f, --force    <span class="token function">yarn</span> <span class="token function">install</span> with force flag
+  -h, --help     show CLI <span class="token builtin class-name">help</span>
+  -v, --verbose
+
+DESCRIPTION
+  Can be installed from <span class="token function">npm</span> or a <span class="token function">git</span> url.
+
+  Installation of a user-installed plugin will override a core plugin.
+
+  e.g. If you have a core plugin that has a <span class="token string">'hello'</span> command, installing a user-installed plugin with a <span class="token string">'hello'</span> <span class="token builtin class-name">command</span> will override the core plugin implementation. This is useful <span class="token keyword">if</span> a user needs to update core plugin
+  functionality <span class="token keyword">in</span> the CLI without the need to patch and update the whole CLI.
+
+ALIASES
+  $ zen plugins:add
+
+EXAMPLES
+  $ zen plugins:install myplugin
+  $ zen plugins:install https://github.com/someuser/someplugin
+  $ zen plugins:install someuser/someplugin
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br></div></div><h3 id="uninstall-a-plugin"><a href="#uninstall-a-plugin" class="header-anchor">#</a> Uninstall a plugin</h3> <p>To uninstall a plugin use the following command:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:uninstall PLUGIN
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:uninstall --help
+
+removes a plugin from the CLI
+
+USAGE
+  $ zen plugins:uninstall PLUGIN<span class="token punctuation">..</span>.
+
+ARGUMENTS
+  PLUGIN  plugin to uninstall
+
+OPTIONS
+  -h, --help     show CLI <span class="token builtin class-name">help</span>
+  -v, --verbose
+
+ALIASES
+  $ zen plugins:unlink
+  $ zen plugins:remove
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><h3 id="update-all-plugins"><a href="#update-all-plugins" class="header-anchor">#</a> Update all plugins</h3> <p>All plugins can be updated using the <code>update</code> command:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:update
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:update --help
+
+update installed plugins
+
+USAGE
+  $ zen plugins:update
+
+OPTIONS
+  -h, --help     show CLI <span class="token builtin class-name">help</span>
+  -v, --verbose
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><h3 id="list-all-installed-plugins"><a href="#list-all-installed-plugins" class="header-anchor">#</a> List all installed plugins</h3> <p>All installed plugins can be listed using the following command:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins --help
+
+list installed plugins
+
+USAGE
+  $ zen plugins
+
+OPTIONS
+  --core  show core plugins
+
+EXAMPLE
+  $ zen plugins
+
+COMMANDS
+  plugins:install    installs a plugin into the CLI
+  plugins:link       links a plugin into the CLI <span class="token keyword">for</span> development
+  plugins:uninstall  removes a plugin from the CLI
+  plugins:update     update installed plugins
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><h3 id="link-a-plugin"><a href="#link-a-plugin" class="header-anchor">#</a> Link a plugin</h3> <p>Links a plugin into the CLI for development:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:link PLUGIN
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>zen plugins:link --help
+
+links a plugin into the CLI <span class="token keyword">for</span> development
+
+USAGE
+  $ zen plugins:link PLUGIN
+
+ARGUMENTS
+  <span class="token environment constant">PATH</span>  <span class="token punctuation">[</span>default: .<span class="token punctuation">]</span> path to plugin
+
+OPTIONS
+  -h, --help     show CLI <span class="token builtin class-name">help</span>
+  -v, --verbose
+
+DESCRIPTION
+  Installation of a linked plugin will override a user-installed or core plugin.
+
+  e.g. If you have a user-installed or core plugin that has a <span class="token string">'hello'</span> command, installing a linked plugin with a <span class="token string">'hello'</span> <span class="token builtin class-name">command</span> will override the user-installed or core plugin implementation. This is useful <span class="token keyword">for</span> development
+  work.
+
+EXAMPLE
+  $ zen plugins:link myplugin
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><h3 id="writing-own-plugins"><a href="#writing-own-plugins" class="header-anchor">#</a> Writing own plugins</h3> <p>A plugin is basically a set of commands or one single command which does something for the user. Commands for the CLI are written using the awesome <em>oclif</em> CLI framework. Please take a look at the <a href="https://oclif.io/docs/commands" target="_blank" rel="noopener noreferrer">official documentation<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> on how to write commands. After you've finished coding and published your command on <em>npm</em> (or <em>git</em>) you can install it using the command listen above.</p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/sahachide/ZenTS/edit/master/docs/cli.md" target="_blank" rel="noopener noreferrer">Edit this page on GitHub</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">9/19/2020, 5:31:22 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/configuration.html" class="prev">
+        Configuration
+      </a></span> <span class="next"><a href="/roadmap.html">
+        Roadmap
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/assets/js/app.ff0d6eb6.js" defer></script><script src="/assets/js/2.1831a849.js" defer></script><script src="/assets/js/12.7d400f46.js" defer></script><script src="/assets/js/4.be0fa7c4.js" defer></script>
+  </body>
+</html>
