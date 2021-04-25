@@ -341,7 +341,7 @@ Sometimes you want to make sure that the data that is passed to your controller 
   validate.object({
     name: validate.string().required().alphanum().min(5).max(50),
     description: validate.string().max(255),
-    price: validate.integer().positive().required().limit(9999)
+    price: validate.number().integer().positive().required().limit(9999)
   }),
 )
 public createProduct(@body body: {
