@@ -5,6 +5,7 @@ import type {
   SecurityProviders,
   Services,
   TemplateEngineLoaderResult,
+  Workers,
 } from '../types/'
 
 import { ControllerLoader } from '../controller/ControllerLoader'
@@ -15,6 +16,7 @@ import { Registry } from './Registry'
 import { SecurityProviderLoader } from '../security/SecurityProviderLoader'
 import { ServiceLoader } from '../service/ServiceLoader'
 import { TemplateEngineLoader } from '../template/TemplateEngineLoader'
+import { WorkerLoader } from '../messagequeue/WorkerLoader'
 import { createConnection } from '../database/createConnection'
 import { createRedisClient } from '../database/createRedisClient'
 
@@ -26,6 +28,7 @@ export class AutoLoader {
       templateData,
       emailTemplates,
       entities,
+      workers,
       connection,
       redisClient,
     ] = await Promise.all([
@@ -34,6 +37,7 @@ export class AutoLoader {
       this.loadTemplateData(),
       this.loadEmailTemplates(),
       this.loadEntities(),
+      this.loadWorkers(),
       createConnection(),
       createRedisClient(),
     ])
@@ -48,6 +52,7 @@ export class AutoLoader {
       emailTemplates,
       databaseContainer,
       entities,
+      workers,
       securityProviders,
     )
 
@@ -85,6 +90,12 @@ export class AutoLoader {
     const entityLoader = new EntityLoader()
 
     return await entityLoader.load()
+  }
+
+  protected async loadWorkers(): Promise<Workers> {
+    const workerLoader = new WorkerLoader()
+
+    return await workerLoader.load()
   }
 
   protected async loadEmailTemplates(): Promise<EmailTemplates> {

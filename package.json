@@ -61,6 +61,7 @@
     "@types/nunjucks": "^3.1.4",
     "app-root-path": "3.0.0",
     "bcrypt": "^5.0.1",
+    "bullmq": "^1.26.0",
     "consola": "^2.15.3",
     "cookie": "~0.4.1",
     "cosmiconfig": "^7.0.0",

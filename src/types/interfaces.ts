@@ -17,6 +17,8 @@ import type { Context as ContextClass } from '../http/Context'
 import type { ControllerFactory } from '../controller/ControllerFactory'
 import type { EmailFactory } from '../email/EmailFactory'
 import type { HtmlToTextOptions } from 'html-to-text'
+import type { JobsOptions } from 'bullmq'
+import type { QueueFactory } from '../messagequeue/QueueFactory'
 import type { RedisOptions } from 'ioredis'
 import type { Request } from '../http/Request'
 import type { RequestFactory } from '../http/RequestFactory'
@@ -26,6 +28,7 @@ import type { ServiceFactory } from '../service/ServiceFactory'
 import type { Session as SessionClass } from '../security/Session'
 import type { SessionFactory } from '../security'
 import type { ConnectionOptions as TLSConnectionOptions } from 'tls'
+import type { WorkerFactory } from '../messagequeue/WorkerFactory'
 
 // ---- A
 // ---- B
@@ -69,6 +72,7 @@ export interface ControllerDeclaration {
   module: Class
   routes: Route[]
 }
+
 export interface CommonJSZenModule<T> {
   [key: string]: Class<T>
 }
@@ -202,6 +206,16 @@ export interface ParsedBody {
 
 // ---- Q
 
+export interface QueueOption {
+  name: string
+  prefix?: string
+  defaultJobOptions?: JobsOptions
+  scheduler?: boolean
+  maxStalledCount?: number // only used when scheduler = true
+  stalledInterval?: number // only used when scheduler = true
+  log?: boolean
+}
+
 export interface QueryString {
   [key: string]: undefined | string | string[] | QueryString | QueryString[]
 }
@@ -238,6 +252,8 @@ export interface RegistryFactories {
   service: ServiceFactory
   session: SessionFactory
   email: EmailFactory
+  queue: QueueFactory
+  worker: WorkerFactory
 }
 
 export interface RequestValidationError {
@@ -406,6 +422,7 @@ export interface ZenConfig {
     service?: string
     entity?: string
     email?: string
+    worker?: string
     public?: string | boolean
   }
   web?: {
@@ -487,6 +504,10 @@ export interface ZenConfig {
       | 'latin1'
       | 'binary'
       | 'hex'
+  }
+  mq?: {
+    enable?: boolean
+    queues?: QueueOption[]
   }
   email?: {
     enable?: boolean

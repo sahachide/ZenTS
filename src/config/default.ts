@@ -19,6 +19,7 @@ export const defaultConfig: ZenConfig = {
     service: './service/',
     entity: './entity/',
     email: './email/',
+    worker: './worker/',
     public: join(appDir, 'public'),
   },
   web: {
@@ -39,6 +40,33 @@ export const defaultConfig: ZenConfig = {
   redis: {
     enable: false,
     log: true,
+  },
+  mq: {
+    enable: false,
+    /*
+    queues: [
+      {
+        name: 'string',
+        defaultJobOptions: {
+          // https://github.com/taskforcesh/bullmq/blob/master/docs/gitbook/api/bullmq.jobsoptions.md
+        }, 
+        scheduler: bool, // required if running stuff like delayed jobs, retries and rate limiting, needs an error when turned off and jobs requiring that, default should be true
+        log: bool // give some logging done with events and our log framework
+
+      }
+    ],
+    // these are the startup jobs, they should also be added automaticly
+    jobs: [
+      {
+        queue: 'name',
+        data: {...}, // optional? 
+        options: {...}, // https://github.com/taskforcesh/bullmq/blob/master/docs/gitbook/api/bullmq.jobsoptions.md
+        children: [
+          // see https://docs.bullmq.io/guide/jobs/flows
+        ]
+      }
+    ]
+    */
   },
   security: {
     enable: false,

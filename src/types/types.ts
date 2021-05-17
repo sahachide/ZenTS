@@ -22,6 +22,7 @@ import type { SecurityProvider } from '../security/SecurityProvider'
 import type { SendMailOptions } from 'nodemailer'
 import type { Stream } from 'stream'
 import type { TemplateResponse } from '../template/TemplateResponse'
+import type { Worker } from './../messagequeue/Worker'
 import type findMyWay from 'find-my-way'
 
 // ---- A
@@ -178,6 +179,9 @@ export type TemplateFiltersMap = Map<string, TemplateFiltersMapItem>
 export type ValidationSchema = ObjectSchema | ArraySchema | BooleanSchema
 
 // ---- W
+
+export type Workers = Map<string, Worker>
+
 // ---- X
 // ---- Y
 // ---- Z

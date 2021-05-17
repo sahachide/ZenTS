@@ -9,6 +9,7 @@ export { fs } from './filesystem/'
 export { Request, Response, ResponseError, ResponseHeader, Server, validate } from './http/'
 export { log } from './log/'
 export { SecurityProviderOptions, SecurityProvider } from './security/'
+export { Worker } from './messagequeue/'
 export {
   Context,
   Email,
@@ -18,6 +19,7 @@ export {
   InjectedConnection,
   InjectedEntityManager,
   InjectedRepository,
+  QueueOption,
   RedisClient,
   Session,
 } from './types/'

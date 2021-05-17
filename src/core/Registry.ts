@@ -6,6 +6,7 @@ import type {
   SecurityProviders,
   Services,
   TemplateEngineLoaderResult,
+  Workers,
 } from '../types'
 
 import type { Connection } from 'typeorm'
@@ -13,11 +14,13 @@ import { ControllerFactory } from '../controller/ControllerFactory'
 import { DB_TYPE } from '../types'
 import { DatabaseContainer } from '../database/DatabaseContainer'
 import { EmailFactory } from '../email'
+import { QueueFactory } from '../messagequeue/QueueFactory'
 import type { Redis } from 'ioredis'
 import { RequestFactory } from '../http/RequestFactory'
 import { RouterFactory } from '../router/RouterFactory'
 import { ServiceFactory } from '../service/ServiceFactory'
 import { SessionFactory } from '../security/SessionFactory'
+import { WorkerFactory } from '../messagequeue/WorkerFactory'
 
 export class Registry {
   public factories: RegistryFactories
@@ -29,6 +32,7 @@ export class Registry {
     emailTemplates: EmailTemplates,
     protected readonly databaseContainer: DatabaseContainer,
     protected readonly entities: Entities,
+    workers: Workers,
     protected readonly securityProviders: SecurityProviders,
   ) {
     const sessionFactory = new SessionFactory(securityProviders, databaseContainer)
@@ -54,6 +58,8 @@ export class Registry {
       ),
       session: sessionFactory,
       email: emailFactory,
+      queue: new QueueFactory(this.getRedisClient()),
+      worker: new WorkerFactory(workers),
     }
   }
 
